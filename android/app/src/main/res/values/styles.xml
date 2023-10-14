@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- fuente Inter Regular -->
+    <style name="TextoInterRegular">
+        <item name="android:fontFamily">@font/interregular</item>
+    </style>
+
+    <!-- fuente Inter Bold -->
+    <style name="TextoInterBold">
+        <item name="android:fontFamily">@font/intersemibold</item>
+    </style>
+</resources>

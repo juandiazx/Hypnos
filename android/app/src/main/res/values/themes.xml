@@ -3,6 +3,22 @@
     <style name="Base.Theme.HypnosApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- Fuente Inter Regular -->
+        <item name="android:fontFamily">@font/interregular</item>
+
+
+        <!-- Tamaños de texto -->
+        <item name="android:textAppearanceLarge">@style/TextoInterRegular</item>
+        <item name="android:textAppearanceMedium">@style/TextoInterRegular</item>
+        <item name="android:textAppearanceSmall">@style/TextoInterRegular</item>
+
+
+        <!-- Colores -->
+        <item name="colorPrimary">@color/colorAzulPrincipal</item>
+        <item name="colorPrimaryDark">@color/colorNegro</item>
+        <item name="colorAccent">@color/colorBlanco</item>
+        <item name="android:background">@color/colorAzulOpaco</item>
     </style>
 
     <style name="Theme.HypnosApp" parent="Base.Theme.HypnosApp" />
