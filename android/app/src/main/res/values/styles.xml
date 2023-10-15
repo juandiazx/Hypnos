@@ -33,5 +33,13 @@
         <item name="android:background">@drawable/borde_botones</item>
     </style>
 
+    <style name="Inputs">
+        <item name="android:background">@drawable/borde_del_input</item>
+        <item name="android:hint">@color/colorAzulClaro</item> <!-- Color del hint -->
+        <item name="android:paddingStart">8dp</item> <!-- Espacio izquierdo -->
+        <item name="android:paddingEnd">8dp</item> <!-- Espacio derecho -->
+    </style>
+
+
 
 </resources>
