@@ -9,4 +9,10 @@
     <style name="TextoInterBold">
         <item name="android:fontFamily">@font/intersemibold</item>
     </style>
+
+    <!--Estilo para subtítulos (azul claro)-->
+    <style name="TextoInterBold.Subtitulo">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/colorAzulClaro</item>
+    </style>
 </resources>

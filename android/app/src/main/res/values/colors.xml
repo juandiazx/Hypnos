@@ -4,4 +4,5 @@
     <color name="colorAzulPrincipal">#164499</color>
     <color name="colorNegro">#000000</color>
     <color name="colorAzulOpaco">#339ED2F1</color> // se ve gris, pero es por la opacidad
+    <color name="colorAzulClaro">#9ED2F1</color>
 </resources>
