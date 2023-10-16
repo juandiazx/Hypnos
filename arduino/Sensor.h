@@ -3,21 +3,13 @@
 
 class Sensor {
 public:
-    // Método para tomar una medida
+    // Mï¿½todo para tomar una medida
     void takeMeasurement();
-
-    // Métodos para obtener información sobre la medida
-    int getRawValue() const; // Devuelve el valor crudo del sensor
-    float getVoltage() const; // Devuelve el voltaje del sensor en volts
 
 protected:
     // Constructor protegido
-    Sensor(int pin); // Inicializa el objeto Sensor con el número de pin especificado
-
-private:
-    int sensorPin; // Número de pin al que está conectado el sensor
-    int rawValue; // Valor crudo del sensor
-    float voltage; // Voltaje del sensor en volts
+    Sensor(int pin); // Inicializa el objeto Sensor con el nï¿½mero de pin especificado
+    int sensorPin; // Nï¿½mero de pin al que estï¿½ conectado el sensor
 };
 
 #endif

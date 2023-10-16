@@ -5,11 +5,18 @@
 
 class TemperatureSensor : public Sensor {
 public:
-    // Constructor público para el sensor de temperatura
-    TemperatureSensor(int pin); // Inicializa el objeto TemperatureSensor con el número de pin especificado
-    
-    // Método para tomar una medida de temperatura
+    // MÃ©todo estÃ¡tico para obtener la instancia del sensor de temperatura (Singleton)
+    static TemperatureSensor* getInstance(int pin);
+
+    // MÃ©todo para tomar una medida de temperatura
     void takeTemperatureMeasurement();
+
+private:
+    // Constructor privado para TemperatureSensor
+    TemperatureSensor(int pin); // Inicializa el objeto TemperatureSensor con el nÃºmero de pin especificado
+
+    // Instancia Ãºnica del sensor de temperatura
+    static TemperatureSensor* instance;
 };
 
 #endif
