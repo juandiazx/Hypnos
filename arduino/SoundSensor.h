@@ -6,18 +6,30 @@
 class SoundSensor : public Sensor {
 public:
     // Método estático para obtener la instancia del sensor de sonido (Singleton)
-    static SoundSensor* getInstance(int pin);
+    static SoundSensor *getInstance(int pin){
+        if (instance == nullptr) {
+            instance = new SoundSensor(pin);
+        }
+        return instance;
+    };
 
-    // Método para tomar una medida de sonido
-    void takeSoundMeasurement();
+    // Override método para tomar una medida de sonido
+    int takeMeasurement(){
+        return analogRead(sensorPin);
+    };
 
 private:
     // Constructor privado para SoundSensor
-    SoundSensor(int pin); // Inicializa el objeto SoundSensor con el número de pin especificado
+    SoundSensor(int pin){
+        sensorPin = pin;
+        pinMode(sensorPin,INPUT);
+    }; // Inicializa el objeto SoundSensor con el número de pin especificado
     
     // Instancia única del sensor de sonido
     static SoundSensor* instance;
 };
+
+SoundSensor* SoundSensor::instance = nullptr;
 
 #endif
 
