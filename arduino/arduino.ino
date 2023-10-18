@@ -35,14 +35,16 @@ void setup(){
 
 
 void loop() {
-  M5.Lcd.setCursor(0,0);
-  M5.Lcd.print("                                                     ");
+  int temperatura = temperatureSensor->takeMeasurement() ;
+  int sonido = soundSensor->takeMeasurement();
 
-  M5.Lcd.setCursor(0,0);
-  M5.Lcd.print(temperatureSensor->takeMeasurement());
-  ledLight->turnOn();
-  delay(1500);
-  ledLight->turnOff();
+  if(sonido > 550) ledLight->turnOn();
+  else ledLight->turnOff();
+  M5.Lcd.fillScreen(BLACK); // Borra la pantalla
+  M5.Lcd.setCursor(10, 10); // Establece la posición del cursor en la pantalla
+  M5.Lcd.setTextColor(WHITE); // Establece el color del texto
+  M5.Lcd.println("Temperatura: " + String(temperatura) + " C"); // Muestra la temperatura en la pantalla
+  M5.Lcd.println("Sonido: " + String(sonido) + " Anlg"); // Muestra la humedad en la pan
 
-  delay(400);
+  delay(100);
 }
