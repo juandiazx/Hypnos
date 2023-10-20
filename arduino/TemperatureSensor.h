@@ -15,12 +15,10 @@ public:
 
     // Override método para tomar una medida de temperatura
     int takeMeasurement(){
+        //Transformar esto a un while que tome muchas temperaturas y tambien humedad
+        //que saque luego la media ponderada con la humedad
         return static_cast<int>(dht.readTemperature());
     };
-
-    /*TemperatureSensor(int pin) : sensorPin(pin), dht(pin, DHT11) {
-        dht.begin();
-    }*/
 
 private:
     // Constructor privado para TemperatureSensor
