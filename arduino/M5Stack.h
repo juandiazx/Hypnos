@@ -3,29 +3,37 @@
 
 class M5Stack {
 public:
-    static M5Stack *getInstance() {
+    static M5Stack *getInstance(char ssid,char pass,int udp) {
         if (instance == nullptr) {
-            instance = new M5Stack();
+            instance = new M5Stack(ssid,pass,udp);
             instance->initializeM5Stack();
         }
         return instance;
     }
 
-    void switchLightOnOff(bool on) {
-        //Si pulsamos boton se enciende, si pulsamos otra vez se apaga
-        //Se envia por UTP al ESP32 y ahi se ordena al LED a apagarse o encenderse basado en si
-        //ya estaba encendido o apagado
-        if (on) {
-            M5.Lcd.fillScreen(TFT_WHITE);
+    void switchLightM5Stack() {
+        if (isNight) {
+            M5.Lcd.fillScreen(mainColor);
+            M5.Lcd.setTextColor(WHITE);  // Color del texto blanco
+            //Pon
         } else {
-            M5.Lcd.fillScreen(TFT_BLACK);
+            M5.Lcd.fillScreen(WHITE);
+            M5.Lcd.setTextColor(mainColor);  // Color del texto azul
         }
     }
 
-    void obtainSensorsData() {
-        // Aquí se reciben los datos por UTP
+    //Cuando boton A se pulsa por 1,5 segundos en loop()
+    void startRestingTrackRoutine() {
+        //
+        // Aquí se reciben los datos por UTP y se guardan en snoreAmount y averageTemperature
     }
 
+    //Cuando el boton B se pulsa por 1,5 segundos en loop()
+    void stopRestingTrackRoutine(){
+
+    }
+
+    //Cuando el boton C se pulsa por 1,5 segundos en loop() se muestran lo
     void showDataInScreen() {
         // Aquí muestras los datos en la pantalla del dispositivo M5Stack
         /*
@@ -37,12 +45,32 @@ public:
     }
 
 private:
-    M5Stack();
+    int snoreAmount;
+    int averageTemperature;
+    bool isNight = false;
+    int udpPort;
+    char ssidWifi;
+    char passwordWifi;
+    uint32_t mainColor = 0x164499;
+
+
+    M5Stack(char ssid,char pass,int udp){
+        ssidWifi = ssid;
+        passwordWifi = pass;
+        udpPort = udp;
+    }
 
     void initializeM5Stack() {
         M5.begin(); //Init M5Core. Initialize M5Core
         M5.Power.begin(); //Init Power module. Initialize the power module
         M5.Lcd.textsize = 5;
+        M5.Lcd.fillScreen(WHITE);
+        M5.Lcd.setTextColor(mainColor);  // Color del texto azul
+        //Poner pantalla en blanca con nuestro logo y indicación para comenzar
+    }
+
+    void receiveSensorsData(){
+
     }
 
     static M5Stack* instance;
