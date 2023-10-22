@@ -35,7 +35,22 @@
 
 
     <!--Acerca de-->
+    <string name="AcercaDe">Acerca de</string>
 
+    <string name="QuienesSomos">¿Quienes somos?</string>
+
+    <string name="QuienesSomosTexto">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aenean euismod bibendum laoreet.
+        Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. </string>
+
+    <string name="NuestraVision">Nuestra visión</string>
+
+    <string name="NuestraVisionTexto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
+        Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. </string>
+
+    <string name="PoliticaDePrivacidad">Política de privacidad</string>
+
+    <string name="PoliticaDePrivTexto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
+        Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. </string>
 
 
 
