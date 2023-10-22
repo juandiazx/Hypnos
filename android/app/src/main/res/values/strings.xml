@@ -23,6 +23,12 @@
     <string name="CreaContrasenya">Crea una contraseña</string>
     <string name="RepiteContrasenya">Repita la contraseña</string>
 
+    <!--Perfil usuario-->
+    <string name="TituloPerfilUsuario">Tu perfil</string>
+    <string name="EjemploFecha">10/10/2001</string>
+    <string name="EjemploContrasenya">123456</string>
+    <string name="ConfirmarCambios">Confirmar cambios</string>
+    <string name="CerrarSesion">Cerrar sesión</string>
 
 
 
