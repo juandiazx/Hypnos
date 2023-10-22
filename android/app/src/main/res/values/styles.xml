@@ -10,6 +10,8 @@
         <item name="android:fontFamily">@font/intersemibold</item>
     </style>
 
+
+
     <!--Estilo para subtítulos (azul claro)-->
     <style name="TextoInterBold.Subtitulo">
         <item name="android:textSize">28sp</item>
@@ -42,6 +44,18 @@
     <style name="TextoInterRegular.Inputs">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/colorAzulPrincipal</item>
+    </style>
+
+    <!--Estilo para titulos (azul)-->
+    <style name="TextoInterBold.Titulo">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/colorAzulPrincipal</item>
+    </style>
+
+    <!--Estilo para subtítulos negros (azul claro)-->
+    <style name="TextoInterBold.Subtitulo2">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorNegro</item>
     </style>
 
 
