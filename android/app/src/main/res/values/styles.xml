@@ -19,6 +19,7 @@
     <style name="EstiloBoton">
         <item name="android:textColor">@color/colorBlanco</item>
         <item name="android:backgroundTint">@color/colorAzulPrincipal</item>
+        <item name="android:background">@drawable/boton_redondeado</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/intersemibold</item>
         <item name="android:textAlignment">center</item>

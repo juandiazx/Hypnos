@@ -14,6 +14,7 @@
     <string name="Reclamo">Mejora tu descanso</string>
     <string name="HighConcept">Transformamos tus noches en un oasis de descanso de calidad</string>
     <string name="IniciarGoogle">Continuar con Google</string>
+    <string name="IniciarTwitter">Continuar con Twitter</string>
     <string name="IniciarCorreo">Continuar con e-mail</string>
 
     <!--Formulario de registro-->
@@ -22,6 +23,8 @@
     <string name="FechaNacimiento">Fecha de nacimiento</string>
     <string name="CreaContrasenya">Crea una contraseña</string>
     <string name="RepiteContrasenya">Repita la contraseña</string>
+    <string name="YaTienesUnaCuenta">¿Ya tienes una cuenta?</string>
+    <string name="IniciaSesion">Iniciar sesión</string>
 
     <!--Perfil usuario-->
     <string name="TituloPerfilUsuario">Tu perfil</string>
