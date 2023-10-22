@@ -1,175 +1,232 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
 
-    <TextView
-        android:id="@+id/respuestaRegistro"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="#972F2F"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
-        app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegistro" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvnombre"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="#972F2F"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
-        app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
-        app:layout_constraintTop_toBottomOf="@+id/edtNombreApellidos" />
 
-    <TextView
-        android:id="@+id/tvfecha"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="#972F2F"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
-        app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
-        app:layout_constraintTop_toBottomOf="@+id/edtFechaNacimiento" />
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/txtSubtituloRegistro"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/logo_sin_fondo" />
 
-    <TextView
-        android:id="@+id/tvcontrare"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="#972F2F"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
-        app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
-        app:layout_constraintTop_toBottomOf="@+id/edtContraseñaRegistro" />
+        <TextView
+            android:id="@+id/txtSubtituloRegistro"
+            style="@style/TextoInterBold.Subtitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/TituloRegistro"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/tvcontraredos"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="#972F2F"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
-        app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
-        app:layout_constraintTop_toBottomOf="@+id/edtRepetirContraseña" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="181dp" />
 
-    <ImageView
-        android:id="@+id/imageViewLogoRegistro"
-        android:layout_width="244dp"
-        android:layout_height="178dp"
-        android:layout_marginTop="-24dp"
-        android:src="@drawable/logotipo_hypnos"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/edtEmailRegistro"
+            style="@style/Inputs"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/Email"
+            android:textColorHint="@color/colorAzulClaro"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-    <TextView
-        android:id="@+id/txtSubtituloRegistro"
-        style="@style/TextoInterBold.Subtitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/TituloRegistro"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewLogoRegistro"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/tvemailre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#972F2F"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
+            app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
+            app:layout_constraintTop_toBottomOf="@+id/edtEmailRegistro" />
 
-    <EditText
-        android:id="@+id/edtEmailRegistro"
-        style="@style/Inputs"
-        android:layout_width="300dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:hint="@string/Email"
-        android:textColorHint="@color/colorAzulClaro"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoRegistro" />
+        <EditText
+            android:id="@+id/edtNombreApellidos"
+            style="@style/Inputs"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:hint="@string/NombreApellidos"
+            android:textColorHint="@color/colorAzulClaro"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtEmailRegistro" />
 
-    <!-- Campo de Nombre y Apellidos -->
-    <EditText
-        android:id="@+id/edtNombreApellidos"
-        style="@style/Inputs"
-        android:layout_width="300dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:hint="@string/NombreApellidos"
-        android:textColorHint="@color/colorAzulClaro"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmailRegistro" />
+        <TextView
+            android:id="@+id/tvnombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#972F2F"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
+            app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
+            app:layout_constraintTop_toBottomOf="@+id/edtNombreApellidos" />
 
-    <!-- Campo de Fecha de Nacimiento -->
-    <EditText
-        android:id="@+id/edtFechaNacimiento"
-        style="@style/Inputs"
-        android:layout_width="300dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:hint="@string/FechaNacimiento"
-        android:textColorHint="@color/colorAzulClaro"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtNombreApellidos" />
+        <EditText
+            android:id="@+id/edtFechaNacimiento"
+            style="@style/Inputs"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:hint="@string/FechaNacimiento"
+            android:textColorHint="@color/colorAzulClaro"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtNombreApellidos" />
 
-    <!-- Campo de Contraseña -->
-    <EditText
-        android:id="@+id/edtContraseñaRegistro"
-        style="@style/Inputs"
-        android:layout_width="300dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:hint="@string/CreaContrasenya"
-        android:textColorHint="@color/colorAzulClaro"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtFechaNacimiento" />
+        <TextView
+            android:id="@+id/tvfecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#972F2F"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
+            app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
+            app:layout_constraintTop_toBottomOf="@+id/edtFechaNacimiento" />
 
-    <!-- Campo para Repetir la Contraseña -->
-    <EditText
-        android:id="@+id/edtRepetirContraseña"
-        style="@style/Inputs"
-        android:layout_width="300dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:hint="@string/RepiteContrasenya"
-        android:textColorHint="@color/colorAzulClaro"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtContraseñaRegistro" />
+        <EditText
+            android:id="@+id/edtContraseñaRegistro"
+            style="@style/Inputs"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:hint="@string/CreaContrasenya"
+            android:textColorHint="@color/colorAzulClaro"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtFechaNacimiento" />
 
-    <!-- Botón de Registro -->
+        <TextView
+            android:id="@+id/tvcontrare"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#972F2F"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
+            app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
+            app:layout_constraintTop_toBottomOf="@+id/edtContraseñaRegistro" />
 
-    <Button
-        android:id="@+id/btnRegistro"
-        style="@style/EstiloBoton"
-        android:layout_width="296dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="32dp"
-        android:onClick="registroCorreo"
-        android:text="@string/TituloRegistro"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvcontraredos" />
+        <EditText
+            android:id="@+id/edtRepetirContraseña"
+            style="@style/Inputs"
+            android:layout_width="300dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="24dp"
+            android:hint="@string/RepiteContrasenya"
+            android:textColorHint="@color/colorAzulClaro"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtContraseñaRegistro" />
 
-    <TextView
-        android:id="@+id/tvemailre"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="#972F2F"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
-        app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
-        app:layout_constraintTop_toBottomOf="@+id/edtEmailRegistro" />
+        <TextView
+            android:id="@+id/tvcontraredos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#972F2F"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
+            app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
+            app:layout_constraintTop_toBottomOf="@+id/edtRepetirContraseña" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Campo de Nombre y Apellidos -->
+
+        <!-- Campo de Fecha de Nacimiento -->
+
+        <!-- Campo de Contraseña -->
+
+        <!-- Campo para Repetir la Contraseña -->
+
+        <!-- Botón de Registro -->
+
+        <Button
+            android:id="@+id/btnRegistro"
+            style="@style/EstiloBoton"
+            android:layout_width="296dp"
+            android:layout_height="51dp"
+            android:layout_marginTop="12dp"
+            android:onClick="registroCorreo"
+            android:text="@string/TituloRegistro"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.478"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvcontraredos" />
+
+        <TextView
+            android:id="@+id/respuestaRegistro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:textColor="#972F2F"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
+            app:layout_constraintTop_toBottomOf="@+id/btnRegistro" />
+
+        <TextView
+            android:id="@+id/txt"
+            style="@style/TextoInterRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="@string/YaTienesUnaCuenta"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txtRegistrate"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnRegistro"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/txtRegistrate"
+            style="@style/TextoInterBold"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/IniciaSesion"
+            android:textColor="@color/colorAzulPrincipal"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/txt"
+            app:layout_constraintTop_toTopOf="@+id/txt"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

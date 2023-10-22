@@ -7,33 +7,24 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logotipo_hypnos" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="400dp" />
+        android:layout_marginTop="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_sin_fondo" />
 
     <TextView
         android:id="@+id/textView3"
         style="@style/TextoInterBold.Subtitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-80dp"
         android:text="@string/Reclamo"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
@@ -43,13 +34,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="60dp"
         android:text="@string/HighConcept"
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="351dp" />
 
     <Button
         android:id="@+id/btnGoogle"
@@ -64,19 +63,6 @@
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
-    <Button
-        android:id="@+id/btnEmail"
-        style="@style/EstiloBoton"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:onClick="pulsaEmail"
-        android:text="@string/IniciarCorreo"
-        android:textAlignment="textEnd"
-        app:layout_constraintEnd_toEndOf="@+id/btnGoogle"
-        app:layout_constraintStart_toStartOf="@+id/btnGoogle"
-        app:layout_constraintTop_toBottomOf="@+id/btnGoogle" />
-
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="30dp"
@@ -87,6 +73,58 @@
         app:layout_constraintStart_toStartOf="@+id/btnGoogle"
         app:layout_constraintTop_toTopOf="@+id/btnGoogle"
         app:srcCompat="@drawable/logo_google" />
+
+    <Button
+        android:id="@+id/btnTwitter"
+        style="@style/EstiloBoton.ConBorde"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:onClick="pulsaIniciarConTwitter"
+        android:text="@string/IniciarTwitter"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnTwitter"
+        app:layout_constraintEnd_toEndOf="@+id/btnTwitter"
+        app:layout_constraintHorizontal_bias="0.077"
+        app:layout_constraintStart_toStartOf="@+id/btnTwitter"
+        app:layout_constraintTop_toTopOf="@+id/btnTwitter"
+        app:layout_constraintVertical_bias="0.555"
+        app:srcCompat="@drawable/logo_twitter" />
+
+    <Button
+        android:id="@+id/btnEmail"
+        style="@style/EstiloBoton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:onClick="pulsaEmail"
+        android:text="@string/IniciarCorreo"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="@+id/btnGoogle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btnGoogle"
+        app:layout_constraintTop_toBottomOf="@+id/btnGoogle" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/btnEmail"
+        app:layout_constraintEnd_toEndOf="@+id/btnEmail"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="@+id/btnEmail"
+        app:layout_constraintTop_toTopOf="@+id/btnEmail"
+        app:srcCompat="@drawable/luna_peque" />
 
     <TextView
         android:id="@+id/txtRegistrate"
@@ -110,24 +148,12 @@
         style="@style/TextoInterRegular"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:text="@string/NoTienesUnaCuenta"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/txtRegistrate"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnEmail" />
-
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toBottomOf="@+id/btnEmail"
-        app:layout_constraintEnd_toEndOf="@+id/btnEmail"
-        app:layout_constraintHorizontal_bias="0.08"
-        app:layout_constraintStart_toStartOf="@+id/btnEmail"
-        app:layout_constraintTop_toTopOf="@+id/btnEmail"
-        app:srcCompat="@drawable/luna_peque" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
