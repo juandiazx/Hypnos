@@ -1,3 +1,39 @@
 <resources>
     <string name="app_name">HypnosApp</string>
+
+    <!--Iniciar sesión-->
+    <string name="IniciarSesion">Iniciar sesión</string>
+    <string name="Email">E-mail</string>
+    <string name="contrasenya">Contraseña</string>
+    <string name="olvidadoContrasenya">¿Has olvidado tu contraseña?</string>
+    <string name="Entrar">Entrar</string>
+    <string name="NoTienesUnaCuenta">¿No tienes una cuenta?</string>
+    <string name="Registrate">Regístrate</string>
+
+    <!--Pre-inicio de sesión-->
+    <string name="Reclamo">Mejora tu descanso</string>
+    <string name="HighConcept">Transformamos tus noches en un oasis de descanso de calidad</string>
+    <string name="IniciarGoogle">Continuar con Google</string>
+    <string name="IniciarCorreo">Continuar con e-mail</string>
+
+    <!--Formulario de registro-->
+    <string name="TituloRegistro">Registrarse</string>
+    <string name="NombreApellidos">Nombre y apellidos</string>
+    <string name="FechaNacimiento">Fecha de nacimiento</string>
+    <string name="CreaContrasenya">Crea una contraseña</string>
+    <string name="RepiteContrasenya">Repita la contraseña</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </resources>
