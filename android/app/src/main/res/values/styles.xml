@@ -63,6 +63,12 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/colorNegro</item>
     </style>
+
+    <!--Estilo para el header-->
+    <style name="Header">
+        <item name="android:background">@color/colorBlanco</item>
+    </style>
+
     <!--Estilo para footer-->
     <style name="Footer">
         <item name="itemIconSize">30dp</item>

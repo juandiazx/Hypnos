@@ -6,13 +6,12 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class PerfilUsuarioActivity extends AppCompatActivity {
+public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.perfil_usuario);
-
+        setContentView(R.layout.ajustes_de_sueno);
 
         //FUNCIONALIDAD BOTONES MENUS
         MenuManager funcionMenu = new MenuManager();
@@ -21,7 +20,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         btnPerfilUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirPerfilUsuario(PerfilUsuarioActivity.this);
+                funcionMenu.abrirPerfilUsuario(AjustesDeSuenyoActivity.this);
             }
         });
 
@@ -29,7 +28,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         btnPantallaPrincipal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirPantallaPrincipal(PerfilUsuarioActivity.this);
+                funcionMenu.abrirPantallaPrincipal(AjustesDeSuenyoActivity.this);
             }
         });
 
@@ -37,7 +36,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         btnAjustesDescanso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirAjustesDescanso(PerfilUsuarioActivity.this);
+                funcionMenu.abrirAjustesDescanso(AjustesDeSuenyoActivity.this);
             }
         });
 
@@ -45,13 +44,13 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         btnPreferencias.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirAcercaDe(PerfilUsuarioActivity.this);
+                funcionMenu.abrirAcercaDe(AjustesDeSuenyoActivity.this);
             }
         });
 
 
+
+
+
     }
-
-
-
 }

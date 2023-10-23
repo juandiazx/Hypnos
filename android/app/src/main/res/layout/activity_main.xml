@@ -5,9 +5,28 @@
     android:id="@+id/ConstraintPrincipal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00000000"
+    android:background="@color/colorBlanco"
     tools:context=".MainActivity">
 
+    <!--FOOTER-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="20dp">
+
+        <include
+            layout="@layout/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--FIN DE FOOTER-->
+
+<!--
     <ImageView
         android:id="@+id/imageMenu"
         android:layout_width="45dp"
@@ -46,6 +65,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icons8_male_user_96" />
+-->
+    <!--HEADER-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            layout="@layout/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--FIN DE HEADER-->
+
 
     <View
         android:id="@+id/divider"
@@ -97,7 +134,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="110dp"
-        android:layout_marginBottom="90dp"
         android:background="#00000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -462,7 +498,7 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
+<!--
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayoutMenu"
         android:layout_width="0dp"
@@ -512,6 +548,6 @@
             app:layout_constraintTop_toTopOf="@+id/imageHome" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
