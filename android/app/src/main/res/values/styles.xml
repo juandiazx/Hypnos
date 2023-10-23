@@ -58,6 +58,16 @@
         <item name="android:textColor">@color/colorNegro</item>
     </style>
 
+    <!--Estilo para footer-->
+    <style name="Footer">
+        <item name="itemIconSize">50dp</item>
+        <item name="labelVisibilityMode">unlabeled</item>
+        <item name="itemIconTint">@color/colorAzulPrincipal</item>
+        <item name="itemBackground">@drawable/fondo_footer</item>
 
+
+
+
+    </style>
 
 </resources>

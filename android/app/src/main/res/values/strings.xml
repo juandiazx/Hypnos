@@ -37,7 +37,10 @@
     <!--Acerca de-->
 
 
-
+    <!--Footer-->
+    <string name="Descanso">Configuración de descanso</string>
+    <string name="Inicio">Inicio</string>
+    <string name="Preferencias">Preferencias</string>
 
 
 
