@@ -1,11 +1,7 @@
 package com.example.hypnosapp;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -18,7 +14,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,15 +24,12 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class PreinicioDeSesion extends AppCompatActivity {
     public PreinicioDeSesion binding;
-
+    LoginButton loginButtonFacebookEscondido;
     private CallbackManager mCallbackManager;
-    private LoginButton btnFacebook;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static final String TAG = "FacebookLogin";
 
@@ -48,27 +40,9 @@ public class PreinicioDeSesion extends AppCompatActivity {
         //binding = PreinicioDeSesionBinding.inflate(getLayoutInflater());
         //setContentView(binding.getRoot());
 
-        // Initialize Facebook Login button
-        mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = findViewById(R.id.button_sign_in_facebook);
-        loginButton.setPermissions(Arrays.asList("public_profile"));
-        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
 
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "facebook:onError", error);
-            }
-        });
+        //Llamada de inicio al método de facebook iniciar auth
+        handleFacebookStart();
     }
 
     public void pulsaEmail(View view) {
@@ -109,7 +83,42 @@ public class PreinicioDeSesion extends AppCompatActivity {
         Intent intent = new Intent(PreinicioDeSesion.this, Registro.class);
         startActivity(intent);
     }
+
 */
+
+
+    //----------------------------------------------------------------------------------------------------------
+    //FACEBOOK
+    //----------------------------------------------------------------------------------------------------------
+    //Metodo onClick del boton personalizado de facebook, llama al boton escondido de facebook y hace click
+    public void pulsaIniciarConFacebook(View view) {
+        loginButtonFacebookEscondido.performClick();
+    }
+    //Metodo inicial llamado en el onCreate()
+    private void handleFacebookStart(){
+
+        // Initialize Facebook Login button
+        mCallbackManager = CallbackManager.Factory.create();
+        loginButtonFacebookEscondido = findViewById(R.id.button_sign_in_facebook);
+        loginButtonFacebookEscondido.setPermissions(Arrays.asList("public_profile","email"));
+        loginButtonFacebookEscondido.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "facebook:onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAG, "facebook:onError", error);
+            }
+        });
+    }
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
 
@@ -122,7 +131,7 @@ public class PreinicioDeSesion extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(PreinicioDeSesion.this, "Authentication aqui.",
+                            Toast.makeText(PreinicioDeSesion.this, "Authentication aqui." + user.getPhotoUrl(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -133,6 +142,11 @@ public class PreinicioDeSesion extends AppCompatActivity {
                     }
                 });
     }
+    //----------------------------------------------------------------------------------------------------------
+    //FINALIZA FACEBOOK
+    //----------------------------------------------------------------------------------------------------------
+
+
      /*    private void verificaSiUsuarioHaIniciadoSesion() {
         AuthHelper.verificaSiUsuarioValidado(auth, this, new Intent(this, MainActivity.class));
     }*/

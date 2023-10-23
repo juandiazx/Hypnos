@@ -57,9 +57,42 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:onClick="pulsaIniciarConGoogle"
+        android:paddingLeft="0dp"
+        android:paddingRight="30dp"
         android:text="@string/IniciarGoogle"
         android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+
+    <Button
+        android:id="@+id/btnFacebook"
+        style="@style/EstiloBoton.ConBorde"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="pulsaIniciarConFacebook"
+        android:paddingLeft="0dp"
+        android:paddingRight="30dp"
+        android:text="@string/IniciarFacebook"
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toTopOf="@+id/btnEmail"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/btnGoogle" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/button_sign_in_facebook"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="436dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="40dp"
+        android:textAlignment="textEnd"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
@@ -74,8 +107,24 @@
         app:layout_constraintTop_toTopOf="@+id/btnGoogle"
         app:srcCompat="@drawable/logo_google" />
 
+
     <Button
-        android:id="@+id/btnTwitter"
+        android:id="@+id/btnEmail"
+        style="@style/EstiloBoton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:onClick="pulsaEmail"
+        android:paddingRight="30dp"
+        android:text="@string/IniciarCorreo"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="@+id/btnGoogle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btnGoogle"
+        app:layout_constraintTop_toBottomOf="@+id/btnGoogle" />
+
+    <!--<com.facebook.login.widget.LoginButton
+        android:id="@+id/button_sign_in_facebook"
         style="@style/EstiloBoton.ConBorde"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -86,57 +135,7 @@
         app:layout_constraintEnd_toEndOf="@+id/textView4"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnTwitter"
-        app:layout_constraintEnd_toEndOf="@+id/btnTwitter"
-        app:layout_constraintHorizontal_bias="0.077"
-        app:layout_constraintStart_toStartOf="@+id/btnTwitter"
-        app:layout_constraintTop_toTopOf="@+id/btnTwitter"
-        app:layout_constraintVertical_bias="0.555"
-        app:srcCompat="@drawable/logo_twitter" />
-
-    <Button
-        android:id="@+id/btnTwitter"
-        style="@style/EstiloBoton.ConBorde"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="228dp"
-        android:onClick="pulsaIniciarConTwitter"
-        android:text="Continuar con Twitter"
-        android:textAlignment="textEnd"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/button_sign_in_facebook"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/btnGoogle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <Button
-        android:id="@+id/btnEmail"
-        style="@style/EstiloBoton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:onClick="pulsaEmail"
-        android:text="@string/IniciarCorreo"
-        android:textAlignment="textEnd"
-        app:layout_constraintEnd_toEndOf="@+id/btnGoogle"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btnGoogle"
-        app:layout_constraintTop_toBottomOf="@+id/btnGoogle" />
+        app:layout_constraintTop_toTopOf="@+id/guideline"/>-->
 
     <ImageView
         android:id="@+id/imageView7"
@@ -179,5 +178,6 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnEmail" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

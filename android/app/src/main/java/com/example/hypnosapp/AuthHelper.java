@@ -134,6 +134,7 @@ public class AuthHelper {
     }
 
 
+    //Se llama en inicio de sesion y registro para redirijir
     public static void manejoRespuestaFirebase(Task<AuthResult> task, TextView respuesta, AppCompatActivity activity, String className) {
         if (task.isSuccessful()) {
             // El usuario se autenticó correctamente, se redirige a la actividad supuesta
