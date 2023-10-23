@@ -23,7 +23,7 @@ public class Pantalla_Principal extends AppCompatActivity {
 
          */
 
-        setContentView(R.layout.footer_header);
+        setContentView(R.layout.perfil_usuario);
 
 
 
