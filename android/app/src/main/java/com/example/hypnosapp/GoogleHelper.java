@@ -18,11 +18,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 public class GoogleHelper {
     public static final int RC_SIGN_IN = 123;
 
+
+    //Se llama en pulsaIniciarConGoogle, en el onClick del boton de google
     public static void iniciarConGoogle(Activity activity) {
         Intent signInIntent = GoogleSignIn.getClient(activity, GoogleSignInOptions.DEFAULT_SIGN_IN).getSignInIntent();
         activity.startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    //Se llama en el onActivityResult de PreinicioDeSesion
     public static void manejoResultadoGoogle(Activity activity, Intent data) {
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
         try {
@@ -46,6 +49,7 @@ public class GoogleHelper {
         }
     }
 
+    //Se llama si el token != null en manejoResultadoGoogle
     private static void firebaseAuthWithGoogle(Activity activity, String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         FirebaseAuth.getInstance().signInWithCredential(credential)

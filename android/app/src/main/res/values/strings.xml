@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">HypnosApp</string>
 
+    <string name="facebook_app_id">1613164835881087</string>
+    <string name="fb_login_protocol_scheme">fb1613164835881087</string>
+    <string name="facebook_client_token">24e57dfc658850875c93bbc6a35a8566</string>
+
+
+
     <!--Iniciar sesión-->
     <string name="IniciarSesion">Iniciar sesión</string>
     <string name="Email">E-mail</string>
@@ -14,7 +20,7 @@
     <string name="Reclamo">Mejora tu descanso</string>
     <string name="HighConcept">Transformamos tus noches en un oasis de descanso de calidad</string>
     <string name="IniciarGoogle">Continuar con Google</string>
-    <string name="IniciarTwitter">Continuar con Twitter</string>
+    <string name="IniciarFacebook">Continuar con Facebook</string>
     <string name="IniciarCorreo">Continuar con e-mail</string>
 
     <!--Formulario de registro-->
