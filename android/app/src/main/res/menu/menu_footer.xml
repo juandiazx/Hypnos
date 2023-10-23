@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/home_icono"
+            android:title="@string/Inicio"
+            />
+
+        <item
+            android:id="@+id/opcionesDescanso"
+            android:icon="@drawable/luna_peque"
+            android:title="@string/Descanso"
+            />
+
+        <item
+            android:id="@+id/preferencias"
+            android:icon="@drawable/preferencias_icono"
+            android:title="@string/Preferencias"
+            />
+
+
+</menu>

@@ -37,6 +37,9 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".Pantalla_Principal">
+            
+        </activity>
 
     </application>
 </manifest>
