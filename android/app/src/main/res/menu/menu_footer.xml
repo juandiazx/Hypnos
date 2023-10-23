@@ -13,12 +13,12 @@
             android:icon="@drawable/luna_peque"
             android:title="@string/Descanso"
             />
-<!--
+
         <item
             android:id="@+id/preferencias"
             android:icon="@drawable/preferencias_icono"
             android:title="@string/Preferencias"
             />
-            -->
+
 
 </menu>
