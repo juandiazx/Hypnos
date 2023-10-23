@@ -150,10 +150,6 @@ public class AuthHelper {
         }
     }
 
-    public void mostrarToast(Context context, String mensaje) {
-        Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show();
-    }
-
 
     public static void verificaSiUsuarioHaIniciadoSesion(FirebaseAuth auth, AppCompatActivity activity, Intent intent) {
         if (auth.getCurrentUser() != null) {

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">HypnosApp</string>
+
+    <string name="facebook_app_id">1613164835881087</string>
+    <string name="fb_login_protocol_scheme">fb1613164835881087</string>
+    <string name="facebook_client_token">24e57dfc658850875c93bbc6a35a8566</string>
+
+
 </resources>

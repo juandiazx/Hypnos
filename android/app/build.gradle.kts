@@ -53,5 +53,9 @@ dependencies {
     implementation("com.google.firebase:firebase-database:20.2.2")
     implementation ("com.google.android.gms:play-services-auth:20.0.0")
     implementation ("com.google.firebase:firebase-core:20.0.1")
+    implementation ("com.facebook.android:facebook-login:latest.release")
+
+
+
 
 }
