@@ -48,21 +48,42 @@
 
     <!--Estilo para titulos (azul)-->
     <style name="TextoInterBold.Titulo">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/colorAzulPrincipal</item>
     </style>
 
     <!--Estilo para subtítulos negros (azul claro)-->
     <style name="TextoInterBold.Subtitulo2">
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/colorNegro</item>
     </style>
 
+    <!--Estilo para subtítulos negros (azul claro)-->
+    <style name="TextoInterRegular.Texto">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorNegro</item>
+    </style>
     <!--Estilo para footer-->
     <style name="Footer">
         <item name="itemIconSize">30dp</item>
         <item name="labelVisibilityMode">unlabeled</item>
         <item name="itemIconTint">@color/colorAzulPrincipal</item>
     </style>
+
+    <!--Estilo para subtítulos (azul claro)-->
+    <style name="TextoInterBold.Subtitulo3">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorAzulClaro</item>
+    </style>
+
+    <!--Estilo para switches-->
+    <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:thumbTint">@color/colorBlanco</item>
+        <item name="android:trackTint">@color/colorAzulPrincipal</item>
+        <item name="android:trackTintMode">multiply</item>
+    </style>
+
+
+
 
 </resources>

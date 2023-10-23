@@ -2,6 +2,7 @@ package com.example.hypnosapp;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -27,21 +28,23 @@ public class HalfDonutChart extends View {
         int width = getWidth();
         int height = getHeight();
 
-        int strokeWidth = 60; // Grosor del donut
+        int strokeWidth = 30; // Grosor del donut
         int halfStrokeWidth = strokeWidth / 2;
         int radius = Math.min(width, height) / 2 - halfStrokeWidth;
 
         rectF.set(width / 2 - radius, height / 2 - radius, width / 2 + radius, height / 2 + radius);
 
         // Dibuja la mitad rellena con un color azul claro
-        paint.setColor(getResources().getColor(android.R.color.holo_blue_light)); // Color azul claro
+        paint.setColor(Color.parseColor("#809ED2F1")); // Color azul claro
+        paint.setStrokeWidth(strokeWidth);
+        paint.setStyle(Paint.Style.STROKE);
 
-        //Dibuja la mitad del donut de 0 a 180 grados verticalmente
-        canvas.drawArc(rectF, 180, 147, true, paint); // Empieza en 180 para hacer medio circulo
+        // Dibuja el contorno del medio donut de 0 a 180 grados verticalmente
+        canvas.drawArc(rectF, 180, 180, false, paint);
         //De 180 a 180 seria una puntuacion de 100. 180 a 147 seria una puntuacion de 82. Regla de tres: 180 * X / 100
 
         // Draw the outline with a darker blue color
-        paint.setColor(getResources().getColor(android.R.color.holo_blue_dark)); // Azul oscuro
+        paint.setColor(Color.parseColor("#164499"));// Azul oscuro
         paint.setStrokeWidth(strokeWidth);
         paint.setStyle(Paint.Style.STROKE);
 
