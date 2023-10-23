@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class PreinicioDeSesion extends AppCompatActivity {
 
     public PreinicioDeSesion binding;
+    private GoogleHelper googleHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +17,8 @@ public class PreinicioDeSesion extends AppCompatActivity {
         setContentView(R.layout.preinicio_de_sesion);
         //binding = PreinicioDeSesionBinding.inflate(getLayoutInflater());
         //setContentView(binding.getRoot());
+        // Inicializa la instancia de GoogleHelper
+        googleHelper = new GoogleHelper(PreinicioDeSesion.this);
     }
 
     public void pulsaEmail(View view) {
@@ -29,15 +32,15 @@ public class PreinicioDeSesion extends AppCompatActivity {
     }
 
     public void pulsaIniciarConGoogle(View view) {
-        GoogleHelper.iniciarConGoogle(this);
+        googleHelper.iniciarConGoogle();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GoogleHelper.RC_SIGN_IN) {
-            GoogleHelper.manejoResultadoGoogle(this, data);
+        if (requestCode == googleHelper.RC_GOOGLE_SIGN_IN) {
+            googleHelper.manejoResultadoGoogle(data);
         }
     }
 

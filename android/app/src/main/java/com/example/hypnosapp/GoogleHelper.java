@@ -1,62 +1,113 @@
 package com.example.hypnosapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class GoogleHelper {
-    public static final int RC_SIGN_IN = 123;
 
-    public static void iniciarConGoogle(Activity activity) {
-        Intent signInIntent = GoogleSignIn.getClient(activity, GoogleSignInOptions.DEFAULT_SIGN_IN).getSignInIntent();
-        activity.startActivityForResult(signInIntent, RC_SIGN_IN);
+    public static final int RC_GOOGLE_SIGN_IN = 123; // Use your own request code
+
+    private AppCompatActivity activity;
+    private GoogleSignInClient googleSignInClient;
+    private FirebaseAuth auth;
+
+    public GoogleHelper(AppCompatActivity activity) {
+        this.activity = activity;
+
+        // Configure Google Sign-In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(activity.getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(activity, gso);
+
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance();
     }
 
-    public static void manejoResultadoGoogle(Activity activity, Intent data) {
+    public void iniciarConGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        activity.startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+    }
+
+    public void manejoResultadoGoogle(Intent data) {
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
         try {
             GoogleSignInAccount account = task.getResult(ApiException.class);
-            if (account != null) {
-                String token = account.getIdToken();
-                if (token != null) {
-                    Toast.makeText(activity, token, Toast.LENGTH_SHORT).show();
-                    firebaseAuthWithGoogle(activity, token);
-                } else {
-                    // El idToken es nulo, maneja el error aquí.
-                    Toast.makeText(activity, "El idToken es nulo", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                // La cuenta de Google es nula, maneja el error aquí.
-                Toast.makeText(activity, "La cuenta de Google es nula", Toast.LENGTH_SHORT).show();
-            }
+            firebaseAuthWithGoogle(account.getIdToken());
         } catch (ApiException e) {
-            // Maneja otros errores aquí
-            Toast.makeText(activity, "Error al iniciar sesión con Google: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            // Handle error
+            // Por ejemplo, muestra un mensaje de error al usuario
+            Toast.makeText(activity, "Error al autenticar con Google", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private static void firebaseAuthWithGoogle(Activity activity, String idToken) {
+    private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        FirebaseAuth.getInstance().signInWithCredential(credential)
+        auth.signInWithCredential(credential)
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        // El usuario ha iniciado sesión con Google
+                        //verificaSiUsuarioValidado();
+                        FirebaseUser user = auth.getCurrentUser();
+                        if (user != null) {
+                            try {
+                                Class<?> destinationClass = Class.forName("com.example.hypnosapp.Registro");
+                                Intent intent = new Intent(activity, destinationClass);
+                                activity.startActivity(intent);
+                                activity.finish();
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     } else {
-                        // Maneja errores aquí
-                        Toast.makeText(activity, "Error al autenticar con Firebase: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Error al autenticar con Firebase", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+    private void verificaSiUsuarioValidado() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null) {
+            // El usuario ha iniciado sesión correctamente
+            // Puedes realizar acciones adicionales aquí
+        }
+    }
 }
+
+
+//// parte de preinicio
+//
+//    private GoogleJelper googleHelper;
+//
+//// en el oncreate
+//
+//    googleHelper = new GoogleJelper(PreinicioDeSesion.this);
+//
+//    // funciones
+//
+//public void pulsaIniciarConGoogle(View view) {
+//        googleHelper.iniciarConGoogle();
+//        }
+//
+//@Override
+//protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == googleHelper.RC_GOOGLE_SIGN_IN) {
+//        googleHelper.manejoResultadoGoogle(data);
+//        }
+//        }
