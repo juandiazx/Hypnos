@@ -28,7 +28,18 @@
             android:name=".Pantalla_Principal">
 
         </activity>
+        <activity
+            android:name=".PerfilUsuarioActivity">
 
+        </activity>
+        <activity
+            android:name=".AcercaDeActivity">
+
+        </activity>
+        <activity
+            android:name=".AjustesDeSuenyoActivity">
+
+        </activity>
 
         <activity
             android:name=".Registro">
@@ -43,9 +54,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".Pantalla_Principal">
-            
-        </activity>
+
 
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=

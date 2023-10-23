@@ -6,13 +6,12 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class PerfilUsuarioActivity extends AppCompatActivity {
+public class AcercaDeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.perfil_usuario);
-
+        setContentView(R.layout.acerca_de);
 
         //FUNCIONALIDAD BOTONES MENUS
         MenuManager funcionMenu = new MenuManager();
@@ -21,7 +20,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         btnPerfilUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirPerfilUsuario(PerfilUsuarioActivity.this);
+                funcionMenu.abrirPerfilUsuario(AcercaDeActivity.this);
             }
         });
 
@@ -29,7 +28,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         btnPantallaPrincipal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirPantallaPrincipal(PerfilUsuarioActivity.this);
+                funcionMenu.abrirPantallaPrincipal(AcercaDeActivity.this);
             }
         });
 
@@ -37,7 +36,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         btnAjustesDescanso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirAjustesDescanso(PerfilUsuarioActivity.this);
+                funcionMenu.abrirAjustesDescanso(AcercaDeActivity.this);
             }
         });
 
@@ -45,13 +44,9 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         btnPreferencias.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirAcercaDe(PerfilUsuarioActivity.this);
+                funcionMenu.abrirAcercaDe(AcercaDeActivity.this);
             }
         });
 
-
     }
-
-
-
 }
