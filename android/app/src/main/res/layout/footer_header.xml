@@ -20,7 +20,7 @@
     </View>
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/btnPantallaPrincipal"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="40dp"
@@ -34,21 +34,21 @@
         app:srcCompat="@drawable/home_icono" />
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/btnAjustesDescanso"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:clickable="true"
         android:elevation="20dp"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toStartOf="@+id/imageView10"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintEnd_toStartOf="@+id/btnPreferencias"
+        app:layout_constraintStart_toEndOf="@+id/btnPantallaPrincipal"
         app:layout_constraintTop_toTopOf="@+id/view"
         app:srcCompat="@drawable/luna_peque"
         app:tint="@color/colorAzulPrincipal" />
 
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/btnPreferencias"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="40dp"

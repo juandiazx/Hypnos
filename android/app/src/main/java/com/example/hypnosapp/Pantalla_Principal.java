@@ -1,7 +1,10 @@
 package com.example.hypnosapp;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -24,6 +27,16 @@ public class Pantalla_Principal extends AppCompatActivity {
          */
 
         setContentView(R.layout.perfil_usuario);
+
+        MenuManager funcionMenu = new MenuManager();
+
+        ImageView btnPantallaPrincipal = findViewById(R.id.btnPantallaPrincipal);
+        btnPantallaPrincipal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirPantallaPrincipal(Pantalla_Principal.this);
+            }
+        });
 
 
 
