@@ -6,4 +6,64 @@
     <string name="facebook_client_token">24e57dfc658850875c93bbc6a35a8566</string>
 
 
+
+    <!--Iniciar sesión-->
+    <string name="IniciarSesion">Iniciar sesión</string>
+    <string name="Email">E-mail</string>
+    <string name="contrasenya">Contraseña</string>
+    <string name="olvidadoContrasenya">¿Has olvidado tu contraseña?</string>
+    <string name="Entrar">Entrar</string>
+    <string name="NoTienesUnaCuenta">¿No tienes una cuenta?</string>
+    <string name="Registrate">Regístrate</string>
+
+    <!--Pre-inicio de sesión-->
+    <string name="Reclamo">Mejora tu descanso</string>
+    <string name="HighConcept">Transformamos tus noches en un oasis de descanso de calidad</string>
+    <string name="IniciarGoogle">Continuar con Google</string>
+    <string name="IniciarTwitter">Continuar con Twitter</string>
+    <string name="IniciarCorreo">Continuar con e-mail</string>
+
+    <!--Formulario de registro-->
+    <string name="TituloRegistro">Registrarse</string>
+    <string name="NombreApellidos">Nombre y apellidos</string>
+    <string name="FechaNacimiento">Fecha de nacimiento</string>
+    <string name="CreaContrasenya">Crea una contraseña</string>
+    <string name="RepiteContrasenya">Repita la contraseña</string>
+    <string name="YaTienesUnaCuenta">¿Ya tienes una cuenta?</string>
+    <string name="IniciaSesion">Iniciar sesión</string>
+
+    <!--Perfil usuario-->
+    <string name="TituloPerfilUsuario">Tu perfil</string>
+    <string name="EjemploFecha">10/10/2001</string>
+    <string name="EjemploContrasenya">123456</string>
+    <string name="ConfirmarCambios">Confirmar cambios</string>
+    <string name="CerrarSesion">Cerrar sesión</string>
+
+
+    <!--Acerca de-->
+    <string name="AcercaDe">Acerca de</string>
+
+    <string name="QuienesSomos">¿Quienes somos?</string>
+
+    <string name="QuienesSomosTexto">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aenean euismod bibendum laoreet.
+        Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. </string>
+
+    <string name="NuestraVision">Nuestra visión</string>
+
+    <string name="NuestraVisionTexto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
+        Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. </string>
+
+    <string name="PoliticaDePrivacidad">Política de privacidad</string>
+
+    <string name="PoliticaDePrivTexto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
+        Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. </string>
+
+
+
+
+
+
+
+
+
 </resources>
