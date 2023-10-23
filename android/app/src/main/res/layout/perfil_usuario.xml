@@ -116,15 +116,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView"
                 app:srcCompat="@drawable/avatar" />
 -->
-            <ImageView
+            <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/fotoPerfil"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                app:srcCompat="@drawable/avatar" />
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
             <ImageView
                 android:id="@+id/editarFoto"
