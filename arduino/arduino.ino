@@ -19,8 +19,10 @@
 #define SOUNDPIN 36
 #define LEDPIN 2
 #define udpPort 6230
-#define ssid "TP-LINK_6CAE"
-#define password "54346615"
+//#define ssid "TP-LINK_6CAE"
+//#define password "54346615"
+#define ssid "darkasa"
+#define password "0Spoilerspls"
 //--------------------------------------------------------------------------------------
 
 
@@ -40,6 +42,8 @@ void setup(){
 
 void loop() {
   m5stackAbstract->printLogoWhiteBackground();
+
+  //
   while(1){
     if(M5.BtnA.read()){
       delay(3000);

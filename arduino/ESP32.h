@@ -34,11 +34,13 @@ private:
     SoundSensor* soundSensor;
     LedLight* ledLight;
 
+    
+
     ESP32(const char *ssid, const char *pass, int udp) {
         udpPort = udp;
-        temperatureSensor = TemperatureSensor::getInstance();  // Crea una instancia del sensor de temperatura
-        soundSensor = SoundSensor::getInstance();  // Crea una instancia del sensor de sonido
-        ledLight = LedLight::getInstance();  // Crea una instancia del controlador de luz LED
+        temperatureSensor = TemperatureSensor::getInstance(TEMPERATUREPIN);  // Crea una instancia del sensor de temperatura
+        soundSensor = SoundSensor::getInstance(SOUNDPIN);  // Crea una instancia del sensor de sonido
+        ledLight = LedLight::getInstance(LEDPIN);  // Crea una instancia del controlador de luz LED
         M5StackAbstract::getInstance(ssid, pass, udp);  // Crea una instancia del M5Stack
     }
 
