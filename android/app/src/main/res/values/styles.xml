@@ -64,6 +64,20 @@
         <item name="android:textColor">@color/colorNegro</item>
     </style>
 
+    <!--Estilo para subtítulos (azul claro)-->
+    <style name="TextoInterBold.Subtitulo3">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorAzulClaro</item>
+    </style>
+
+    <!--Estilo para switches-->
+    <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:thumbTint">@color/colorBlanco</item>
+        <item name="android:trackTint">@color/colorAzulPrincipal</item>
+        <item name="android:trackTintMode">multiply</item>
+    </style>
+
+
 
 
 </resources>

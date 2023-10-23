@@ -53,6 +53,32 @@
         Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. </string>
 
 
+    <!--Ajustes de sueño-->
+    <string name="AjustesDeSueno">Ajustes de sueño</string>
+
+    <string name="Despertador">Despertador</string>
+
+    <string name="Gradual">Gradual:</string>
+
+    <string name="Automatico">Automático:</string>
+
+    <string name="Tono">Tono:</string>
+
+    <string name="ObjetivosDeDescanso">Objetivos de descanso</string>
+
+    <string name="TiempoDeDescanso">Tiempo de descanso:</string>
+
+    <string name="HoraDeDespertarse">Hora de despertarse:</string>
+
+    <string name="RecibirHora">Recibir notificaciones para recordar la hora de acostarse:</string>
+
+    <string name="Iluminacion">Iluminación</string>
+
+    <string name="Automatico2">Automático:</string>
+
+    <string name="Calidas">Calidas:</string>
+
+    <string name="Blancas">Blancas:</string>
 
 
 
