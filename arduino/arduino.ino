@@ -32,11 +32,13 @@ TemperatureSensor* temperatureSensor;
 M5StackAbstract* m5stackAbstract;
 
 void setup(){
-  // Inicializamos las instancias dentro de setup
-  ledLight = LedLight::getInstance(LEDPIN);
-  soundSensor = SoundSensor::getInstance(SOUNDPIN);
-  temperatureSensor = TemperatureSensor::getInstance(TEMPERATUREPIN);
-  m5stackAbstract = M5StackAbstract::getInstance(ssid,password,udpPort);
+// Inicializamos las instancias dentro de setup
+  // ledLight = LedLight::getInstance(LEDPIN);
+  // soundSensor = SoundSensor::getInstance(SOUNDPIN);
+  // temperatureSensor = TemperatureSensor::getInstance(TEMPERATUREPIN);
+  // m5stackAbstract = M5StackAbstract::getInstance(ssid,password,udpPort);
+
+  // se inicializa en esp32
 }
 
 
