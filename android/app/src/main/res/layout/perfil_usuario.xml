@@ -1,167 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="@color/colorBlanco">
 
+    <!--FOOTER-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:elevation="20dp">
 
-        <EditText
-            android:id="@+id/inputEmail"
-            style="@style/Inputs"
-            android:layout_width="0dp"
+        <include
+            layout="@layout/footer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="16dp"
-            android:text="@string/Email"
-            app:layout_constraintEnd_toEndOf="@+id/inputNombre"
-            app:layout_constraintStart_toStartOf="@+id/inputNombre"
-            app:layout_constraintTop_toBottomOf="@+id/labelEmail" />
-
-        <TextView
-            android:id="@+id/labelEmail"
-            style="@style/TextoInterRegular.Inputs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/Email"
-            app:layout_constraintEnd_toEndOf="@+id/labelNombreApellidos"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/labelNombreApellidos"
-            app:layout_constraintTop_toBottomOf="@+id/inputNombre" />
-
-        <TextView
-            android:id="@+id/labelEmail3"
-            style="@style/TextoInterRegular.Inputs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/contrasenya"
-            app:layout_constraintEnd_toEndOf="@+id/labelEmail"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/labelEmail"
-            app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
-
-        <TextView
-            android:id="@+id/textView"
-            style="@style/TextoInterBold.Subtitulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="48dp"
-            android:text="@string/TituloPerfilUsuario"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/fotoPerfil"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:srcCompat="@drawable/avatar" />
-
-        <ImageView
-            android:id="@+id/editarFoto"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="-10dp"
-            android:layout_marginBottom="-10dp"
-            android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="@+id/fotoPerfil"
-            app:layout_constraintEnd_toEndOf="@+id/fotoPerfil"
-            app:srcCompat="@drawable/icono_lapiz" />
-
-        <TextView
-            android:id="@+id/labelNombreApellidos"
-            style="@style/TextoInterRegular.Inputs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="@string/NombreApellidos"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fotoPerfil" />
-
-        <EditText
-            android:id="@+id/inputNombre"
-            style="@style/Inputs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="40dp"
-            android:ems="10"
-            android:inputType="text"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="16dp"
-            android:text="@string/NombreApellidos"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelNombreApellidos" />
-
-        <EditText
-            android:id="@+id/inputContrasenya"
-            style="@style/Inputs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="16dp"
-            android:text="@string/EjemploContrasenya"
-            app:layout_constraintEnd_toEndOf="@+id/inputEmail"
-            app:layout_constraintStart_toStartOf="@+id/inputEmail"
-            app:layout_constraintTop_toBottomOf="@+id/labelEmail3" />
-
-        <Button
-            android:id="@+id/btnConfirmarCambios"
-            style="@style/EstiloBoton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="16dp"
-            android:text="@string/ConfirmarCambios"
-            app:layout_constraintEnd_toEndOf="@+id/inputContrasenya"
-            app:layout_constraintStart_toStartOf="@+id/inputContrasenya"
-            app:layout_constraintTop_toBottomOf="@+id/inputContrasenya" />
-
-        <Button
-            android:id="@+id/btnCerrarSesion"
-            style="@style/EstiloBoton.ConBorde"
-            android:layout_width="331dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="116dp"
-            android:layout_marginBottom="24dp"
-            android:paddingStart="10dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/btnConfirmarCambios"
-            app:layout_constraintStart_toStartOf="@+id/btnConfirmarCambios"
-            app:layout_constraintTop_toBottomOf="@+id/btnConfirmarCambios"
-            tools:text="@string/CerrarSesion" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+    <!--FIN DE FOOTER-->
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <!--HEADER-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    layout="@layout/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--FIN DE HEADER-->
+
+
+            <EditText
+                android:id="@+id/inputEmail"
+                style="@style/Inputs"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/Email"
+                app:layout_constraintEnd_toEndOf="@+id/inputNombre"
+                app:layout_constraintStart_toStartOf="@+id/inputNombre"
+                app:layout_constraintTop_toBottomOf="@+id/labelEmail" />
+
+            <TextView
+                android:id="@+id/labelEmail"
+                style="@style/TextoInterRegular.Inputs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/Email"
+                app:layout_constraintEnd_toEndOf="@+id/labelNombreApellidos"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/labelNombreApellidos"
+                app:layout_constraintTop_toBottomOf="@+id/inputNombre" />
+
+            <TextView
+                android:id="@+id/labelEmail3"
+                style="@style/TextoInterRegular.Inputs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/contrasenya"
+                app:layout_constraintEnd_toEndOf="@+id/labelEmail"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/labelEmail"
+                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/TextoInterBold.Subtitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/TituloPerfilUsuario"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+<!--
+            <ImageView
+                android:id="@+id/fotoPerfil"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:srcCompat="@drawable/avatar" />
+-->
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/fotoPerfil"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            <ImageView
+                android:id="@+id/editarFoto"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="-10dp"
+                android:layout_marginBottom="-10dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="@+id/fotoPerfil"
+                app:layout_constraintEnd_toEndOf="@+id/fotoPerfil"
+                app:srcCompat="@drawable/icono_lapiz" />
+
+            <TextView
+                android:id="@+id/labelNombreApellidos"
+                style="@style/TextoInterRegular.Inputs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="@string/NombreApellidos"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fotoPerfil" />
+
+            <EditText
+                android:id="@+id/inputNombre"
+                style="@style/Inputs"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="40dp"
+                android:ems="10"
+                android:inputType="text"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/NombreApellidos"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelNombreApellidos" />
+
+            <EditText
+                android:id="@+id/inputContrasenya"
+                style="@style/Inputs"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/EjemploContrasenya"
+                app:layout_constraintEnd_toEndOf="@+id/inputEmail"
+                app:layout_constraintStart_toStartOf="@+id/inputEmail"
+                app:layout_constraintTop_toBottomOf="@+id/labelEmail3" />
+
+            <Button
+                android:id="@+id/btnConfirmarCambios"
+                style="@style/EstiloBoton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/ConfirmarCambios"
+                app:layout_constraintEnd_toEndOf="@+id/inputContrasenya"
+                app:layout_constraintStart_toStartOf="@+id/inputContrasenya"
+                app:layout_constraintTop_toBottomOf="@+id/inputContrasenya" />
+
+            <Button
+                android:id="@+id/btnCerrarSesion"
+                style="@style/EstiloBoton.ConBorde"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="116dp"
+                android:layout_marginBottom="72dp"
+                android:paddingStart="10dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="12dp"
+                android:text="@string/CerrarSesion"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/btnConfirmarCambios"
+                app:layout_constraintStart_toStartOf="@+id/btnConfirmarCambios"
+                app:layout_constraintTop_toBottomOf="@+id/btnConfirmarCambios" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

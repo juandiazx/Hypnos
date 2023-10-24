@@ -36,6 +36,7 @@ public class GoogleHelper {
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
+    //Se llama en pulsaIniciarConGoogle, en el onClick del boton de google
     }
 
     public void iniciarConGoogle() {
@@ -44,6 +45,7 @@ public class GoogleHelper {
     }
 
     public void manejoResultadoGoogle(Intent data) {
+    //Se llama en el onActivityResult de PreinicioDeSesion
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
         try {
@@ -57,6 +59,7 @@ public class GoogleHelper {
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
+    //Se llama si el token != null en manejoResultadoGoogle
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(activity, task -> {

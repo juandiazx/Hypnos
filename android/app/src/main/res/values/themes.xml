@@ -15,11 +15,10 @@
 
 
         <!-- Colores -->
+
         <item name="colorPrimary">@color/colorAzulPrincipal</item>
         <item name="colorPrimaryDark">@color/colorNegro</item>
         <item name="colorAccent">@color/colorBlanco</item>
-        <!--<item name="android:background">@color/colorAzulOpaco</item>-->
-        <item name="android:background">@color/colorBlanco</item>
 
     </style>
 

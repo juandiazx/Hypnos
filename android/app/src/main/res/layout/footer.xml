@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlanco">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@drawable/fondo_footer"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </View>
+
+    <ImageView
+        android:id="@+id/btnPantallaPrincipal"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="40dp"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:elevation="20dp"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:srcCompat="@drawable/home_icono" />
+
+    <ImageView
+        android:id="@+id/btnAjustesDescanso"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:elevation="20dp"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toStartOf="@+id/btnPreferencias"
+        app:layout_constraintStart_toEndOf="@+id/btnPantallaPrincipal"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:srcCompat="@drawable/luna_peque"
+        app:tint="@color/colorAzulPrincipal" />
+
+    <ImageView
+        android:id="@+id/btnPreferencias"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="40dp"
+        android:clickable="true"
+        android:elevation="20dp"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:srcCompat="@drawable/preferencias_icono" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
