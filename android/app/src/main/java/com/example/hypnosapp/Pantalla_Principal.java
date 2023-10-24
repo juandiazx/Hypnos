@@ -73,24 +73,5 @@ public class Pantalla_Principal extends AppCompatActivity {
          */
 
     }
-
-    //MÉTODOS PARA LA COMPROBACIÓN DE INICIO DE SESIÓN
-    @Override
-    protected void onStart() {
-        //Llamamos a onStart para ejecutar la verificación de inicio de sesión cuando se ejecute la actividad:
-        verificacionInicioSesion();
-        super.onStart();
-    }
-
-    private void verificacionInicioSesion(){
-        if (firebaseUser != null){
-            Toast.makeText(this, "se ha iniciado sesión", Toast.LENGTH_SHORT).show();
-        }
-        //Si el usuario no ha iniciado sesión nos dirige al pre-inicio de sesión:
-        else{
-            startActivity(new Intent(Pantalla_Principal.this, PreinicioDeSesion.class));
-            finish();
-        }
-    }
 }
 

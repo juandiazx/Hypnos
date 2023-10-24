@@ -64,11 +64,10 @@ public class GoogleHelper {
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(activity, task -> {
                     if (task.isSuccessful()) {
-                        //verificaSiUsuarioValidado();
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
                             try {
-                                Class<?> destinationClass = Class.forName("com.example.hypnosapp.Registro");
+                                Class<?> destinationClass = Class.forName("com.example.hypnosapp.Pantalla_Principal");
                                 Intent intent = new Intent(activity, destinationClass);
                                 activity.startActivity(intent);
                                 activity.finish();
@@ -81,36 +80,4 @@ public class GoogleHelper {
                     }
                 });
     }
-
-    private void verificaSiUsuarioValidado() {
-        FirebaseUser user = auth.getCurrentUser();
-        if (user != null) {
-            // El usuario ha iniciado sesión correctamente
-            // Puedes realizar acciones adicionales aquí
-        }
-    }
 }
-
-
-//// parte de preinicio
-//
-//    private GoogleJelper googleHelper;
-//
-//// en el oncreate
-//
-//    googleHelper = new GoogleJelper(PreinicioDeSesion.this);
-//
-//    // funciones
-//
-//public void pulsaIniciarConGoogle(View view) {
-//        googleHelper.iniciarConGoogle();
-//        }
-//
-//@Override
-//protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == googleHelper.RC_GOOGLE_SIGN_IN) {
-//        googleHelper.manejoResultadoGoogle(data);
-//        }
-//        }

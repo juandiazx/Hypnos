@@ -19,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -145,6 +146,9 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     public void cerrarSesion(View view){
 
         firebaseAuth.signOut();
+
+        //Facebook Log Out Login Manager
+        LoginManager.getInstance().logOut();
         Toast.makeText(this, "Se ha cerrado la sesión", Toast.LENGTH_SHORT).show();
 
         //después de cerrar sesión nos dirigirá a la pantalla de pre-inicio de sesión:
