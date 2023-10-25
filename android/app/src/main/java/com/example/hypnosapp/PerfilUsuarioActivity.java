@@ -149,6 +149,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
         //Facebook Log Out Login Manager
         LoginManager.getInstance().logOut();
+
         Toast.makeText(this, "Se ha cerrado la sesión", Toast.LENGTH_SHORT).show();
 
         //después de cerrar sesión nos dirigirá a la pantalla de pre-inicio de sesión:

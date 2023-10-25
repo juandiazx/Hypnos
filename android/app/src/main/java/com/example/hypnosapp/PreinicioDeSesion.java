@@ -84,7 +84,6 @@ public class PreinicioDeSesion extends AppCompatActivity {
         }
     }
 
-
     //----------------------------------------------------------------------------------------------------------
     //FACEBOOK
     //----------------------------------------------------------------------------------------------------------
@@ -94,7 +93,6 @@ public class PreinicioDeSesion extends AppCompatActivity {
     }
     //Metodo inicial llamado en el onCreate()
     private void handleFacebookStart(){
-
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         loginButtonFacebookEscondido = findViewById(R.id.button_sign_in_facebook);
