@@ -29,20 +29,30 @@ public:
         openUDPConnection();
         // Aquí se debe comunicar con el ESP32 mediante UDP para indicarle que comience a tomar medidas con obtainSensorData() de la clase ESP32
         // Puedes usar el objeto udp para enviar el mensaje al ESP32
-        udp.beginPacket(esp32IP, udpPort);
+        udp.beginPacket(udp.remoteIP, udpPort);
+
+
+        //REVISAR udp.remoteIP PUEDE PRODUCIR ERRORES 
+
         udp.printf("START_TRACKING");
         udp.endPacket();
-        // Aquí se reciben los datos por UTP y se guardan en snoreAmount y averageTemperature
     }
 
     //Cuando el boton B se pulsa por 1,5 segundos en loop()
     void stopRestingTrackRoutine(){
         // Aquí se debe comunicar con el ESP32 mediante UDP para indicarle que ya puede enviar los datos
         // Puedes usar la función receiveSensorsData() para recibir el JSON enviado por el ESP32
-        udp.beginPacket(esp32IP, udpPort);
+        udp.beginPacket(udp.remoteIP, udpPort);
+        
+
+        //REVISAR udp.remoteIP PUEDE PRODUCIR ERRORES 
+
         udp.printf("STOP_TRACKING");
         udp.endPacket();
+        // Aquí se reciben los datos por UTP y se guardan en snoreAmount y averageTemperature
 
+        //AQUI PUEDE QUE HAGA FALTA ESPERAR A QUE EL ESP32 ENVIE LAS MEDIDAS
+        //DEBIDO A QUE ES ASINCRONO
         receiveSensorsData();
     }
 
@@ -72,33 +82,36 @@ public:
     }
 
 private:
-    JsonArray soundMeasurements;
-    int snoreAmount;
-    int frecuenciaMinimaSonido = 600; // Numero aleatorio que hace de minimo valor de medida para los ronquidos
-    JsonArray temperatureMeasurements;
-    unsigned int maxMeasurements = 120;
-    int averageTemperature;
     bool isNight = false;
     int udpPort;
     char ssidWifi[32]; // Array para almacenar el SSID, con un máximo de 32 caracteres incluyendo el carácter nulo '\0'
     char passwordWifi[64];
     uint16_t mainColor = 0x164499;
     WiFiUDP udp;
-    IPAddress esp32IP;
 
 
-   M5StackAbstract(const char *ssid, const char *pass, int udp, const IPAddress &ip) {
+   M5StackAbstract(const char *ssid, const char *pass, int udp) {
         strncpy(ssidWifi, ssid, sizeof(ssidWifi) - 1); // Copia el SSID a ssidWifi, asegurando que no sobrepase el tamaño del array
         strncpy(passwordWifi, pass, sizeof(passwordWifi) - 1); // Copia la contraseña a passwordWifi, asegurando que no sobrepase el tamaño del array
         ssidWifi[sizeof(ssidWifi) - 1] = '\0'; // Asegura que ssidWifi tenga el carácter nulo al final
         passwordWifi[sizeof(passwordWifi) - 1] = '\0'; // Asegura que passwordWifi tenga el carácter nulo al final
         udpPort = udp;
-        esp32IP = ip;
     }
 
     void initializeM5StackAbstract() {
         M5.begin(); //Init M5Core. Initialize M5Core
         M5.Power.begin(); //Init Power module. Initialize the power module
+    }
+
+    void openUDPConnection(){
+        WiFi.begin(ssidWifi, passwordWifi);
+        while (WiFi.status() != WL_CONNECTED) {
+            delay(1000);
+            Serial.println("Conectando a WiFi...");
+        }
+        Serial.println("Conexión WiFi establecida");
+
+        udp.begin(udpPort);
     }
 
     void receiveSensorsData(){
@@ -115,44 +128,11 @@ private:
                 DeserializationError error = deserializeJson(doc, packetBuffer);
                 if (!error) {
                     // Obtener los valores de las medidas
-                    soundMeasurements = doc["soundMeasurements"];
-                    temperatureMeasurements = doc["temperatureMeasurements"];
-
-                    averageTemperature = averageMeasurements(temperatureMeasurements);
-                    snoreAmount = SnoreSummary(soundMeasurements)
+                    averageTemperature = doc["averageTemperature"];
+                    snoreAmount = doc["snoreAmount"];
                 }
             }
         }
-    }
-
-    void openUDPConnection(){
-        WiFi.begin(ssidWifi, passwordWifi);
-        while (WiFi.status() != WL_CONNECTED) {
-            delay(1000);
-            Serial.println("Conectando a WiFi...");
-        }
-        Serial.println("Conexión WiFi establecida");
-
-        udp.begin(udpPort);
-        
-    }
-
-    int averageMeasurements(JsonArray measurements) {
-        int summary = 0;
-        for(int i=maxMeasurements; i; i--) {
-            summary = summary + measurements[i];
-        }
-        return summary/measurementsQuantity;
-    }
-
-    int SnoreSummary(JsonArray measurements) {
-        int snores = 0;
-        for(int i=maxMeasurements; i; i--) {
-            if(measurements[i] > frecuenciaMinimaSonido) {
-                snores++;
-            } 
-        }
-        return snores;
     }
 
     static M5StackAbstract* instance;
@@ -161,7 +141,3 @@ private:
 M5StackAbstract* M5StackAbstract::instance = nullptr;
 
 #endif
-
-
-
-
