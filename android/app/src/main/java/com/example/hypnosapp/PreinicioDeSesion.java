@@ -61,8 +61,6 @@ public class PreinicioDeSesion extends AppCompatActivity {
         googleHelper.iniciarConGoogle();
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Facebook
@@ -75,19 +73,16 @@ public class PreinicioDeSesion extends AppCompatActivity {
         }
     }
 
-    //Facebook
-
-    /*
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        Intent intent = new Intent(PreinicioDeSesion.this, Registro.class);
-        startActivity(intent);
+        if(currentUser !=null){
+            Intent intent = new Intent(PreinicioDeSesion.this, Pantalla_Principal.class);
+            startActivity(intent);
+        }
     }
-
-*/
 
 
     //----------------------------------------------------------------------------------------------------------
@@ -134,8 +129,17 @@ public class PreinicioDeSesion extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(PreinicioDeSesion.this, "Authentication aqui." + user.getPhotoUrl(),
-                                    Toast.LENGTH_SHORT).show();
+                            if (user != null) {
+                                try {
+                                    AppCompatActivity thisActivity = PreinicioDeSesion.this;
+                                    Class<?> destinationClass = Class.forName("com.example.hypnosapp.Pantalla_Principal");
+                                    Intent intent = new Intent(thisActivity, destinationClass);
+                                    thisActivity.startActivity(intent);
+                                    thisActivity.finish();
+                                } catch (ClassNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -148,9 +152,4 @@ public class PreinicioDeSesion extends AppCompatActivity {
     //----------------------------------------------------------------------------------------------------------
     //FINALIZA FACEBOOK
     //----------------------------------------------------------------------------------------------------------
-
-
-     /*    private void verificaSiUsuarioHaIniciadoSesion() {
-        AuthHelper.verificaSiUsuarioValidado(auth, this, new Intent(this, MainActivity.class));
-    }*/
 }

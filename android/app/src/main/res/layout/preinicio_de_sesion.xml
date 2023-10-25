@@ -90,7 +90,7 @@
         android:paddingLeft="24dp"
         android:paddingRight="40dp"
         android:textAlignment="textEnd"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView4"
