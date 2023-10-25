@@ -7,6 +7,7 @@ public:
         if (instance == nullptr) {
             instance = new M5StackAbstract(ssid, pass, udp);
             instance->initializeM5StackAbstract();
+            instance->openUDPConnection
         }
         return instance;
     }
@@ -26,7 +27,6 @@ public:
 
     //Cuando boton A se pulsa por 1,5 segundos en loop()
     void startRestingTrackRoutine() {
-        openUDPConnection();
         // Aquí se debe comunicar con el ESP32 mediante UDP para indicarle que comience a tomar medidas con obtainSensorData() de la clase ESP32
         // Puedes usar el objeto udp para enviar el mensaje al ESP32
         char texto[200];

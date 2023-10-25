@@ -31,21 +31,27 @@ void setup() {
 
 
 void loop() {
-    // Tomar medida de temperatura y sonido
-    int temperature = temperatureSensor->takeMeasurement();
-    int soundValue = soundSensor->takeMeasurement();
+    m5stackAbstract->printLogoWhiteBackground();
+    while (1){
+        if(M5.BtnA.read()){
+            delay(3000);
 
-    // Imprimir los resultados por el puerto serie
-    Serial.print("Temperatura: ");
-    Serial.print(temperature);
-    Serial.print("°C, Sonido: ");
-    Serial.println(soundValue);
-
-    // Encender el LED durante 3 segundos
-    ledLight->turnOn();
-    delay(3000);
-    ledLight->turnOff();
-
-    // Esperar un segundo antes de tomar la siguiente medida
-    delay(1000);
+            m5stackAbstract->switchLightM5StackAbstract();
+            m5stackAbstract->startRestingTrackRoutine();
+            while(1){
+                if(M5.BtnB.read()){
+                    m5stackAbstract->stopRestingTrackRoutine();
+                    m5stackAbstract->switchLightM5StackAbstract();
+                    m5stackAbstract->showDataInScreen();
+                    while(1){
+                        if(M5.BtnC.read()){
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+    }
 }
