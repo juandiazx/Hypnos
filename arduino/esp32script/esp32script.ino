@@ -1,6 +1,8 @@
 //Incluimos librerías externas
 //--------------------------------------------------------
 #include <DHT.h>
+#include <AsyncUDP.h>
+#include <ArduinoJson.h>
 //--------------------------------------------------------
 
 
