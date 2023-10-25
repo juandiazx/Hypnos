@@ -29,31 +29,33 @@ public:
         openUDPConnection();
         // Aquí se debe comunicar con el ESP32 mediante UDP para indicarle que comience a tomar medidas con obtainSensorData() de la clase ESP32
         // Puedes usar el objeto udp para enviar el mensaje al ESP32
-        udp.beginPacket(udp.remoteIP, udpPort);
+        char texto[200];
+        StaticJsonDocument<200> jsonBuffer;
+        
+        jsonBuffer["mensaje"] = "START_TRACKING";
+        
+        serializeJson(jsonBuffer, texto);
 
+        udp.broadcastTo(texto, udpPort);
 
-        //REVISAR udp.remoteIP PUEDE PRODUCIR ERRORES 
-
-        udp.printf("START_TRACKING");
-        udp.endPacket();
     }
 
     //Cuando el boton B se pulsa por 1,5 segundos en loop()
     void stopRestingTrackRoutine(){
         // Aquí se debe comunicar con el ESP32 mediante UDP para indicarle que ya puede enviar los datos
         // Puedes usar la función receiveSensorsData() para recibir el JSON enviado por el ESP32
-        udp.beginPacket(udp.remoteIP, udpPort);
+        char texto[200];
+        StaticJsonDocument<200> jsonBuffer;
+
+        jsonBuffer["mensaje"] = "STOP_TRACKING";
         
+        serializeJson(jsonBuffer, texto);
 
-        //REVISAR udp.remoteIP PUEDE PRODUCIR ERRORES 
-
-        udp.printf("STOP_TRACKING");
-        udp.endPacket();
+        udp.broadcastTo(texto, udpPort);
         // Aquí se reciben los datos por UTP y se guardan en snoreAmount y averageTemperature
-
+        receiveSensorsData();
         //AQUI PUEDE QUE HAGA FALTA ESPERAR A QUE EL ESP32 ENVIE LAS MEDIDAS
         //DEBIDO A QUE ES ASINCRONO
-        receiveSensorsData();
     }
 
     //Cuando el boton C se pulsa por 1,5 segundos en loop() se muestran lo
@@ -86,8 +88,13 @@ private:
     int udpPort;
     char ssidWifi[32]; // Array para almacenar el SSID, con un máximo de 32 caracteres incluyendo el carácter nulo '\0'
     char passwordWifi[64];
+    static const int UDP_TX_PACKET_MAX_SIZE = 200;
+
+    int averageTemperature;
+    unsigned int snoreAmount;
+
     uint16_t mainColor = 0x164499;
-    WiFiUDP udp;
+    AsyncUDP udp;
 
 
    M5StackAbstract(const char *ssid, const char *pass, int udp) {
@@ -104,36 +111,47 @@ private:
     }
 
     void openUDPConnection(){
+        WiFi.mode(WIFI_STA);
         WiFi.begin(ssidWifi, passwordWifi);
-        while (WiFi.status() != WL_CONNECTED) {
-            delay(1000);
+        if(WiFi.waitForConnectResult()!=WL_CONNECTED) {
             Serial.println("Conectando a WiFi...");
-        }
-        Serial.println("Conexión WiFi establecida");
-
-        udp.begin(udpPort);
-    }
-
-    void receiveSensorsData(){
-         // Aquí se debe recibir la información JSON enviada por el ESP32 mediante UDP
-        // Puedes usar el objeto udp para recibir los datos y luego parsear el JSON
-        char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
-        int packetSize = udp.parsePacket();
-        if (packetSize) {
-            int len = udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
-            if (len > 0) {
-                packetBuffer[len] = '\0';
-                // Parsear el JSON recibido
-                DynamicJsonDocument doc(1024);
-                DeserializationError error = deserializeJson(doc, packetBuffer);
-                if (!error) {
-                    // Obtener los valores de las medidas
-                    averageTemperature = doc["averageTemperature"];
-                    snoreAmount = doc["snoreAmount"];
-                }
+            while(1) {
+              delay(1000);
             }
         }
+
+        Serial.println("Conexión WiFi establecida");
+
+        if(udp.listen(udpPort)) {
+        Serial.print("UDP Listening on IP: ");
+        Serial.println(WiFi.localIP());
+        }
     }
+
+    void receiveSensorsData() {
+    udp.onPacket([this](AsyncUDPPacket &packet) {
+        char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
+        int len = packet.length();
+        
+        // Leer los datos del paquete en el buffer
+        for (int i = 0; i < len; i++) {
+            packetBuffer[i] = packet.data()[i];
+        }
+        packetBuffer[len] = '\0';
+
+        // Parsear el JSON recibido
+        DynamicJsonDocument jsonDoc(200);  // Ajusta el tamaño según tus necesidades
+        DeserializationError error = deserializeJson(jsonDoc, packetBuffer);
+
+        if (!error) {
+            // Acceder a los valores recibidos y almacenarlos según tus necesidades
+            this->averageTemperature = jsonDoc["averageTemperature"];
+            this->snoreAmount = jsonDoc["snoreAmount"];
+        } else {
+            Serial.println("Error al analizar los datos JSON recibidos");
+        }
+    });
+}
 
     static M5StackAbstract* instance;
 };

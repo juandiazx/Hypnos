@@ -2,6 +2,9 @@
 //--------------------------------------------------------
 #include <M5Stack.h>
 #include <DHT.h>
+#include <WiFi.h>
+#include <AsyncUDP.h>
+#include <ArduinoJson.h>
 //--------------------------------------------------------
 
 
@@ -11,6 +14,7 @@
 #include "TemperatureSensor.h"
 #include "LedLight.h"
 #include "M5StackAbstract.h"
+#include "ESP32Abstract.h"
 //--------------------------------------------------------
 
 //Realizamos nuestras definiciones que no ocupan espacio, acciones de compilador
@@ -25,20 +29,22 @@
 #define password "0Spoilerspls"
 //--------------------------------------------------------------------------------------
 
-
 LedLight* ledLight;
 SoundSensor* soundSensor;
 TemperatureSensor* temperatureSensor;
 M5StackAbstract* m5stackAbstract;
+ESP32Abstract* esp32Abstract;
 
 void setup(){
 // Inicializamos las instancias dentro de setup
-  // ledLight = LedLight::getInstance(LEDPIN);
-  // soundSensor = SoundSensor::getInstance(SOUNDPIN);
-  // temperatureSensor = TemperatureSensor::getInstance(TEMPERATUREPIN);
-  // m5stackAbstract = M5StackAbstract::getInstance(ssid,password,udpPort);
+  ledLight = LedLight::getInstance(LEDPIN);
+  soundSensor = SoundSensor::getInstance(SOUNDPIN);
+  temperatureSensor = TemperatureSensor::getInstance(TEMPERATUREPIN);
+  m5stackAbstract = M5StackAbstract::getInstance(ssid,password,udpPort);
+  esp32Abstract = ESP32Abstract::getInstance(ssid, password, udpPort, TEMPERATUREPIN, SOUNDPIN, LEDPIN);
 
   // se inicializa en esp32
+
 }
 
 
