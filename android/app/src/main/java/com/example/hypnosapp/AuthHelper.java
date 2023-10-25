@@ -151,12 +151,4 @@ public class AuthHelper {
         }
     }
 
-
-    public static void verificaSiUsuarioHaIniciadoSesion(FirebaseAuth auth, AppCompatActivity activity, Intent intent) {
-        if (auth.getCurrentUser() != null) {
-            activity.startActivity(intent);
-            activity.finish();
-        }
-    }
-
 }
