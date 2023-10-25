@@ -12,6 +12,7 @@ public:
     static ESP32Abstract* getInstance(const char *ssid, const char *pass, int udp, int tempPIN, int soundPIN, int ledPIN) {
         if (instance == nullptr) {
             instance = new ESP32Abstract(ssid, pass, udp, tempPIN, soundPIN, ledPIN);
+            instance->openUDPConnection();
         }
         return instance;
     }
@@ -90,8 +91,6 @@ private:
 
         strncpy(pass, passConstructor, sizeof(pass) - 1);
         pass[sizeof(pass) - 1] = '\0';
-
-        openUDPConnection();
     }
 
     void openUDPConnection(){
@@ -129,12 +128,18 @@ private:
         // Implementa la obtención de datos de los sensores (temperatureSensor, soundSensor, etc.)
         unsigned long currentTime = millis();
 
-        if (currentTime - previousTempMeasurementTime >= tempMeasurementInterval && tempIndex < maxMeasurements) {
-            multipleTemperatureMeasurements();
-        }
+        ledLight->turnOn;
+        delay(2000);
+        ledLight->turnOff;
+        
+        for(;;) {
+            if (currentTime - previousTempMeasurementTime >= tempMeasurementInterval && tempIndex < maxMeasurements) {
+                multipleTemperatureMeasurements();
+            }
 
-        if (currentTime - previousSoundMeasurementTime >= soundMeasurementInterval && soundIndex < maxMeasurements) {
-            multipleSoundMeasurements();
+            if (currentTime - previousSoundMeasurementTime >= soundMeasurementInterval && soundIndex < maxMeasurements) {
+                multipleSoundMeasurements();
+            }
         }
     }
 
@@ -161,6 +166,9 @@ private:
     void sendDataToM5Stack(int puerto) {
         // Implementa el envío de datos al M5Stack
         // Crear un objeto JSON para almacenar los datos
+        ledLight->turnOn;
+        ledLight->turnOff;
+
         StaticJsonDocument<200> jsonBuffer;
         char medidas[200];
 
