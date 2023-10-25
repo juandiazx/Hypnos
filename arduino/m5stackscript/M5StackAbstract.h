@@ -52,6 +52,8 @@ public:
         serializeJson(jsonBuffer, texto);
 
         udp.broadcastTo(texto, udpPort);
+        
+        delay(2000);
         // Aquí se reciben los datos por UTP y se guardan en snoreAmount y averageTemperature
         receiveSensorsData();
         //AQUI PUEDE QUE HAGA FALTA ESPERAR A QUE EL ESP32 ENVIE LAS MEDIDAS

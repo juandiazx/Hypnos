@@ -30,53 +30,21 @@
 LedLight* ledLight;
 SoundSensor* soundSensor;
 TemperatureSensor* temperatureSensor;
-M5StackAbstract* m5stackAbstract;
 ESP32Abstract* esp32Abstract;
 
 void setup(){
-    Serial.begin(115200);
-// Inicializamos las instancias dentro de setup
+  Serial.begin(115200);
+  // Inicializamos las instancias dentro de setup
   ledLight = LedLight::getInstance(LEDPIN);
   soundSensor = SoundSensor::getInstance(SOUNDPIN);
   temperatureSensor = TemperatureSensor::getInstance(TEMPERATUREPIN);
   esp32Abstract = ESP32Abstract::getInstance(ssid, password, udpPort, TEMPERATUREPIN, SOUNDPIN, LEDPIN);
-
-  // se inicializa en esp32
-
+  esp32Abstract->listenForMessages;
 }
 
 
 void loop() {
-  m5stackAbstract->printLogoWhiteBackground();
-
-  //
-  while(1){
-    if(M5.BtnA.read()){
-      delay(3000);
-
-      m5stackAbstract->switchLightM5StackAbstract();
-      ledLight->turnOn();
-
-      delay(2000);
-
-      ledLight->turnOff();
-
-      delay(5000);
-
-      int temperatura = temperatureSensor->takeMeasurement() ;
-      int sonido = soundSensor->takeMeasurement();
-      m5stackAbstract->switchLightM5StackAbstract();
-      ledLight->turnOn();
-
-      delay(2000);
-
-      ledLight->turnOff();
-      m5stackAbstract->showDataInScreen(sonido, temperatura);
-      
-      delay(5000);
-      break;
-    }
-  }
+  //esp32Abstract->listenForMessages();
 
 }
 
