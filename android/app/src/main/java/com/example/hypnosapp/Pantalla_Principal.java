@@ -2,18 +2,14 @@ package com.example.hypnosapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.android.material.shape.CornerFamily;
-import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -25,6 +21,17 @@ public class Pantalla_Principal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Encuentra el TabLayout y el ViewPager
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        ViewPager viewPager = findViewById(R.id.viewPager);
+
+        // Crea un adaptador para manejar los fragmentos
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+
+        // Conecta el TabLayout con el ViewPager
+        tabLayout.setupWithViewPager(viewPager);
 
 
         //FUNCIONALIDAD BOTONES MENUS
