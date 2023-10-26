@@ -34,7 +34,7 @@ public class TabsPaginaPrincipal extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Antes de ayer";
+                return "Anteayer";
             case 1:
                 return "Ayer";
             case 2:
