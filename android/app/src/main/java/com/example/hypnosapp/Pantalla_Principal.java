@@ -33,6 +33,11 @@ public class Pantalla_Principal extends AppCompatActivity {
         // Conecta el TabLayout con el ViewPager
         tabLayout.setupWithViewPager(viewPager);
 
+        TabLayout.Tab tab = tabLayout.getTabAt(2); // Selecciona la tab "Hoy" por defecto
+        if (tab != null) {
+            tab.select();
+        }
+
 
         //FUNCIONALIDAD BOTONES MENUS
         MenuManager funcionMenu = new MenuManager();

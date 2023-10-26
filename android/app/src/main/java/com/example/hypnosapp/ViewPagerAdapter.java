@@ -34,7 +34,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Antes de Ayer";
+                return "Antes de ayer";
             case 1:
                 return "Ayer";
             case 2:
@@ -43,4 +43,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+
 }
+
+
