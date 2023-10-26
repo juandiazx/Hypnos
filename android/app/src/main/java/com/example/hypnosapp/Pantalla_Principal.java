@@ -1,10 +1,8 @@
 package com.example.hypnosapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -27,7 +25,7 @@ public class Pantalla_Principal extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.viewPager);
 
         // Crea un adaptador para manejar los fragmentos
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        TabsPaginaPrincipal adapter = new TabsPaginaPrincipal(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
         // Conecta el TabLayout con el ViewPager
