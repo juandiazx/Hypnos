@@ -109,6 +109,7 @@
         android:layout_marginTop="110dp"
         android:layout_marginBottom="60dp"
         android:background="#00000000"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
@@ -178,7 +179,7 @@
                     android:id="@+id/txtConsejoSalud"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
                     android:background="#00000000"
                     android:text="Consejo de salud"
                     android:textSize="16sp"
@@ -215,8 +216,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
                     android:background="#00000000"
                     android:text="Reduce la temperatura de la habitación abriendo una ventana para que entre aire fresco."
                     android:textSize="13sp"
@@ -364,7 +365,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="#00000000"
-                    android:text="27ºC"
+                    android:text="Buena"
                     android:textAlignment="center"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -424,6 +425,15 @@
                     app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
                     app:layout_constraintTop_toBottomOf="@+id/iconoTemperaturaMediaNoche"
                     app:srcCompat="@drawable/icons8_breath_100" />
+
+                <TextView
+                    android:id="@+id/textoInvisibleSeparacion"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txtDescripcionConsejoSalud" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
