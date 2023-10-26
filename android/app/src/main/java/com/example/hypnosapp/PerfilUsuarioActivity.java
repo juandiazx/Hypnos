@@ -215,10 +215,11 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
     private void modificarDatosPerfil(){
 
-        Toast.makeText(PerfilUsuarioActivity.this, "Modificar datos", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(PerfilUsuarioActivity.this, "Modificar datos", Toast.LENGTH_SHORT).show();
 
         correo = findViewById(R.id.inputEmail);
         String emailNuevo = correo.getText().toString();
+        //Toast.makeText(PerfilUsuarioActivity.this, emailNuevo, Toast.LENGTH_SHORT).show();
 
         UserProfileChangeRequest perfil = new UserProfileChangeRequest.Builder()
                 //.setDisplayName(nombreNuevo)
@@ -284,8 +285,9 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                         //Acciones a realizar
                         Bundle extras = data.getExtras();
                         String valor = extras.getString("valor");
+                        //Toast.makeText(PerfilUsuarioActivity.this, valor, Toast.LENGTH_SHORT).show();
                         if(Objects.equals(valor, "correcto")){
-                            Toast.makeText(PerfilUsuarioActivity.this, "Ha llegado correcto", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(PerfilUsuarioActivity.this, "Ha llegado correcto", Toast.LENGTH_SHORT).show();
 
                             modificarDatosPerfil();
 

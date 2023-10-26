@@ -60,7 +60,7 @@ public class ConfirmarCambioActivity extends AppCompatActivity {
                 valor = "correcto";
 
 
-                Toast.makeText(this, "E-mail correcto", Toast.LENGTH_SHORT).show();
+               Toast.makeText(this, "E-mail correcto", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent();
                 intent.putExtra("valor",valor);
