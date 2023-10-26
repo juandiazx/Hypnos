@@ -80,7 +80,8 @@
         app:layout_constraintEnd_toEndOf="@+id/textView4"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/btnGoogle" />
+        app:layout_constraintTop_toBottomOf="@+id/btnGoogle"
+        app:layout_constraintVertical_bias="0.464" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/button_sign_in_facebook"
@@ -178,6 +179,18 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnEmail" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnFacebook"
+        app:layout_constraintEnd_toEndOf="@+id/btnFacebook"
+        app:layout_constraintHorizontal_bias="0.081"
+        app:layout_constraintStart_toStartOf="@+id/btnFacebook"
+        app:layout_constraintTop_toTopOf="@+id/btnFacebook"
+        app:layout_constraintVertical_bias="0.444"
+        app:srcCompat="@drawable/facebook" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
