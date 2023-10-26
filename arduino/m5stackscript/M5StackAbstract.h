@@ -53,7 +53,7 @@ public:
 
         udp.broadcastTo(texto, udpPort);
         
-        delay(2000);
+        delay(5000);
         // Aquí se reciben los datos por UTP y se guardan en snoreAmount y averageTemperature
         receiveSensorsData();
         //AQUI PUEDE QUE HAGA FALTA ESPERAR A QUE EL ESP32 ENVIE LAS MEDIDAS
@@ -147,8 +147,10 @@ private:
 
         if (!error) {
             // Acceder a los valores recibidos y almacenarlos según tus necesidades
+            Serial.println("Recibe los datos");
             this->averageTemperature = jsonDoc["averageTemperature"];
             this->snoreAmount = jsonDoc["snoreAmount"];
+            Serial.println(averageTemperature);
         } else {
             Serial.println("Error al analizar los datos JSON recibidos");
         }

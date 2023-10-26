@@ -35,7 +35,6 @@ void loop() {
     m5stackAbstract->printLogoWhiteBackground();
     Serial.println("se ha mostrado el logo");
     while (1){
-      Serial.println("se ha entrado al bucle");
         if(M5.BtnA.read()){
           Serial.println("se ha entrado al if del boton A");
             delay(3000);
