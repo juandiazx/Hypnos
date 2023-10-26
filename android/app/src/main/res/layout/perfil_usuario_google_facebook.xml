@@ -59,9 +59,7 @@
                 style="@style/Inputs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="40dp"
                 android:ems="10"
                 android:inputType="textEmailAddress"
                 android:paddingStart="16dp"
@@ -69,8 +67,8 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="16dp"
                 android:text="@string/Email"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/inputNombre"
+                app:layout_constraintStart_toStartOf="@+id/inputNombre"
                 app:layout_constraintTop_toBottomOf="@+id/labelEmail" />
 
             <TextView
@@ -78,24 +76,12 @@
                 style="@style/TextoInterRegular.Inputs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:text="@string/Email"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fotoPerfil" />
-
-            <TextView
-                android:id="@+id/labelEmail3"
-                style="@style/TextoInterRegular.Inputs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/contrasenya"
-                app:layout_constraintEnd_toEndOf="@+id/labelEmail"
+                android:text="@string/Email"
+                app:layout_constraintEnd_toEndOf="@+id/labelNombreApellidos"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/labelEmail"
-                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+                app:layout_constraintStart_toStartOf="@+id/labelNombreApellidos"
+                app:layout_constraintTop_toBottomOf="@+id/inputNombre" />
 
             <TextView
                 android:id="@+id/textView"
@@ -107,17 +93,25 @@
                 android:text="@string/TituloPerfilUsuario"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-            <ImageView
+            <!--
+                        <ImageView
+                            android:id="@+id/fotoPerfil"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="40dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView"
+                            app:srcCompat="@drawable/avatar" />
+            -->
+            <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/fotoPerfil"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                app:srcCompat="@drawable/avatar" />
-
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
             <ImageView
                 android:id="@+id/editarFoto"
@@ -130,37 +124,36 @@
                 app:layout_constraintEnd_toEndOf="@+id/fotoPerfil"
                 app:srcCompat="@drawable/icono_lapiz" />
 
+            <TextView
+                android:id="@+id/labelNombreApellidos"
+                style="@style/TextoInterRegular.Inputs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="@string/NombreApellidos"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fotoPerfil" />
+
             <EditText
-                android:id="@+id/inputContrasenya"
+                android:id="@+id/inputNombre"
                 style="@style/Inputs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="40dp"
                 android:ems="10"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="16dp"
-                android:text="Hola1234"
-                app:layout_constraintEnd_toEndOf="@+id/inputEmail"
-                app:layout_constraintStart_toStartOf="@+id/inputEmail"
-                app:layout_constraintTop_toBottomOf="@+id/labelEmail3" />
-
-            <Button
-                android:id="@+id/btnConfirmarCambios"
-                style="@style/EstiloBoton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp"
-                android:text="@string/ConfirmarCambios"
-                app:layout_constraintEnd_toEndOf="@+id/inputContrasenya"
-                app:layout_constraintStart_toStartOf="@+id/inputContrasenya"
-                app:layout_constraintTop_toBottomOf="@+id/inputContrasenya" />
+                android:text="@string/NombreApellidos"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelNombreApellidos" />
 
             <Button
                 android:id="@+id/btnCerrarSesion"
@@ -168,18 +161,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:layout_marginBottom="72dp"
                 android:paddingStart="10dp"
                 android:paddingTop="12dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="12dp"
                 android:text="@string/CerrarSesion"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/btnConfirmarCambios"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/btnConfirmarCambios"
-                app:layout_constraintTop_toBottomOf="@+id/btnConfirmarCambios"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintEnd_toEndOf="@+id/inputEmail"
+                app:layout_constraintStart_toStartOf="@+id/inputEmail"
+                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

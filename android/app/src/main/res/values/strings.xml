@@ -95,6 +95,14 @@
 
     <string name="Blancas">Blancas:</string>
 
+    <!--Confirmar cambios-->
+    <string name="RepetirCorreo">Repite el correo electrónico:</string>
+    <string name="RepetirContrasenya">Repite la contraseña:</string>
+    <string name="CorreoElectronico">Correo electrónico</string>
+    <string name="Aceptar">Aceptar</string>
+    <string name="Cancelar">Cancelar</string>
+
+
 
 
 
