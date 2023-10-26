@@ -1,10 +1,13 @@
 package com.example.hypnosapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,9 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,8 +65,8 @@ public class AuthHelper {
             tvFechaNac.setText("Introduce una fecha de nacimiento");
         } else if (!nombreApellido.matches("^[A-Za-z\\s]+$")) {
             tvNombreApellido.setText("Nombre/Apellido no válido");
-        } else if (!fechaNac.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
-            tvFechaNac.setText("Fecha de Nacimiento no válida (formato dd/mm/yyyy)");
+//        } else if (!fechaNac.matches("^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$")) {
+//            tvFechaNac.setText("Fecha de Nacimiento no válida (formato dd/mm/yyyy)");
         } else {
             // Limpia los mensajes de error si todos los campos son válidos
             tvNombreApellido.setText(null);
@@ -76,7 +81,7 @@ public class AuthHelper {
         String contraseña = etContraseña.getText().toString();
         String repContraseña = etRepContraseña.getText().toString();
 
-        if(contraseña.equals(repContraseña)) {
+        if (contraseña.equals(repContraseña)) {
             return true;
         }
         tvRepContraseña.setText("Las contraseñas no coinciden");
@@ -90,45 +95,82 @@ public class AuthHelper {
     }
 
     public static void registrarUsuario(final FirebaseAuth auth, final String correo,
-                    final String contraseña, final String nombre, final String fechaNacimiento,
-                        Context appContext, final OnCompleteListener<AuthResult> onComplete) {
+                                        final String contraseña, final String nombre, final String fechaNacimiento,
+                                        Context appContext, TextView respuesta, final OnCompleteListener<AuthResult> onComplete) {
+
+        FirebaseAuth.getInstance().fetchSignInMethodsForEmail(correo)
+                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                        if (task.isSuccessful()){
+                            boolean check = task.getResult().getSignInMethods().isEmpty();
+                            if (!check){
+                                respuesta.setText("El correo ya está registrado");
+                                Toast.makeText(appContext, "El correo ya está registrado", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                registrarNuevaCuenta(auth, correo, contraseña, nombre, fechaNacimiento, appContext, onComplete);
+                            }
+                        }
+                    }
+                });
+//        auth.createUserWithEmailAndPassword(correo, contraseña)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            FirebaseUser user = auth.getCurrentUser();
+//                            // Envía un correo de verificación
+//                            user.sendEmailVerification()
+//                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<Void> emailVerificationTask) {
+//                                        if (emailVerificationTask.isSuccessful()) {
+//                                            //mostrarPopUpRegistro((AppCompatActivity) appContext);
+//                                            // Envío de correo exitoso
+//                                        } else {
+//                                            // Error al enviar el correo de verificación
+//                                            Toast.makeText(appContext, "No se ha podido enviar el codigo de verificación, "
+//                                                    , Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }
+//                                });
+//
+//                            almacenarInformacionUsuario(user, nombre, fechaNacimiento);
+//                        }
+//                        onComplete.onComplete(task);
+//                    }
+//                });
+    }
+
+    private static void registrarNuevaCuenta(final FirebaseAuth auth, final String correo,
+                                             final String contraseña, final String nombre, final String fechaNacimiento,
+                                             final Context appContext, final OnCompleteListener<AuthResult> onComplete) {
         auth.createUserWithEmailAndPassword(correo, contraseña)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = auth.getCurrentUser();
-
-                            // Verifica si el correo electrónico ya ha sido verificado
-                            if (!user.isEmailVerified()) {
-                                // Envía un correo de verificación
-                                user.sendEmailVerification()
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> emailVerificationTask) {
-                                                if (emailVerificationTask.isSuccessful()) {
-                                                    // Envío de correo exitoso
-                                                    Toast.makeText(appContext, "Correo de verificación enviado. Por favor, " +
-                                                            "verifique su correo electrónico.", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    // Error al enviar el correo de verificación
-                                                    Toast.makeText(appContext, "No se ha podido enviar el codigo de verificación, "
-                                                            , Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
-                            }
-
-                            // Almacena información adicional en la base de datos en tiempo real de Firebase
-                            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-                            String userID = user.getUid();
-                            Map<String, Object> userData = new HashMap<>();
-                            userData.put("nombre", nombre);
-                            userData.put("fechaNacimiento", fechaNacimiento);
-                            usersRef.child(userID).setValue(userData);
+                            enviarCorreoDeVerificacion(user, appContext);
+                            mostrarPopUpRegistro((AppCompatActivity) appContext);
+                            almacenarInformacionUsuario(user, nombre, fechaNacimiento);
                         }
-
                         onComplete.onComplete(task);
+                    }
+                });
+    }
+
+    private static void enviarCorreoDeVerificacion(FirebaseUser user, Context appContext) {
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> emailVerificationTask) {
+                        if (!emailVerificationTask.isSuccessful()) {
+                            // Error al enviar el correo de verificación
+                            Toast.makeText(appContext, "No se ha podido enviar el código de verificación",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }
@@ -149,14 +191,41 @@ public class AuthHelper {
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
-                } else {
+                }
                     // Usuario autenticado pero correo no verificado, mostrar un mensaje
                     respuesta.setText("Por favor verifique su correo electronico");
-                }
-            } else {
-                respuesta.setText("Las credenciales de inicio no son correctas" + task.getException().getLocalizedMessage());
             }
         }
+        respuesta.setText("Ha ocurrido un problema, las credenciales de inicio no son correctas");
+    }
+
+    public static void mostrarPopUpRegistro(AppCompatActivity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Se ha registrado correctamente")
+                .setMessage("Correo de verificación enviado. Por favor, verifique su correo electrónico.")
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        try {
+                            Class<?> destinationClass = Class.forName("com.example.hypnosapp.InicioDeSesion");
+                            Intent intent = new Intent(activity, destinationClass);
+                            activity.startActivity(intent);
+                            activity.finish();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .show();
+    }
+
+    private static void almacenarInformacionUsuario(FirebaseUser user, String nombre, String fechaNacimiento) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
+        String userID = user.getUid();
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("nombre", nombre);
+        userData.put("fechaNacimiento", fechaNacimiento);
+        usersRef.child(userID).setValue(userData);
     }
 }
 

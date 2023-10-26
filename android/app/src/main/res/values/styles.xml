@@ -87,4 +87,8 @@
         <item name="android:trackTintMode">multiply</item>
     </style>
 
+    <style name="AlertDialogCustomStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@drawable/custom_dialog_background</item>
+    </style>
+
 </resources>

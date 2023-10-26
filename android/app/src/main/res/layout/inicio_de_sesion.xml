@@ -127,30 +127,27 @@
         style="@style/TextoInterRegular"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/NoTienesUnaCuenta"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/txtRegistrate"
+        app:layout_constraintEnd_toStartOf="@+id/tvRegistrate"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnIniciarSesion"
-        app:layout_constraintVertical_bias="0.176" />
+        app:layout_constraintVertical_bias="0.174" />
 
     <TextView
-        android:id="@+id/txtRegistrate"
+        android:id="@+id/tvRegistrate"
         style="@style/TextoInterBold"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="5dp"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/Registrate"
         android:textColor="@color/colorAzulPrincipal"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/txt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/txt"
+        app:layout_constraintEnd_toEndOf="@+id/btnIniciarSesion"
         app:layout_constraintTop_toTopOf="@+id/txt"
         app:layout_constraintVertical_bias="0.0" />
 

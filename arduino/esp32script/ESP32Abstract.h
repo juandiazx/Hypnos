@@ -136,10 +136,10 @@ private:
         // Implementa la obtención de datos de los sensores (temperatureSensor, soundSensor, etc.)
         unsigned long currentTime = millis();
 
-        ledLight->turnOn();
-        delay(2000);
-        ledLight->turnOff();
         Serial.println("Se entro a obtainSensorsData, bucle infinito de toma de medidas");
+        ledLight->turnOn();
+        delay(6000);
+        ledLight->turnOff();
         
         // for(;;) {
         //     if (currentTime - previousTempMeasurementTime >= tempMeasurementInterval && tempIndex < maxMeasurements) {

@@ -44,6 +44,8 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="181dp" />
 
+        <!-- Campo de email -->
+
         <EditText
             android:id="@+id/edtEmailRegistro"
             style="@style/Inputs"
@@ -68,6 +70,8 @@
             app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
             app:layout_constraintTop_toBottomOf="@+id/edtEmailRegistro" />
 
+        <!-- Campo de Nombre y Apellidos -->
+
         <EditText
             android:id="@+id/edtNombreApellidos"
             style="@style/Inputs"
@@ -90,6 +94,8 @@
             app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
             app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
             app:layout_constraintTop_toBottomOf="@+id/edtNombreApellidos" />
+
+        <!-- Campo de Fecha de Nacimiento -->
 
         <EditText
             android:id="@+id/edtFechaNacimiento"
@@ -116,6 +122,8 @@
             app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
             app:layout_constraintTop_toBottomOf="@+id/edtFechaNacimiento" />
 
+        <!-- Campo de Contraseña -->
+
         <EditText
             android:id="@+id/edtContraseñaRegistro"
             style="@style/Inputs"
@@ -125,6 +133,7 @@
             android:hint="@string/CreaContrasenya"
             android:textColorHint="@color/colorAzulClaro"
             android:textSize="14sp"
+            android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edtFechaNacimiento" />
@@ -135,9 +144,12 @@
             android:layout_height="wrap_content"
             android:textColor="#972F2F"
             android:textSize="14sp"
+            android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
             app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
             app:layout_constraintTop_toBottomOf="@+id/edtContraseñaRegistro" />
+
+        <!-- Campo para Repetir la Contraseña -->
 
         <EditText
             android:id="@+id/edtRepetirContraseña"
@@ -146,6 +158,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="24dp"
             android:hint="@string/RepiteContrasenya"
+            android:inputType="textPassword"
             android:textColorHint="@color/colorAzulClaro"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -161,14 +174,6 @@
             app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
             app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
             app:layout_constraintTop_toBottomOf="@+id/edtRepetirContraseña" />
-
-        <!-- Campo de Nombre y Apellidos -->
-
-        <!-- Campo de Fecha de Nacimiento -->
-
-        <!-- Campo de Contraseña -->
-
-        <!-- Campo para Repetir la Contraseña -->
 
         <!-- Botón de Registro -->
 
@@ -189,7 +194,7 @@
             android:id="@+id/respuestaRegistro"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="80dp"
             android:textColor="#972F2F"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
@@ -202,17 +207,16 @@
             style="@style/TextoInterRegular"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
+            android:layout_marginTop="30dp"
             android:text="@string/YaTienesUnaCuenta"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/txtRegistrate"
+            app:layout_constraintEnd_toStartOf="@+id/tvIniciaSesion"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnRegistro"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/btnRegistro" />
 
         <TextView
-            android:id="@+id/txtRegistrate"
+            android:id="@+id/tvIniciaSesion"
             style="@style/TextoInterBold"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
