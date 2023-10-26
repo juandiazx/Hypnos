@@ -92,23 +92,37 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             }
         });
 
+        //Escribir los datos en la página de perfil:
+        nombre = findViewById(R.id.inputNombre);
+        correo = findViewById(R.id.inputEmail);
+        contrasenya = findViewById(R.id.inputContrasenya);
 
         //Obtención de datos del usuario:
         String nombreUsuario = firebaseUser.getDisplayName();
         String correoUsuario = firebaseUser.getEmail();
         //String passUsuario;
         Uri urlFoto = firebaseUser.getPhotoUrl();
+        String proveedores = "";
+        for (int n=0; n<firebaseUser.getProviderData().size(); n++){
+            proveedores += firebaseUser.getProviderData().get(n).getProviderId()+", ";
+        }
 
-        //Escribir los datos en la página de perfil:
-        nombre = findViewById(R.id.inputNombre);
-        correo = findViewById(R.id.inputEmail);
-        contrasenya = findViewById(R.id.inputContrasenya);
+        if (proveedores.contains("google")) {
+            contrasenya.setText("google");
+        }
+        else if(proveedores.contains("facebook")){
+            contrasenya.setText("facebook");
+        }
+        else{
+            contrasenya.setText("correo");
+        }
+
+
 
         nombre.setText(nombreUsuario);
         correo.setText(correoUsuario);
-        /*
-        contrasenya.setText(passUsuario);
-        */
+        //contrasenya.setText(proveedores);
+
 
         //PARA OBTENER LA FOTO DE PERFIL DEL USUARIO
         // Inicialización Volley
@@ -131,7 +145,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             foto.setImageUrl(urlFoto.toString(), lectorImagenes);
         }
 
-
+/*
         //Boton confirmar cambios:
         Button btnConfirmarCambios = findViewById(R.id.btnConfirmarCambios);
         btnConfirmarCambios.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +154,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 modificarDatosPerfil(v);
             }
         });
+
+ */
 
     }
 
