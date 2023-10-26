@@ -1,0 +1,326 @@
+[
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\font_intermedium.ttf.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\font\\intermedium.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_gear_48.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_gear_48.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_sleeping_in_bed_96.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_sleeping_in_bed_96.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icono_exclamacion.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icono_exclamacion.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\font_interthin.ttf.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\font\\interthin.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_fondo_footer.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\fondo_footer.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/drawable_icons8_circle_100__1_.png.flat",
+        "source": "com.example.hypnosapp-main-42:/drawable/icons8_circle_100__1_.png"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/layout_activity_main.xml.flat",
+        "source": "com.example.hypnosapp-main-42:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_fondo_redondeado.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\fondo_redondeado.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_logo_sin_fondo.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\logo_sin_fondo.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_home_24.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_home_24.png"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/drawable_icons8_calendar_96__2_.png.flat",
+        "source": "com.example.hypnosapp-main-42:/drawable/icons8_calendar_96__2_.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_breath_100.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_breath_100.png"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/drawable_icons8_circle_100.png.flat",
+        "source": "com.example.hypnosapp-main-42:/drawable/icons8_circle_100.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icono_lapiz.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icono_lapiz.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_hypnogram.JPG.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\hypnogram.JPG"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_borde_del_input.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\borde_del_input.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\font_interblack.ttf.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\font\\interblack.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\layout_header.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\header.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_border_background.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\border_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_sunset_96.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_sunset_96.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_boton_redondeado.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\boton_redondeado.xml"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/drawable_icons8_circle_100__2_.png.flat",
+        "source": "com.example.hypnosapp-main-42:/drawable/icons8_circle_100__2_.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\font_interextrabold.ttf.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\font\\interextrabold.ttf"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/drawable_image__2_.png.flat",
+        "source": "com.example.hypnosapp-main-42:/drawable/image__2_.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\layout_ajustes_de_sueno.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\ajustes_de_sueno.xml"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/layout_fragment_dia_3.xml.flat",
+        "source": "com.example.hypnosapp-main-42:/layout/fragment_dia_3.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\font_interlight.ttf.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\font\\interlight.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_health_64.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_health_64.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\font_intersemibold.ttf.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\font\\intersemibold.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_shadow.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\shadow.xml"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/drawable_icono_calendario_semanal_arreglado.png.flat",
+        "source": "com.example.hypnosapp-main-42:/drawable/icono_calendario_semanal_arreglado.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\layout_perfil_usuario.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\perfil_usuario.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_sunrise_96.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_sunrise_96.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\layout_acerca_de.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\acerca_de.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_user_100.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\user_100.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\layout_preinicio_de_sesion.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\preinicio_de_sesion.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_menu_100.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_menu_100.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_avatar.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\avatar.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_temperature_96.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_temperature_96.png"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/drawable_icons8_calendar_96__6_.png.flat",
+        "source": "com.example.hypnosapp-main-42:/drawable/icons8_calendar_96__6_.png"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/layout_fragment_dia_2.xml.flat",
+        "source": "com.example.hypnosapp-main-42:/layout/fragment_dia_2.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_male_user_96.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_male_user_96.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\layout_footer.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\footer.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_home_icono.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\home_icono.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_reloj_provisional.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\reloj_provisional.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\font_interregular.ttf.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\font\\interregular.ttf"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/layout_preinicio_de_sesion.xml.flat",
+        "source": "com.example.hypnosapp-main-42:/layout/preinicio_de_sesion.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/drawable_round_border.xml.flat",
+        "source": "com.example.hypnosapp-main-42:/drawable/round_border.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_preferencias_icono.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\preferencias_icono.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\font_interextralight.ttf.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\font\\interextralight.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_borde_botones.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\borde_botones.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_luna_peque.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\luna_peque.png"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/drawable_hypnogram.JPG.flat",
+        "source": "com.example.hypnosapp-main-42:/drawable/hypnogram.JPG"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\layout_inicio_de_sesion.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\inicio_de_sesion.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_icons8_moon_60.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\icons8_moon_60.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\font_interbold.ttf.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\font\\interbold.ttf"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_logo_twitter.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\logo_twitter.png"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/drawable_icono_calendario_semanal.png.flat",
+        "source": "com.example.hypnosapp-main-42:/drawable/icono_calendario_semanal.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.hypnosapp-merged_res-40:/layout_fragment_dia_1.xml.flat",
+        "source": "com.example.hypnosapp-main-42:/layout/fragment_dia_1.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\layout_pantalla_de_carga.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\pantalla_de_carga.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\layout_registro.xml.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\registro.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_logotipo_hypnos.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\logotipo_hypnos.png"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-merged_res-40:\\drawable_logo_google.png.flat",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\drawable\\logo_google.png"
+    }
+]

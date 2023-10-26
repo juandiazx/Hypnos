@@ -1,0 +1,62 @@
+[
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-mergeDebugResources-39:\\layout\\registro.xml",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\registro.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-mergeDebugResources-39:\\layout\\pantalla_de_carga.xml",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\pantalla_de_carga.xml"
+    },
+    {
+        "merged": "com.example.hypnosapp-mergeDebugResources-39:/layout/fragment_dia_2.xml",
+        "source": "com.example.hypnosapp-main-42:/layout/fragment_dia_2.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-mergeDebugResources-39:\\layout\\footer.xml",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\footer.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-mergeDebugResources-39:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-mergeDebugResources-39:\\layout\\ajustes_de_sueno.xml",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\ajustes_de_sueno.xml"
+    },
+    {
+        "merged": "com.example.hypnosapp-mergeDebugResources-39:/layout/preinicio_de_sesion.xml",
+        "source": "com.example.hypnosapp-main-42:/layout/preinicio_de_sesion.xml"
+    },
+    {
+        "merged": "com.example.hypnosapp-mergeDebugResources-39:/layout/fragment_dia_1.xml",
+        "source": "com.example.hypnosapp-main-42:/layout/fragment_dia_1.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-mergeDebugResources-39:\\layout\\acerca_de.xml",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\acerca_de.xml"
+    },
+    {
+        "merged": "com.example.hypnosapp-mergeDebugResources-39:/layout/activity_main.xml",
+        "source": "com.example.hypnosapp-main-42:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-mergeDebugResources-39:\\layout\\perfil_usuario.xml",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\perfil_usuario.xml"
+    },
+    {
+        "merged": "com.example.hypnosapp-mergeDebugResources-39:/layout/fragment_dia_3.xml",
+        "source": "com.example.hypnosapp-main-42:/layout/fragment_dia_3.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-mergeDebugResources-39:\\layout\\preinicio_de_sesion.xml",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\preinicio_de_sesion.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-mergeDebugResources-39:\\layout\\inicio_de_sesion.xml",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\inicio_de_sesion.xml"
+    },
+    {
+        "merged": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-mergeDebugResources-39:\\layout\\header.xml",
+        "source": "C:\\Users\\Juan\\.gradle\\daemon\\8.0\\com.example.hypnosapp-main-42:\\layout\\header.xml"
+    }
+]
