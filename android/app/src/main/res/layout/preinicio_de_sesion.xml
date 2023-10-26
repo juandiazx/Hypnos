@@ -76,6 +76,8 @@
         android:paddingRight="30dp"
         android:text="@string/IniciarFacebook"
         android:textAlignment="textEnd"
+        android:textSize="17sp"
+        app:iconGravity="textTop"
         app:layout_constraintBottom_toTopOf="@+id/btnEmail"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
         app:layout_constraintHorizontal_bias="0.0"
