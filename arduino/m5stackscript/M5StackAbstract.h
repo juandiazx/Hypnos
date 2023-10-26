@@ -151,6 +151,7 @@ private:
             this->averageTemperature = jsonDoc["averageTemperature"];
             this->snoreAmount = jsonDoc["snoreAmount"];
             Serial.println(averageTemperature);
+            Serial.println(snoreAmount);
         } else {
             Serial.println("Error al analizar los datos JSON recibidos");
         }
