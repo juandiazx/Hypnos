@@ -489,14 +489,17 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="60dp"
-        android:background="@drawable/icono_calendario_semanal_arreglado"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActiveButtonCalendarioSemanal"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/baseline_calendar_today_24"
+        app:backgroundTint="@color/colorAzulPrincipal"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="#ffffff" />
 
     <!--
         <androidx.constraintlayout.widget.ConstraintLayout
