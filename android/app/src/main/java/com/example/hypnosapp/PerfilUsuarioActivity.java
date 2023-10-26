@@ -1,5 +1,6 @@
 package com.example.hypnosapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,6 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,6 +31,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.Objects;
+
 public class PerfilUsuarioActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
@@ -39,7 +46,102 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.perfil_usuario);
+
+        //obtenemos la sesión y el usuario:
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
+        //Obtención de datos del usuario:
+        String nombreUsuario = firebaseUser.getDisplayName();
+        String correoUsuario = firebaseUser.getEmail();
+        Uri urlFoto = firebaseUser.getPhotoUrl();
+        String proveedores = "";
+        for (int n=0; n<firebaseUser.getProviderData().size(); n++){
+            proveedores += firebaseUser.getProviderData().get(n).getProviderId()+", ";
+        }
+
+        if (proveedores.contains("google")) {
+            //Si iniciamos sesión con Google:
+            setContentView(R.layout.perfil_usuario_google_facebook);
+
+            //PARA OBTENER LA FOTO DE PERFIL DEL USUARIO
+            // Inicialización Volley
+            RequestQueue colaPeticiones = Volley.newRequestQueue(this);
+            ImageLoader lectorImagenes = new ImageLoader(colaPeticiones,
+                    new ImageLoader.ImageCache() {
+                        private final LruCache<String, Bitmap> cache =
+                                new LruCache<String, Bitmap>(10);
+                        public void putBitmap(String url, Bitmap bitmap) {
+                            cache.put(url, bitmap);
+                        }
+                        public Bitmap getBitmap(String url) {
+                            return cache.get(url);
+                        }
+                    });
+
+            // Foto de usuario
+            if (urlFoto != null) {
+                NetworkImageView foto = (NetworkImageView) findViewById(R.id.fotoPerfil);
+                foto.setImageUrl(urlFoto.toString(), lectorImagenes);
+            }
+
+            nombre = findViewById(R.id.inputNombre);
+            nombre.setText(nombreUsuario);
+
+            correo = findViewById(R.id.inputEmail);
+            correo.setText(correoUsuario);
+
+        }
+        else if(proveedores.contains("facebook")){
+            //Si iniciamos sesión con Facebook:
+            setContentView(R.layout.perfil_usuario_google_facebook);
+
+            //PARA OBTENER LA FOTO DE PERFIL DEL USUARIO
+            // Inicialización Volley
+            RequestQueue colaPeticiones = Volley.newRequestQueue(this);
+            ImageLoader lectorImagenes = new ImageLoader(colaPeticiones,
+                    new ImageLoader.ImageCache() {
+                        private final LruCache<String, Bitmap> cache =
+                                new LruCache<String, Bitmap>(10);
+                        public void putBitmap(String url, Bitmap bitmap) {
+                            cache.put(url, bitmap);
+                        }
+                        public Bitmap getBitmap(String url) {
+                            return cache.get(url);
+                        }
+                    });
+
+            // Foto de usuario
+            if (urlFoto != null) {
+                NetworkImageView foto = (NetworkImageView) findViewById(R.id.fotoPerfil);
+                foto.setImageUrl(urlFoto.toString(), lectorImagenes);
+            }
+
+            nombre = findViewById(R.id.inputNombre);
+            nombre.setText(nombreUsuario);
+
+            correo = findViewById(R.id.inputEmail);
+            correo.setText(correoUsuario);
+        }
+
+        else{
+            setContentView(R.layout.perfil_usuario);
+
+            correo = findViewById(R.id.inputEmail);
+            correo.setText(correoUsuario);
+
+            contrasenya = findViewById(R.id.inputContrasenya);
+
+
+        //Boton confirmar cambios:
+        Button btnConfirmarCambios = findViewById(R.id.btnConfirmarCambios);
+        btnConfirmarCambios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lanzarConfirmarCambios(v);
+            }
+        });
+        }
 
 
         //FUNCIONALIDAD BOTONES MENUS
@@ -79,10 +181,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         });
 
 
-        //obtenemos la sesión y el usuario:
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-
         //funcionalidad del botón de cerrar sesión:
         Button botonCerrarSesion = findViewById(R.id.btnCerrarSesion);
         botonCerrarSesion.setOnClickListener(new View.OnClickListener() {
@@ -92,70 +190,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             }
         });
 
-        //Escribir los datos en la página de perfil:
-        nombre = findViewById(R.id.inputNombre);
-        correo = findViewById(R.id.inputEmail);
-        contrasenya = findViewById(R.id.inputContrasenya);
-
-        //Obtención de datos del usuario:
-        String nombreUsuario = firebaseUser.getDisplayName();
-        String correoUsuario = firebaseUser.getEmail();
-        //String passUsuario;
-        Uri urlFoto = firebaseUser.getPhotoUrl();
-        String proveedores = "";
-        for (int n=0; n<firebaseUser.getProviderData().size(); n++){
-            proveedores += firebaseUser.getProviderData().get(n).getProviderId()+", ";
-        }
-
-        if (proveedores.contains("google")) {
-            contrasenya.setText("google");
-        }
-        else if(proveedores.contains("facebook")){
-            contrasenya.setText("facebook");
-        }
-        else{
-            contrasenya.setText("correo");
-        }
 
 
-
-        nombre.setText(nombreUsuario);
-        correo.setText(correoUsuario);
-        //contrasenya.setText(proveedores);
-
-
-        //PARA OBTENER LA FOTO DE PERFIL DEL USUARIO
-        // Inicialización Volley
-        RequestQueue colaPeticiones = Volley.newRequestQueue(this);
-        ImageLoader lectorImagenes = new ImageLoader(colaPeticiones,
-                new ImageLoader.ImageCache() {
-                    private final LruCache<String, Bitmap> cache =
-                            new LruCache<String, Bitmap>(10);
-                    public void putBitmap(String url, Bitmap bitmap) {
-                        cache.put(url, bitmap);
-                    }
-                    public Bitmap getBitmap(String url) {
-                        return cache.get(url);
-                    }
-                });
-
-        // Foto de usuario
-        if (urlFoto != null) {
-            NetworkImageView foto = (NetworkImageView) findViewById(R.id.fotoPerfil);
-            foto.setImageUrl(urlFoto.toString(), lectorImagenes);
-        }
-
-/*
-        //Boton confirmar cambios:
-        Button btnConfirmarCambios = findViewById(R.id.btnConfirmarCambios);
-        btnConfirmarCambios.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                modificarDatosPerfil(v);
-            }
-        });
-
- */
 
     }
 
@@ -177,16 +213,18 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         finish();
     }
 
-    private void modificarDatosPerfil(View view){
+    private void modificarDatosPerfil(){
 
-        String nombreNuevo = nombre.getText().toString();
+        Toast.makeText(PerfilUsuarioActivity.this, "Modificar datos", Toast.LENGTH_SHORT).show();
+
+        correo = findViewById(R.id.inputEmail);
         String emailNuevo = correo.getText().toString();
-        String passNueva = contrasenya.getText().toString();
 
         UserProfileChangeRequest perfil = new UserProfileChangeRequest.Builder()
-                .setDisplayName(nombreNuevo)
+                //.setDisplayName(nombreNuevo)
                 //.setPhotoUri(Uri.parse("https://www.ejemplo.com/usuario/foto.jpg"))
                 .build();
+
 
         firebaseUser.updateProfile(perfil).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -204,6 +242,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 }
             }
         });
+
+        /*
         firebaseUser.updatePassword(passNueva).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -212,8 +252,45 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 }
             }
         });
-        Toast.makeText(this, "Cambios confirmados", Toast.LENGTH_SHORT).show();
+
+         */
+
+
+
     }
 
+    private void lanzarConfirmarCambios(View view){
+        Intent i = new Intent(this, ConfirmarCambioActivity.class);
 
+        //Recogemos los datos introducidos por el usuario:
+        //String nombreNuevo = nombre.getText().toString();
+        String emailNuevo = correo.getText().toString();
+        //String passNueva = contrasenya.getText().toString();
+
+        //Los mandamos a la actividad de ConfirmarCambios:
+        i.putExtra("email",emailNuevo);
+        //i.putExtra("contrasenya", passNueva);
+
+        activityResultLauncher.launch(i);
+    }
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        //Acciones a realizar
+                        Bundle extras = data.getExtras();
+                        String valor = extras.getString("valor");
+                        if(Objects.equals(valor, "correcto")){
+                            Toast.makeText(PerfilUsuarioActivity.this, "Ha llegado correcto", Toast.LENGTH_SHORT).show();
+
+                            modificarDatosPerfil();
+
+                        }
+                    }
+                }
+            });
 }

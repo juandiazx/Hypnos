@@ -41,6 +41,10 @@
 
         </activity>
 
+        <activity android:name=".ConfirmarCambioActivity"
+            android:label="@string/ConfirmarCambios"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+
         <activity
             android:name=".Registro">
 
