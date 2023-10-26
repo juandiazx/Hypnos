@@ -150,7 +150,7 @@
         app:srcCompat="@drawable/luna_peque" />
 
     <TextView
-        android:id="@+id/txtRegistrate"
+        android:id="@+id/tvIniciaSesion"
         style="@style/TextoInterBold"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -174,7 +174,7 @@
         android:layout_marginTop="28dp"
         android:text="@string/NoTienesUnaCuenta"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/txtRegistrate"
+        app:layout_constraintEnd_toStartOf="@+id/tvIniciaSesion"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnEmail" />

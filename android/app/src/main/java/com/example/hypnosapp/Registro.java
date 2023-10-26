@@ -1,5 +1,6 @@
 package com.example.hypnosapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -21,7 +22,7 @@ public class Registro extends AppCompatActivity {
     public RegistroBinding binding;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private EditText etCorreo, etContraseña, etRepContraseña, etNombreApellido, etFecha;
-    private TextView tvCorreo, tvContraseña, tvRepContraseña, tvNombreApellido, tvFecha, tvRespuesta;
+    private TextView tvCorreo, tvContraseña, tvRepContraseña, tvNombreApellido, tvFecha, tvRespuesta, tvIniciaSesion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +40,20 @@ public class Registro extends AppCompatActivity {
         tvRepContraseña = binding.tvcontraredos;
         tvNombreApellido = binding.tvnombre;
         tvFecha = binding.tvfecha;
+        tvIniciaSesion = binding.tvIniciaSesion;
+        tvRespuesta = binding.respuestaRegistro;
 
         etFecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mostrarDatePickerDialog();
+            }
+        });
+
+        tvIniciaSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pulsaIniciaSesion();
             }
         });
     }
@@ -58,10 +68,11 @@ public class Registro extends AppCompatActivity {
         if (AuthHelper.verificaCredenciales(etCorreo, etContraseña, tvCorreo, tvContraseña) &&
                 AuthHelper.verificaCamposRegistro(etNombreApellido, etFecha, tvNombreApellido, tvFecha) &&
                 AuthHelper.verificaContraseña(etContraseña, etRepContraseña, tvRepContraseña)) {
-            AuthHelper.registrarUsuario(auth, correo, contraseña, nombreCompleto, fechaNacimiento, this, new OnCompleteListener<AuthResult>() {
+            AuthHelper.registrarUsuario(auth, correo, contraseña, nombreCompleto, fechaNacimiento, this, tvRespuesta, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    AuthHelper.manejoRespuestaFirebase(task, tvRespuesta, Registro.this, "com.example.hypnosapp.InicioDeSesion");
+                    //AuthHelper.manejoRespuestaFirebase(task, tvRespuesta, Registro.this, "com.example.hypnosapp.InicioDeSesion");
+                    //AuthHelper.mostrarPopUpRegistro(Registro.this);
                 }
             });
         }
@@ -78,5 +89,17 @@ public class Registro extends AppCompatActivity {
 
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()); // Opcional: establece una fecha máxima (hasta la fecha actual)
         datePickerDialog.show();
+    }
+
+    private void pulsaIniciaSesion() {
+        Class<?> destinationClass = null;
+        try {
+            destinationClass = Class.forName("com.example.hypnosapp.InicioDeSesion");
+            Intent intent = new Intent(Registro.this, destinationClass);
+            Registro.this.startActivity(intent);
+            Registro.this.finish();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
