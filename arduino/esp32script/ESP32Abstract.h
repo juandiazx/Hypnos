@@ -18,6 +18,8 @@ public:
     }
 
     void listenForMessages() {
+
+        Serial.println("listening for messages");
         udp.onPacket([this](AsyncUDPPacket &packet) {
         char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
         int len = packet.length();
@@ -33,12 +35,14 @@ public:
         DeserializationError error = deserializeJson(jsonDoc, packetBuffer);
 
         if (!error) {
+            Serial.println("No hay error al descomprimir el json");
             const char *message = jsonDoc["mensaje"];
             if (message) {
                 if (strcmp(message, "START_TRACKING") == 0) {
                     // Recibido un mensaje para iniciar el seguimiento
                     obtainSensorsData();
                 } else if (strcmp(message, "STOP_TRACKING") == 0) {
+                    Serial.println("recibio stoptracking");
                     // Recibido un mensaje para detener el seguimiento
                     sendDataToM5Stack(udpPort);
                 } else {
@@ -91,9 +95,13 @@ private:
 
         strncpy(pass, passConstructor, sizeof(pass) - 1);
         pass[sizeof(pass) - 1] = '\0';
+        Serial.println("Wifi: ");
+        Serial.print(ssid);
+        Serial.print(pass);
     }
 
     void openUDPConnection(){
+        Serial.println("openUDPConnection");
         WiFi.mode(WIFI_STA);
         WiFi.begin(ssid, pass);
         if(WiFi.waitForConnectResult()!=WL_CONNECTED) {
@@ -128,19 +136,29 @@ private:
         // Implementa la obtención de datos de los sensores (temperatureSensor, soundSensor, etc.)
         unsigned long currentTime = millis();
 
-        ledLight->turnOn;
+        ledLight->turnOn();
         delay(2000);
-        ledLight->turnOff;
+        ledLight->turnOff();
+        Serial.println("Se entro a obtainSensorsData, bucle infinito de toma de medidas");
         
-        for(;;) {
-            if (currentTime - previousTempMeasurementTime >= tempMeasurementInterval && tempIndex < maxMeasurements) {
-                multipleTemperatureMeasurements();
-            }
+        // for(;;) {
+        //     if (currentTime - previousTempMeasurementTime >= tempMeasurementInterval && tempIndex < maxMeasurements) {
+        //         multipleTemperatureMeasurements();
+        //     }
 
-            if (currentTime - previousSoundMeasurementTime >= soundMeasurementInterval && soundIndex < maxMeasurements) {
-                multipleSoundMeasurements();
-            }
-        }
+        //     if (currentTime - previousSoundMeasurementTime >= soundMeasurementInterval && soundIndex < maxMeasurements) {
+        //         multipleSoundMeasurements();
+        //     }
+        // }
+        Serial.println("se toman medidas");
+        
+        // for(int i=0; i<5;i++) {
+          temperatureMeasurements[0] = temperatureSensor->takeMeasurement();
+          soundMeasurements[0] = soundSensor->takeMeasurement();
+          // delay(1000);
+          // tempIndex++;
+          // soundIndex++;
+        
     }
 
     int averageMeasurements(int *measurements, unsigned int measurementsQuantity) {
@@ -166,19 +184,30 @@ private:
     void sendDataToM5Stack(int puerto) {
         // Implementa el envío de datos al M5Stack
         // Crear un objeto JSON para almacenar los datos
-        ledLight->turnOn;
-        ledLight->turnOff;
+        Serial.print("Se enciende el led");
+        ledLight->turnOn();
+        delay(5000);
+        ledLight->turnOff();
+        Serial.println("esp32 denota que se hace de dia");
 
         StaticJsonDocument<200> jsonBuffer;
         char medidas[200];
 
+        Serial.print("muestra de temperatura");
+        Serial.println(temperatureMeasurements[0]);
+        Serial.print("muestra de sonido");
+        Serial.println(soundMeasurements[0]);
+
         // Agrega los valores directamente al objeto JSON
-        jsonBuffer["averageTemperature"] = averageMeasurements(temperatureMeasurements, tempIndex);
-        jsonBuffer["snoreAmount"] = snoreSummary(soundMeasurements, soundIndex);
+        jsonBuffer["averageTemperature"] = temperatureMeasurements[0];
+        jsonBuffer["snoreAmount"] = soundMeasurements[0];
+        //jsonBuffer["averageTemperature"] = averageMeasurements(temperatureMeasurements, tempIndex);
+        //jsonBuffer["snoreAmount"] = snoreSummary(soundMeasurements, soundIndex);
 
         // Serializar el objeto JSON en una cadena
         serializeJson(jsonBuffer, medidas);
 
+        Serial.println("se intentan enviar los datos al m5stack");
         // Enviar los datos por UDP al M5Stack
         udp.broadcastTo(medidas, puerto); 
 

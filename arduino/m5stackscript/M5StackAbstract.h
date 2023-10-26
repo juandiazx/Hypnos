@@ -7,7 +7,7 @@ public:
         if (instance == nullptr) {
             instance = new M5StackAbstract(ssid, pass, udp);
             instance->initializeM5StackAbstract();
-            instance->openUDPConnection
+            instance->openUDPConnection();
         }
         return instance;
     }
@@ -61,13 +61,13 @@ public:
     }
 
     //Cuando el boton C se pulsa por 1,5 segundos en loop() se muestran lo
-    void showDataInScreen(int snoreAmount,int averageTemperature) {
+    void showDataInScreen() {
         M5.Lcd.fillScreen(WHITE); // Borra la pantalla
         M5.Lcd.textsize = 3;
         M5.Lcd.setCursor(0,0); // Establece la posición del cursor en la pantalla
         M5.Lcd.setTextColor(0x164499); // Establece el color del texto
-        M5.Lcd.println("Temperatura: " + String(averageTemperature) + " C"); // Muestra la temperatura en la pantalla
-        M5.Lcd.println("Ronquidos: " + String(snoreAmount));
+        M5.Lcd.println("Temperatura: " + String(this->averageTemperature) + " C"); // Muestra la temperatura en la pantalla
+        M5.Lcd.println("Ronquidos: " + String(this->snoreAmount));
     }
 
     void printLogoWhiteBackground() {
