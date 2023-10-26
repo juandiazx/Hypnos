@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "804983460743",
+    "project_id": "hypnos-gti",
+    "storage_bucket": "hypnos-gti.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804983460743:android:c187bd4af0397993fab922",
+        "android_client_info": {
+          "package_name": "com.example.hypnosapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804983460743-r12vs40oipuctg01emau8s3cj7776ksq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hypnosapp",
+            "certificate_hash": "dd3031ae719a7166958283453bb09e8fdc0842f5"
+          }
+        },
+        {
+          "client_id": "804983460743-4876d4dpd4sutfrvj06nfqkq07h611os.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVX0lBhILR3wK1BtJHFLbear8-y2WpRlc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804983460743-4876d4dpd4sutfrvj06nfqkq07h611os.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

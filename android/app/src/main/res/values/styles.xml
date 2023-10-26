@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- fuente Inter Regular -->
+    <style name="TextoInterRegular">
+        <item name="android:fontFamily">@font/interregular</item>
+    </style>
+
+    <!-- fuente Inter Bold -->
+    <style name="TextoInterBold">
+        <item name="android:fontFamily">@font/intersemibold</item>
+    </style>
+
+
+
+    <!--Estilo para subtítulos (azul claro)-->
+    <style name="TextoInterBold.Subtitulo">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/colorAzulClaro</item>
+    </style>
+
+    <style name="EstiloBoton">
+        <item name="android:textColor">@color/colorBlanco</item>
+        <item name="android:backgroundTint">@color/colorAzulPrincipal</item>
+        <item name="android:background">@drawable/boton_redondeado</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/intersemibold</item>
+        <item name="android:textAlignment">center</item>
+
+    </style>
+
+    <style name="EstiloBoton.ConBorde">
+        <item name="android:textColor">@color/colorAzulPrincipal</item>
+        <!--Para crear el borde del botón:-->
+        <item name="android:background">@drawable/borde_botones</item>
+    </style>
+
+    <style name="Inputs">
+        <item name="android:background">@drawable/borde_del_input</item>
+        <item name="android:hint">@color/colorAzulClaro</item> <!-- Color del hint -->
+        <item name="android:paddingStart">8dp</item> <!-- Espacio izquierdo -->
+        <item name="android:paddingEnd">8dp</item> <!-- Espacio derecho -->
+    </style>
+
+    <style name="TextoInterRegular.Inputs">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorAzulPrincipal</item>
+    </style>
+
+    <!--Estilo para titulos (azul)-->
+    <style name="TextoInterBold.Titulo">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorAzulPrincipal</item>
+    </style>
+
+    <!--Estilo para subtítulos negros (azul claro)-->
+    <style name="TextoInterBold.Subtitulo2">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorNegro</item>
+    </style>
+
+    <!--Estilo para subtítulos negros (azul claro)-->
+    <style name="TextoInterRegular.Texto">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorNegro</item>
+    </style>
+
+    <!--Estilo para el header-->
+    <style name="Header">
+        <item name="android:background">@color/colorBlanco</item>
+    </style>
+
+    <!--Estilo para footer-->
+    <style name="Footer">
+        <item name="itemIconSize">30dp</item>
+        <item name="labelVisibilityMode">unlabeled</item>
+        <item name="itemIconTint">@color/colorAzulPrincipal</item>
+    </style>
+
+    <!--Estilo para subtítulos (azul claro)-->
+    <style name="TextoInterBold.Subtitulo3">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorAzulClaro</item>
+    </style>
+
+    <!--Estilo para switches-->
+    <style name="SwitchStyle" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:thumbTint">@color/colorBlanco</item>
+        <item name="android:trackTint">@color/colorAzulPrincipal</item>
+        <item name="android:trackTintMode">multiply</item>
+    </style>
+
+
+
+
+</resources>

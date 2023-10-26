@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+<<<<<<< Updated upstream
+    <list default="true" id="95ec4188-7148-4c74-801d-183c7739a435" name="Changes" comment="" />
+=======
+    <list default="true" id="afa9b0c5-0944-450d-8b70-9eabd5f8efa0" name="Changes" comment="" />
+>>>>>>> Stashed changes
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+<<<<<<< Updated upstream
+  <component name="ProjectId" id="2X5DKqyMCP3iVWgLruc4B2ASdRT" />
+=======
+  <component name="ProjectId" id="2Wkxq0sxGTrQXDJNTARmD2WpBY0" />
+>>>>>>> Stashed changes
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cidr.known.project.marker": "true",
+<<<<<<< Updated upstream
+    "last_opened_file_path": "C:/Users/Juan/OneDrive/Escritorio/Hypnos/android",
+    "settings.editor.selected.configurable": "consents"
+=======
+    "last_opened_file_path": "C:/Hypnos/android"
+>>>>>>> Stashed changes
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+<<<<<<< Updated upstream
+      <changelist id="95ec4188-7148-4c74-801d-183c7739a435" name="Changes" comment="" />
+      <created>1697909985117</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1697909985117</updated>
+=======
+      <changelist id="afa9b0c5-0944-450d-8b70-9eabd5f8efa0" name="Changes" comment="" />
+      <created>1697290566802</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1697290566802</updated>
+>>>>>>> Stashed changes
+    </task>
+    <servers />
+  </component>
+</project>
