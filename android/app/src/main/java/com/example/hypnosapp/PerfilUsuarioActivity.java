@@ -131,7 +131,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         btnConfirmarCambios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                modificarDatosPerfil(v);
+                lanzarConfirmarCambios(v);
             }
         });
         }
@@ -208,11 +208,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
     private void modificarDatosPerfil(View view){
 
-        //String nombreNuevo = nombre.getText().toString();
-        String emailNuevo = correo.getText().toString();
-        String passNueva = contrasenya.getText().toString();
-
-
+        /*
 
         UserProfileChangeRequest perfil = new UserProfileChangeRequest.Builder()
                 //.setDisplayName(nombreNuevo)
@@ -245,7 +241,23 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             }
         });
         Toast.makeText(this, "Cambios confirmados", Toast.LENGTH_SHORT).show();
+
+         */
     }
 
+    private void lanzarConfirmarCambios(View view){
+        Intent i = new Intent(this, ConfirmarCambioActivity.class);
 
+        //Recogemos los datos introducidos por el usuario:
+        //String nombreNuevo = nombre.getText().toString();
+        String emailNuevo = correo.getText().toString();
+        String passNueva = contrasenya.getText().toString();
+
+        //Los mandamos a la actividad de ConfirmarCambios:
+        i.putExtra("email",emailNuevo);
+        i.putExtra("contrasenya", passNueva);
+
+        //iniciamos la actividad de confirmarCambios:
+        startActivity(i);
+    }
 }
