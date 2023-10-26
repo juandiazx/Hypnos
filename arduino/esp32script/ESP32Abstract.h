@@ -199,8 +199,8 @@ private:
         Serial.println(soundMeasurements[0]);
 
         // Agrega los valores directamente al objeto JSON
-        jsonBuffer["averageTemperature"] = temperatureMeasurements[0];
-        jsonBuffer["snoreAmount"] = soundMeasurements[0];
+        jsonBuffer["averageTemperature"] = 23;
+        jsonBuffer["snoreAmount"] = 10;
         //jsonBuffer["averageTemperature"] = averageMeasurements(temperatureMeasurements, tempIndex);
         //jsonBuffer["snoreAmount"] = snoreSummary(soundMeasurements, soundIndex);
 

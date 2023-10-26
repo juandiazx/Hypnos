@@ -2,8 +2,10 @@ package com.example.hypnosapp;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.app.DatePickerDialog;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +39,13 @@ public class Registro extends AppCompatActivity {
         tvRepContraseña = binding.tvcontraredos;
         tvNombreApellido = binding.tvnombre;
         tvFecha = binding.tvfecha;
+
+        etFecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarDatePickerDialog();
+            }
+        });
     }
 
     public void registroCorreo(View v) {
@@ -56,5 +65,18 @@ public class Registro extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void mostrarDatePickerDialog() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String fechaSeleccionada = dayOfMonth + "/" + (month + 1) + "/" + year;
+                etFecha.setText(fechaSeleccionada);
+            }
+        }, 2023, 9, 27); // Establece la fecha inicial aquí (por ejemplo, 1 de enero de 1990)
+
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()); // Opcional: establece una fecha máxima (hasta la fecha actual)
+        datePickerDialog.show();
     }
 }

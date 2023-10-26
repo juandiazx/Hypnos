@@ -112,8 +112,8 @@ public class AuthHelper {
                                                             "verifique su correo electrónico.", Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     // Error al enviar el correo de verificación
-                                                    Toast.makeText(appContext, "Correo de verificación enviado. Por favor, " +
-                                                            "verifique su correo electrónico.", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(appContext, "No se ha podido enviar el codigo de verificación, "
+                                                            , Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         });
@@ -137,18 +137,26 @@ public class AuthHelper {
     //Se llama en inicio de sesion y registro para redirijir
     public static void manejoRespuestaFirebase(Task<AuthResult> task, TextView respuesta, AppCompatActivity activity, String className) {
         if (task.isSuccessful()) {
-            // El usuario se autenticó correctamente, se redirige a la actividad supuesta
-            try {
-                Class<?> destinationClass = Class.forName(className);
-                Intent intent = new Intent(activity, destinationClass);
-                activity.startActivity(intent);
-                activity.finish();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                if (user.isEmailVerified()) {
+                    // Usuario autenticado y correo verificado, proceder con la lógica de la aplicación
+                    try {
+                        Class<?> destinationClass = Class.forName(className);
+                        Intent intent = new Intent(activity, destinationClass);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Usuario autenticado pero correo no verificado, mostrar un mensaje
+                    respuesta.setText("Por favor verifique su correo electronico");
+                }
+            } else {
+                respuesta.setText("Las credenciales de inicio no son correctas" + task.getException().getLocalizedMessage());
             }
-        } else {
-            respuesta.setText(task.getException().getLocalizedMessage());
         }
     }
-
 }
+
