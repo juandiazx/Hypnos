@@ -1,5 +1,6 @@
 package com.example.hypnosapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -22,7 +23,7 @@ public class InicioDeSesion extends AppCompatActivity {
     public InicioDeSesionBinding binding;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private EditText etCorreo, etContraseña;
-    private TextView tvCorreo, tvContraseña, respuesta;
+    private TextView tvCorreo, tvContraseña, respuesta, tvRegistrate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,14 @@ public class InicioDeSesion extends AppCompatActivity {
         tvCorreo = binding.tvCorreo;
         tvContraseña = binding.tvContraseA;
         respuesta = binding.respuestaLogin;
+        tvRegistrate = binding.tvRegistrate;
+
+        tvRegistrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pulsaRegistrate();
+            }
+        });
     }
 
     public void inicioSesionCorreo(View v) {
@@ -51,6 +60,18 @@ public class InicioDeSesion extends AppCompatActivity {
                     AuthHelper.manejoRespuestaFirebase(task, respuesta,InicioDeSesion.this,"com.example.hypnosapp.Pantalla_Principal");
                 }
             });
+        }
+    }
+
+    private void pulsaRegistrate() {
+        Class<?> destinationClass = null;
+        try {
+            destinationClass = Class.forName("com.example.hypnosapp.Registro");
+            Intent intent = new Intent(InicioDeSesion.this, destinationClass);
+            InicioDeSesion.this.startActivity(intent);
+            InicioDeSesion.this.finish();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }
