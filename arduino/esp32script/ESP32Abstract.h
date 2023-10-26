@@ -67,7 +67,7 @@ private:
     SoundSensor* soundSensor;
     LedLight* ledLight;
 
-    int snoreAmount;
+    int snoreAmount=0;
     int frecuenciaMinimaSonido = 600; // Numero aleatorio que hace de minimo valor de medida para los ronquidos
     int averageTemperature;
     // Para tomar la temperatura cada 5 segundos
@@ -80,9 +80,9 @@ private:
     unsigned int soundIndex=0;
     // Son los milisegundos que separan cada medida tomada
     const unsigned int maxMeasurements = 256;
-    int temperatureMeasurements[256];
-    int soundMeasurements[256];
-    
+    //int temperatureMeasurements[256];
+    int temperatura=0;
+    int soundMeasurements[256];    
 
     ESP32Abstract(const char *ssidConstructor, const char *passConstructor, int udp, int TEMPERATUREPIN, int SOUNDPIN, int LEDPIN) {
         udpPort = udp;
@@ -118,18 +118,20 @@ private:
         }
     }
 
-    void multipleTemperatureMeasurements() {
-        int temperatura = temperatureSensor->takeMeasurement();
-        temperatureMeasurements[tempIndex] = temperatura;
-        tempIndex++;
-        previousTempMeasurementTime = millis();
-    }
+    // void multipleTemperatureMeasurements() {
+    //     int temperatura = temperatureSensor->takeMeasurement();
+    //     temperatureMeasurements[tempIndex] = temperatura;
+    //     tempIndex++;
+    //     previousTempMeasurementTime = millis();
+    // }
 
     void multipleSoundMeasurements() {
         int sonido = soundSensor->takeMeasurement();
-        soundMeasurements[soundIndex] = sonido;
-        soundIndex++;
-        previousSoundMeasurementTime = millis();
+        Serial.println(sonido);
+        if(sonido >= frecuenciaMinimaSonido) {
+            snoreAmount++;
+        }
+        //previousSoundMeasurementTime = millis();
     }
 
     void obtainSensorsData() {
@@ -141,25 +143,31 @@ private:
         delay(6000);
         ledLight->turnOff();
         
-        // for(;;) {
-        //     if (currentTime - previousTempMeasurementTime >= tempMeasurementInterval && tempIndex < maxMeasurements) {
-        //         multipleTemperatureMeasurements();
-        //     }
+        temperatura = temperatureSensor->takeMeasurement();
 
-        //     if (currentTime - previousSoundMeasurementTime >= soundMeasurementInterval && soundIndex < maxMeasurements) {
-        //         multipleSoundMeasurements();
-        //     }
+        for (int i=0;i<maxMeasurements;i++) {
+
+            // // Toma medidas de temperatura cada 5 segundos
+            // if (currentTime - previousTempMeasurementTime >= tempMeasurementInterval) {
+            //     multipleTemperatureMeasurements();
+            //     previousTempMeasurementTime = currentTime;
+            //     tempIndex++;
+            // }
+
+            // Toma medidas de sonido cada 100 milisegundos
+                multipleSoundMeasurements();
+                delay(50);
+            }
+        }
+
+        // Serial.println("se toman medidas");
+        // for(int k=0; k<50;k++) {
+        //   tempPrueba = temperatureSensor->takeMeasurement();
+        //   soundPrueba = soundSensor->takeMeasurement();
+        //   Serial.println(temperatureSensor->takeMeasurement());
+        //   Serial.println(soundSensor->takeMeasurement());
         // }
-        Serial.println("se toman medidas");
-        
-        // for(int i=0; i<5;i++) {
-          temperatureMeasurements[0] = temperatureSensor->takeMeasurement();
-          soundMeasurements[0] = soundSensor->takeMeasurement();
-          // delay(1000);
-          // tempIndex++;
-          // soundIndex++;
-        
-    }
+    
 
     int averageMeasurements(int *measurements, unsigned int measurementsQuantity) {
         int summary = 0;
@@ -171,14 +179,12 @@ private:
 
     // Si el valor del sonido supera un cierto umbral (por ejemplo, frecuenciaMinimaSonido), 
     // podrías considerarlo como un ronquido y aumentar el contador de ronquidos (snoreAmount).
-    int snoreSummary(int* measurements, unsigned int measurementsQuantity) {
-        int snores = 0;
-        for(int i=measurementsQuantity; i; i--) {
+    void snoreSummary(int* measurements, unsigned int measurementsQuantity) {
+        for(int i=0; i<measurementsQuantity; i++) {
             if(measurements[i] >= frecuenciaMinimaSonido) {
-                snores++;
+                snoreAmount++;
             } 
         }
-        return snores;
     }
 
     void sendDataToM5Stack(int puerto) {
@@ -194,15 +200,15 @@ private:
         char medidas[200];
 
         Serial.print("muestra de temperatura");
-        Serial.println(temperatureMeasurements[0]);
-        Serial.print("muestra de sonido");
-        Serial.println(soundMeasurements[0]);
+        Serial.println(temperatura);
+        Serial.print("muestra de ronquidos");
+        Serial.println(snoreAmount);
 
-        // Agrega los valores directamente al objeto JSON
-        jsonBuffer["averageTemperature"] = 23;
-        jsonBuffer["snoreAmount"] = 10;
-        //jsonBuffer["averageTemperature"] = averageMeasurements(temperatureMeasurements, tempIndex);
-        //jsonBuffer["snoreAmount"] = snoreSummary(soundMeasurements, soundIndex);
+        //snoreSummary(&soundMeasurements[0], soundIndex);
+
+        //jsonBuffer["averageTemperature"] = averageMeasurements(&temperatureMeasurements[0], tempIndex);
+        jsonBuffer["averageTemperature"] = temperatura;
+        jsonBuffer["snoreAmount"] = snoreAmount;
 
         // Serializar el objeto JSON en una cadena
         serializeJson(jsonBuffer, medidas);

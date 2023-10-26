@@ -18,7 +18,7 @@
 //Realizamos nuestras definiciones que no ocupan espacio, acciones de compilador
 //--------------------------------------------------------------------------------------
 #define TEMPERATUREPIN 17
-#define SOUNDPIN 4
+#define SOUNDPIN 34
 #define LEDPIN 2
 #define udpPort 6230
 //#define ssid "TP-LINK_6CAE"
