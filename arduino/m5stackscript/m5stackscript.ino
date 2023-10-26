@@ -3,6 +3,7 @@
 #include <M5Stack.h>
 #include <AsyncUDP.h>
 #include <ArduinoJson.h>
+#include <WiFi.h>
 //--------------------------------------------------------
 
 
@@ -32,19 +33,25 @@ void setup() {
 
 void loop() {
     m5stackAbstract->printLogoWhiteBackground();
+    Serial.println("se ha mostrado el logo");
     while (1){
+        Serial.println(M5.BtnA.read());
         if(M5.BtnA.read()){
+          Serial.println("se ha entrado al if del boton A");
             delay(3000);
 
             m5stackAbstract->switchLightM5StackAbstract();
             m5stackAbstract->startRestingTrackRoutine();
             while(1){
                 if(M5.BtnB.read()){
+                    Serial.println("se ha entrado al if del boton B");
                     m5stackAbstract->stopRestingTrackRoutine();
                     m5stackAbstract->switchLightM5StackAbstract();
+                    delay(2000);
                     m5stackAbstract->showDataInScreen();
                     while(1){
                         if(M5.BtnC.read()){
+                          Serial.println("se ha entrado al if del boton C");
                             break;
                         }
                     }

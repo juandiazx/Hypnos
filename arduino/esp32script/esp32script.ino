@@ -3,6 +3,7 @@
 #include <DHT.h>
 #include <AsyncUDP.h>
 #include <ArduinoJson.h>
+#include <WiFi.h>
 //--------------------------------------------------------
 
 
@@ -17,7 +18,7 @@
 //Realizamos nuestras definiciones que no ocupan espacio, acciones de compilador
 //--------------------------------------------------------------------------------------
 #define TEMPERATUREPIN 17
-#define SOUNDPIN 4
+#define SOUNDPIN 34
 #define LEDPIN 2
 #define udpPort 6230
 //#define ssid "TP-LINK_6CAE"
@@ -35,16 +36,14 @@ ESP32Abstract* esp32Abstract;
 void setup(){
   Serial.begin(115200);
   // Inicializamos las instancias dentro de setup
-  ledLight = LedLight::getInstance(LEDPIN);
-  soundSensor = SoundSensor::getInstance(SOUNDPIN);
-  temperatureSensor = TemperatureSensor::getInstance(TEMPERATUREPIN);
   esp32Abstract = ESP32Abstract::getInstance(ssid, password, udpPort, TEMPERATUREPIN, SOUNDPIN, LEDPIN);
-  esp32Abstract->listenForMessages;
+  //esp32Abstract->listenForMessages();
 }
 
 
 void loop() {
-  //esp32Abstract->listenForMessages();
+  esp32Abstract->listenForMessages();
+  delay(4000);
 
 }
 

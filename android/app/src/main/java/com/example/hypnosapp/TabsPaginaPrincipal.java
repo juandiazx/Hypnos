@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-public class ViewPagerAdapter extends FragmentPagerAdapter {
-    public ViewPagerAdapter(FragmentManager fm) {
+public class TabsPaginaPrincipal extends FragmentPagerAdapter {
+    public TabsPaginaPrincipal(FragmentManager fm) {
         super(fm);
     }
 
@@ -34,7 +34,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Antes de Ayer";
+                return "Anteayer";
             case 1:
                 return "Ayer";
             case 2:
@@ -43,4 +43,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+
 }
+
+

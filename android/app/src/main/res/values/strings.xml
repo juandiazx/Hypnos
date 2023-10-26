@@ -49,18 +49,23 @@
     <string name="Descanso">Configuración de descanso</string>
     <string name="Inicio">Inicio</string>
     <string name="Preferencias">Preferencias</string>
-    <string name="QuienesSomosTexto">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Aenean euismod bibendum laoreet.
-        Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. </string>
+    <string name="QuienesSomosTexto">Somos un equipo apasionado de profesionales de la salud y
+        la tecnología dedicados a mejorar la calidad de vida de las personas a través de un mejor sueño.
+        Nos damos cuenta de que el sueño es un componente esencial de la salud y el bienestar,
+        y queremos ayudar a quienes luchan con problemas de sueño a recuperar la tranquilidad y el descanso que merecen. </string>
 
     <string name="NuestraVision">Nuestra visión</string>
 
-    <string name="NuestraVisionTexto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
-        Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. </string>
+    <string name="NuestraVisionTexto">Nuestra visión es crear un mundo en el que todas las personas tengan acceso a una noche de sueño reparador y de calidad.
+        Queremos empoderarte para que comprendas mejor tus patrones de sueño y tomes medidas para mejorar tu bienestar general.
+        Creemos que el conocimiento es el primer paso para una vida más saludable y estamos comprometidos en proporcionarte herramientas que te permitan tomar el control de tu sueño. </string>
 
     <string name="PoliticaDePrivacidad">Política de privacidad</string>
 
-    <string name="PoliticaDePrivTexto">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet.
-        Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor. </string>
+    <string name="PoliticaDePrivTexto">En Hypnos, respetamos tu privacidad y estamos comprometidos a proteger tus datos personales.
+        No recopilamos información personal a menos que nos la proporciones voluntariamente.
+        Utilizamos tu información únicamente para mejorar tu experiencia en la aplicación y brindarte un mejor servicio. No compartiremos tus datos con terceros sin tu consentimiento.
+        Puedes leer nuestra política de privacidad completa en nuestra aplicación para obtener más detalles. Tu confianza es importante para nosotros.</string>
 
 
     <!--Ajustes de sueño-->
@@ -89,6 +94,14 @@
     <string name="Calidas">Calidas:</string>
 
     <string name="Blancas">Blancas:</string>
+
+    <!--Confirmar cambios-->
+    <string name="RepetirCorreo">Repite el correo electrónico:</string>
+    <string name="RepetirContrasenya">Repite la contraseña:</string>
+    <string name="CorreoElectronico">Correo electrónico</string>
+    <string name="Aceptar">Aceptar</string>
+    <string name="Cancelar">Cancelar</string>
+
 
 
 
