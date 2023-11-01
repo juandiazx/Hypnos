@@ -40,6 +40,6 @@
         android:focusable="true"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintTop_toTopOf="@+id/view3"
-        app:srcCompat="@drawable/user_100" />
+        app:srcCompat="@drawable/perfil" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
