@@ -12,11 +12,12 @@ public:
     static ESP32Abstract* getInstance(const char *ssid, const char *pass, int udp, int tempPIN, int soundPIN, int ledPIN) {
         if (instance == nullptr) {
             instance = new ESP32Abstract(ssid, pass, udp, tempPIN, soundPIN, ledPIN);
-            instance->openUDPConnection();
+            //instance->openUDPConnection();
         }
         return instance;
     }
 
+    //ESTO SE REPITE CADA 4 SEGUNDOS Y PUEDE ESTAR CREANDO UN SOBREPROCESAMIENTO EN EL MICRO O PERDIDA DE DATOS U OCUPANDO MEMORIA
     void listenForMessages() {
 
         Serial.println("listening for messages");
@@ -56,6 +57,27 @@ public:
     });
     }
 
+    int snoreCountComputation(int min, int max){
+      //Un ronquido sera mas o menos un intervalo de 4-7 medidas
+      saveSoundDetections();
+      int counter = 0;
+      snoreAmount = 0;
+      for(int p1=0 ;p1 < soundDetectionsList.size();p1++){
+        if(soundDetectionsList[p1]){
+          counter++;
+        }
+        else if(!soundDetectionsList[p1] && counter >= min && counter <= max){
+          snoreAmount++;
+          counter = 0;
+        }
+        else if(!soundDetectionsList[p1] && counter < min){
+          counter = 0;
+        }
+      }
+      soundDetectionsList.clear();
+      return snoreAmount;
+    }
+
 private:
     int udpPort;
     char ssid[32];
@@ -67,22 +89,12 @@ private:
     SoundSensor* soundSensor;
     LedLight* ledLight;
 
+    bool stopMeasurements;
     int snoreAmount=0;
-    int frecuenciaMinimaSonido = 600; // Numero aleatorio que hace de minimo valor de medida para los ronquidos
-    int averageTemperature;
-    // Para tomar la temperatura cada 5 segundos
-    unsigned int previousTempMeasurementTime = 0;
-    const unsigned int tempMeasurementInterval = 5000;
-    unsigned int tempIndex = 0;
-    // Para tomar el sonido cada 100 milisegundos
-    unsigned int previousSoundMeasurementTime = 0;
-    const unsigned int soundMeasurementInterval = 100;
-    unsigned int soundIndex=0;
-    // Son los milisegundos que separan cada medida tomada
+    int frecuenciaMinimaSonido = 400; // Numero aleatorio que hace de minimo valor de medida para los ronquidos
     const unsigned int maxMeasurements = 256;
-    //int temperatureMeasurements[256];
     int temperatura=0;
-    int soundMeasurements[256];    
+    std::vector<bool> soundDetectionsList;   
 
     ESP32Abstract(const char *ssidConstructor, const char *passConstructor, int udp, int TEMPERATUREPIN, int SOUNDPIN, int LEDPIN) {
         udpPort = udp;
@@ -118,73 +130,35 @@ private:
         }
     }
 
-    // void multipleTemperatureMeasurements() {
-    //     int temperatura = temperatureSensor->takeMeasurement();
-    //     temperatureMeasurements[tempIndex] = temperatura;
-    //     tempIndex++;
-    //     previousTempMeasurementTime = millis();
-    // }
-
-    void multipleSoundMeasurements() {
+    void saveSoundDetections() {
+      int i=0;
+      //!stopMeasurements, should be fully repeated until 
+      while(i < 50){
         int sonido = soundSensor->takeMeasurement();
         Serial.println(sonido);
         if(sonido >= frecuenciaMinimaSonido) {
-            snoreAmount++;
+          soundDetectionsList.push_back(true);
         }
-        //previousSoundMeasurementTime = millis();
+        else{
+          soundDetectionsList.push_back(false);
+        }
+        delay(100);
+        i++;
+      }
     }
+
 
     void obtainSensorsData() {
         // Implementa la obtención de datos de los sensores (temperatureSensor, soundSensor, etc.)
-        unsigned long currentTime = millis();
 
         Serial.println("Se entro a obtainSensorsData, bucle infinito de toma de medidas");
         ledLight->turnOn();
         delay(6000);
         ledLight->turnOff();
         
+        stopMeasurements = false;
         temperatura = temperatureSensor->takeMeasurement();
-
-        for (int i=0;i<maxMeasurements;i++) {
-
-            // // Toma medidas de temperatura cada 5 segundos
-            // if (currentTime - previousTempMeasurementTime >= tempMeasurementInterval) {
-            //     multipleTemperatureMeasurements();
-            //     previousTempMeasurementTime = currentTime;
-            //     tempIndex++;
-            // }
-
-            // Toma medidas de sonido cada 100 milisegundos
-                multipleSoundMeasurements();
-                delay(50);
-            }
-        }
-
-        // Serial.println("se toman medidas");
-        // for(int k=0; k<50;k++) {
-        //   tempPrueba = temperatureSensor->takeMeasurement();
-        //   soundPrueba = soundSensor->takeMeasurement();
-        //   Serial.println(temperatureSensor->takeMeasurement());
-        //   Serial.println(soundSensor->takeMeasurement());
-        // }
-    
-
-    int averageMeasurements(int *measurements, unsigned int measurementsQuantity) {
-        int summary = 0;
-        for(int i=measurementsQuantity; i; i--) {
-            summary = summary + measurements[i];
-        }
-        return summary/measurementsQuantity;
-    }
-
-    // Si el valor del sonido supera un cierto umbral (por ejemplo, frecuenciaMinimaSonido), 
-    // podrías considerarlo como un ronquido y aumentar el contador de ronquidos (snoreAmount).
-    void snoreSummary(int* measurements, unsigned int measurementsQuantity) {
-        for(int i=0; i<measurementsQuantity; i++) {
-            if(measurements[i] >= frecuenciaMinimaSonido) {
-                snoreAmount++;
-            } 
-        }
+        saveSoundDetections();
     }
 
     void sendDataToM5Stack(int puerto) {
@@ -199,6 +173,7 @@ private:
         StaticJsonDocument<200> jsonBuffer;
         char medidas[200];
 
+        stopMeasurements = true;
         Serial.print("muestra de temperatura");
         Serial.println(temperatura);
         Serial.print("muestra de ronquidos");
@@ -216,10 +191,6 @@ private:
         Serial.println("se intentan enviar los datos al m5stack");
         // Enviar los datos por UDP al M5Stack
         udp.broadcastTo(medidas, puerto); 
-
-        // Reiniciar las variables de las medidas
-        tempIndex = 0;
-        soundIndex = 0;
     }
 
     static ESP32Abstract* instance;
