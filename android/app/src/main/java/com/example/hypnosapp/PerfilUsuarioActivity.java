@@ -1,7 +1,5 @@
 package com.example.hypnosapp;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -32,8 +30,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-
-import java.util.Objects;
 
 public class PerfilUsuarioActivity extends AppCompatActivity {
 
@@ -134,17 +130,25 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             correo = findViewById(R.id.inputEmail);
             correo.setText(correoUsuario);
 
-            contrasenya = findViewById(R.id.inputContrasenya);
 
+            //Boton confirmar cambios:
+            Button btnConfirmarCambios = findViewById(R.id.btnConfirmarCambios);
+            btnConfirmarCambios.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pulsarConfirmarCambios(v);
+                }
+            });
 
-        //Boton confirmar cambios:
-        Button btnConfirmarCambios = findViewById(R.id.btnConfirmarCambios);
-        btnConfirmarCambios.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pulsarConfirmarCambios(v);
-            }
-        });
+            //Boton cambiarContrasenya:
+            Button btnCambiarContrasenya = findViewById(R.id.btnCambiarContrasenya);
+            btnCambiarContrasenya.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(PerfilUsuarioActivity.this, CambiarContrasenyaActivity.class);
+                    activityResultLauncher.launch(intent);
+                }
+            });
         }
 
 
@@ -245,51 +249,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             Toast.makeText(this, "usuario es nulo!!!!!", Toast.LENGTH_SHORT).show();
         }
 
-
-
-        /*
-
-        //Toast.makeText(PerfilUsuarioActivity.this, "Modificar datos", Toast.LENGTH_SHORT).show();
-
-        correo = findViewById(R.id.inputEmail);
-        String emailNuevo = correo.getText().toString();
-        //Toast.makeText(PerfilUsuarioActivity.this, emailNuevo, Toast.LENGTH_SHORT).show();
-
-        UserProfileChangeRequest perfil = new UserProfileChangeRequest.Builder()
-                //.setDisplayName(nombreNuevo)
-                //.setPhotoUri(Uri.parse("https://www.ejemplo.com/usuario/foto.jpg"))
-                .build();
-
-
-        firebaseUser.updateProfile(perfil).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("Perfil", "Acción incorrecta");
-                }
-            }
-        });
-        firebaseUser.updateEmail(emailNuevo).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("E-mail", "Acción incorrecta");
-                }
-            }
-        });
-
-        /*
-        firebaseUser.updatePassword(passNueva).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("Contraseña", "Acción incorrecta");
-                }
-            }
-        });
-
-         */
-
     }
 
     private void pulsarConfirmarCambios(View view){
@@ -303,7 +262,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
         //si se ha cambiado el e-mail, lanzar un popUp de confirmación:
         } else if(!emailNuevo.equals(correoUsuario)){
-            Intent intent = new Intent(this, PopUpComprobarDatosActivity.class);
+            Intent intent = new Intent(this, PopUpComprobarCorreoActivity.class);
             intent.putExtra("email", emailNuevo);
             intent.putExtra("nombre", nombreNuevo);
             activityResultLauncher.launch(intent);
@@ -345,4 +304,5 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                         }
                     }
             });
+
 }//Class

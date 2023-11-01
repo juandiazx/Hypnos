@@ -11,21 +11,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
-public class PopUpComprobarDatosActivity extends AppCompatActivity {
+public class PopUpComprobarCorreoActivity extends AppCompatActivity {
 
-    EditText repiteCorreo, repiteContrasenya;
+    EditText repiteCorreo;
     Button aceptar, cancelar;
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+        @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.confirmar_cambio);
+        setContentView(R.layout.confirmar_correo);
 
         Bundle extras = getIntent().getExtras();
         String emailNuevo = extras.getString("email");
 
 
 
-        repiteCorreo = findViewById(R.id.inputEmailNuevo);
+        repiteCorreo = findViewById(R.id.inputPassNueva);
         aceptar = findViewById(R.id.btnAceptar);
         cancelar = findViewById(R.id.btnCancelar);
 
