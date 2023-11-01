@@ -1,10 +1,13 @@
 package com.example.hypnosapp;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.LruCache;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +19,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
@@ -23,8 +27,11 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Objects;
 
@@ -264,13 +271,15 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         String nombreNuevo = nombreApellidos.getText().toString();
         String emailNuevo = correo.getText().toString();
 
-
+        //si no se ha cambiado el e-mail original, pero sí el nombre, cambiamos el nombre directamente.
         if(!nombreNuevo.equals(nombreUsuario) && emailNuevo.equals(correoUsuario)){
-            
+            actualizarNombreUsuario(nombreNuevo, firebaseUser);
 
+        //si se ha cambiado el e-mail, lanzar un popUp de confirmación:
         } else if(!emailNuevo.equals(correoUsuario)){
             Intent intent = new Intent(this, PopUpComprobarDatosActivity.class);
             intent.putExtra("email", emailNuevo);
+            intent.putExtra("nombre", nombreNuevo);
             activityResultLauncher.launch(intent);
         }
 
@@ -292,6 +301,26 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         activityResultLauncher.launch(i);
 
          */
+    }
+
+    private void actualizarNombreUsuario(String nombre, FirebaseUser usuario){
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(nombre)
+                .build();
+
+        usuario.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("nombreUsuario", "¡Nombre de usuario actualizado!");
+                        }
+                        else{
+                            Log.e("nombreUsuario", "Error en actualizar nombre usuario");
+                        }
+                    }
+                });
     }
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
