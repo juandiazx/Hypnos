@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Calendar;
+
 public class Registro extends AppCompatActivity {
 
     public RegistroBinding binding;
@@ -79,13 +81,18 @@ public class Registro extends AppCompatActivity {
     }
 
     private void mostrarDatePickerDialog() {
+
+        Calendar calendar = Calendar.getInstance(); // Obtiene una instancia del calendario con la fecha y hora actuales
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String fechaSeleccionada = dayOfMonth + "/" + (month + 1) + "/" + year;
                 etFecha.setText(fechaSeleccionada);
             }
-        }, 2023, 9, 27); // Establece la fecha inicial aquí (por ejemplo, 1 de enero de 1990)
+        }, year, month, dayOfMonth); // Establece la fecha inicial como la fecha actual
 
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()); // Opcional: establece una fecha máxima (hasta la fecha actual)
         datePickerDialog.show();
