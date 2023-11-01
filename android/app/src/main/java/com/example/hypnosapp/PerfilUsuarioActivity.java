@@ -221,6 +221,32 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
     private void modificarDatosPerfil(){
 
+        String nombreNuevo = nombreApellidos.getText().toString();
+        String emailNuevo = correo.getText().toString();
+
+        if(firebaseUser != null){
+
+            firebaseUser.updateEmail(emailNuevo)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("EmailUsuario", "User email address updated.");
+                            }else{
+                                Log.e("EmailUsuario", "No se ha cambiado el email. Error: " + task.getException().getMessage());
+                            }
+                        }
+                    });
+
+
+            actualizarNombreUsuario(nombreNuevo, firebaseUser);
+
+        }else{
+            Toast.makeText(this, "usuario es nulo!!!!!", Toast.LENGTH_SHORT).show();
+        }
+
+
+
         /*
 
         //Toast.makeText(PerfilUsuarioActivity.this, "Modificar datos", Toast.LENGTH_SHORT).show();
