@@ -73,13 +73,44 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/labelEmail" />
 
+            <EditText
+                android:id="@+id/inputNombreApellidos"
+                style="@style/Inputs"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="40dp"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/NombreApellidos"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelNombre" />
+
             <TextView
                 android:id="@+id/labelEmail"
                 style="@style/TextoInterRegular.Inputs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Email"
+                app:layout_constraintEnd_toEndOf="@+id/labelNombre"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/labelNombre"
+                app:layout_constraintTop_toBottomOf="@+id/inputNombreApellidos" />
+
+            <TextView
+                android:id="@+id/labelNombre"
+                style="@style/TextoInterRegular.Inputs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="@string/NombreApellidos"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.2"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,13 +183,14 @@
                 style="@style/EstiloBoton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="48dp"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="16dp"
                 android:text="@string/ConfirmarCambios"
                 app:layout_constraintEnd_toEndOf="@+id/inputContrasenya"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/inputContrasenya"
                 app:layout_constraintTop_toBottomOf="@+id/inputContrasenya" />
 
