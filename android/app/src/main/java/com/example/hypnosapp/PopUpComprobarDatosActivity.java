@@ -15,7 +15,6 @@ public class PopUpComprobarDatosActivity extends AppCompatActivity {
 
     EditText repiteCorreo, repiteContrasenya;
     Button aceptar, cancelar;
-    String valor;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +22,10 @@ public class PopUpComprobarDatosActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         String emailNuevo = extras.getString("email");
-        //String passNueva = extras.getString("contrasenya");
+
 
 
         repiteCorreo = findViewById(R.id.inputEmailNuevo);
-        //repiteContrasenya = findViewById(R.id.inputPassNueva);
         aceptar = findViewById(R.id.btnAceptar);
         cancelar = findViewById(R.id.btnCancelar);
 
@@ -38,7 +36,6 @@ public class PopUpComprobarDatosActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String correoRepetido = repiteCorreo.getText().toString();
-                //String contrasenyaRepetida = repiteContrasenya.getText().toString();
 
                 pulsaAceptar(correoRepetido, emailNuevo);
             }
@@ -56,20 +53,14 @@ public class PopUpComprobarDatosActivity extends AppCompatActivity {
 
 
             if(Objects.equals(correoRepetido, emailNuevo)){
-                valor = "correcto";
-
 
                Toast.makeText(this, "E-mail correcto", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent();
-                intent.putExtra("valor",valor);
                 setResult(RESULT_OK, intent);
                 finish();
             }
             else {
-                valor = "incorrecto";
-
-
                 Toast.makeText(this, "El e-mail es incorrecto. Vuelva a introducirlo.", Toast.LENGTH_SHORT).show();
             }
         }

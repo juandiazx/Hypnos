@@ -282,25 +282,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             intent.putExtra("nombre", nombreNuevo);
             activityResultLauncher.launch(intent);
         }
-
-
-
-        /*
-
-
-
-
-        Intent i = new Intent(this, PopUpComprobarDatosActivity.class);
-
-
-
-        //Los mandamos a la actividad de ConfirmarCambios:
-        i.putExtra("email",emailNuevo);
-        //i.putExtra("contrasenya", passNueva);
-
-        activityResultLauncher.launch(i);
-
-         */
     }
 
     private void actualizarNombreUsuario(String nombre, FirebaseUser usuario){
@@ -330,17 +311,12 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        //Acciones a realizar
-                        Bundle extras = data.getExtras();
-                        String valor = extras.getString("valor");
-                        //Toast.makeText(PerfilUsuarioActivity.this, valor, Toast.LENGTH_SHORT).show();
-                        if(Objects.equals(valor, "correcto")){
-                            //Toast.makeText(PerfilUsuarioActivity.this, "Ha llegado correcto", Toast.LENGTH_SHORT).show();
 
-                            modificarDatosPerfil();
+                        Toast.makeText(PerfilUsuarioActivity.this, "Ha llegado correcto", Toast.LENGTH_SHORT).show();
+
+                        modificarDatosPerfil();
 
                         }
                     }
-                }
             });
-}
+}//Class
