@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.LruCache;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +16,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.RequestQueue;
@@ -25,11 +23,8 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Objects;
 
@@ -37,7 +32,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-
+    String nombreUsuario, correoUsuario;
     TextView nombre, nombreApellidos, correo, contrasenya;
 
 
@@ -50,8 +45,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
 
         //Obtención de datos del usuario:
-        String nombreUsuario = firebaseUser.getDisplayName();
-        String correoUsuario = firebaseUser.getEmail();
+        nombreUsuario = firebaseUser.getDisplayName();
+        correoUsuario = firebaseUser.getEmail();
         Uri urlFoto = firebaseUser.getPhotoUrl();
         String proveedores = "";
         for (int n=0; n<firebaseUser.getProviderData().size(); n++){
@@ -123,6 +118,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         }
 
         else{
+            //si iniciamos sesión con correo electrónico:
             setContentView(R.layout.perfil_usuario);
 
             nombreApellidos = findViewById(R.id.inputNombreApellidos);
@@ -139,13 +135,15 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         btnConfirmarCambios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lanzarConfirmarCambios(v);
+                pulsarConfirmarCambios(v);
             }
         });
         }
 
 
-        //FUNCIONALIDAD BOTONES MENUS
+        //-------------------------------------------------------------------------------------
+        // FUNCIONALIDAD BOTONES MENUS
+        //-------------------------------------------------------------------------------------
         MenuManager funcionMenu = new MenuManager();
 
         ImageView btnPerfilUsuario = findViewById(R.id.logoUsuarioHeader);
@@ -190,11 +188,11 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 cerrarSesion(v);
             }
         });
+        //-------------------------------------------------------------------------------------
+        // FIN DE FUNCIONALIDAD BOTONES MENUS
+        //-------------------------------------------------------------------------------------
 
-
-
-
-    }
+    }//Fin onCreate()
 
     public void cerrarSesion(View view){
 
@@ -212,9 +210,11 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();
-    }
+    } //Fin cerrarSesion()
 
     private void modificarDatosPerfil(){
+
+        /*
 
         //Toast.makeText(PerfilUsuarioActivity.this, "Modificar datos", Toast.LENGTH_SHORT).show();
 
@@ -257,23 +257,41 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
          */
 
-
-
     }
 
-    private void lanzarConfirmarCambios(View view){
-        Intent i = new Intent(this, ConfirmarCambioActivity.class);
-
+    private void pulsarConfirmarCambios(View view){
         //Recogemos los datos introducidos por el usuario:
-        //String nombreNuevo = nombre.getText().toString();
+        String nombreNuevo = nombreApellidos.getText().toString();
         String emailNuevo = correo.getText().toString();
-        //String passNueva = contrasenya.getText().toString();
+
+
+        if(!nombreNuevo.equals(nombreUsuario) && emailNuevo.equals(correoUsuario)){
+            
+
+        } else if(!emailNuevo.equals(correoUsuario)){
+            Intent intent = new Intent(this, PopUpComprobarDatosActivity.class);
+            intent.putExtra("email", emailNuevo);
+            activityResultLauncher.launch(intent);
+        }
+
+
+
+        /*
+
+
+
+
+        Intent i = new Intent(this, PopUpComprobarDatosActivity.class);
+
+
 
         //Los mandamos a la actividad de ConfirmarCambios:
         i.putExtra("email",emailNuevo);
         //i.putExtra("contrasenya", passNueva);
 
         activityResultLauncher.launch(i);
+
+         */
     }
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(

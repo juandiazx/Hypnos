@@ -161,6 +161,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/fotoPerfil"
                 app:srcCompat="@drawable/icono_lapiz" />
 
+
             <EditText
                 android:id="@+id/inputContrasenya"
                 style="@style/Inputs"
