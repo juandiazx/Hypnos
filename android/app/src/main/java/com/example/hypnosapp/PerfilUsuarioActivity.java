@@ -38,9 +38,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
 
-    TextView nombre;
-    TextView correo;
-    TextView contrasenya;
+    TextView nombre, nombreApellidos, correo, contrasenya;
 
 
     @Override
@@ -126,6 +124,9 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
         else{
             setContentView(R.layout.perfil_usuario);
+
+            nombreApellidos = findViewById(R.id.inputNombreApellidos);
+            nombreApellidos.setText(nombreUsuario);
 
             correo = findViewById(R.id.inputEmail);
             correo.setText(correoUsuario);
