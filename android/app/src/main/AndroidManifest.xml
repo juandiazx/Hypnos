@@ -41,7 +41,11 @@
 
         </activity>
 
-        <activity android:name=".ConfirmarCambioActivity"
+        <activity android:name=".PopUpComprobarCorreoActivity"
+            android:label="@string/ConfirmarCambios"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+
+        <activity android:name=".CambiarContrasenyaActivity"
             android:label="@string/ConfirmarCambios"
             android:theme="@style/Theme.AppCompat.Light.Dialog"/>
 

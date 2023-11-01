@@ -31,13 +31,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
-import java.util.Objects;
-
 public class PerfilUsuarioActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-
+    String nombreUsuario, correoUsuario;
     TextView nombre, nombreApellidos, correo, contrasenya;
 
 
@@ -50,8 +48,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
 
         //Obtención de datos del usuario:
-        String nombreUsuario = firebaseUser.getDisplayName();
-        String correoUsuario = firebaseUser.getEmail();
+        nombreUsuario = firebaseUser.getDisplayName();
+        correoUsuario = firebaseUser.getEmail();
         Uri urlFoto = firebaseUser.getPhotoUrl();
         String proveedores = "";
         for (int n=0; n<firebaseUser.getProviderData().size(); n++){
@@ -123,6 +121,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         }
 
         else{
+            //si iniciamos sesión con correo electrónico:
             setContentView(R.layout.perfil_usuario);
 
             nombreApellidos = findViewById(R.id.inputNombreApellidos);
@@ -131,21 +130,31 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             correo = findViewById(R.id.inputEmail);
             correo.setText(correoUsuario);
 
-            contrasenya = findViewById(R.id.inputContrasenya);
 
+            //Boton confirmar cambios:
+            Button btnConfirmarCambios = findViewById(R.id.btnConfirmarCambios);
+            btnConfirmarCambios.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pulsarConfirmarCambios(v);
+                }
+            });
 
-        //Boton confirmar cambios:
-        Button btnConfirmarCambios = findViewById(R.id.btnConfirmarCambios);
-        btnConfirmarCambios.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lanzarConfirmarCambios(v);
-            }
-        });
+            //Boton cambiarContrasenya:
+            Button btnCambiarContrasenya = findViewById(R.id.btnCambiarContrasenya);
+            btnCambiarContrasenya.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(PerfilUsuarioActivity.this, CambiarContrasenyaActivity.class);
+                    activityResultLauncher.launch(intent);
+                }
+            });
         }
 
 
-        //FUNCIONALIDAD BOTONES MENUS
+        //-------------------------------------------------------------------------------------
+        // FUNCIONALIDAD BOTONES MENUS
+        //-------------------------------------------------------------------------------------
         MenuManager funcionMenu = new MenuManager();
 
         ImageView btnPerfilUsuario = findViewById(R.id.logoUsuarioHeader);
@@ -190,11 +199,11 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 cerrarSesion(v);
             }
         });
+        //-------------------------------------------------------------------------------------
+        // FIN DE FUNCIONALIDAD BOTONES MENUS
+        //-------------------------------------------------------------------------------------
 
-
-
-
-    }
+    }//Fin onCreate()
 
     public void cerrarSesion(View view){
 
@@ -212,68 +221,72 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
         finish();
-    }
+    } //Fin cerrarSesion()
 
     private void modificarDatosPerfil(){
 
-        //Toast.makeText(PerfilUsuarioActivity.this, "Modificar datos", Toast.LENGTH_SHORT).show();
-
-        correo = findViewById(R.id.inputEmail);
+        String nombreNuevo = nombreApellidos.getText().toString();
         String emailNuevo = correo.getText().toString();
-        //Toast.makeText(PerfilUsuarioActivity.this, emailNuevo, Toast.LENGTH_SHORT).show();
 
-        UserProfileChangeRequest perfil = new UserProfileChangeRequest.Builder()
-                //.setDisplayName(nombreNuevo)
-                //.setPhotoUri(Uri.parse("https://www.ejemplo.com/usuario/foto.jpg"))
-                .build();
+        if(firebaseUser != null){
 
-
-        firebaseUser.updateProfile(perfil).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("Perfil", "Acción incorrecta");
-                }
-            }
-        });
-        firebaseUser.updateEmail(emailNuevo).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("E-mail", "Acción incorrecta");
-                }
-            }
-        });
-
-        /*
-        firebaseUser.updatePassword(passNueva).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("Contraseña", "Acción incorrecta");
-                }
-            }
-        });
-
-         */
+            firebaseUser.updateEmail(emailNuevo)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("EmailUsuario", "User email address updated.");
+                            }else{
+                                Log.e("EmailUsuario", "No se ha cambiado el email. Error: " + task.getException().getMessage());
+                            }
+                        }
+                    });
 
 
+            actualizarNombreUsuario(nombreNuevo, firebaseUser);
+
+        }else{
+            Toast.makeText(this, "usuario es nulo!!!!!", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
-    private void lanzarConfirmarCambios(View view){
-        Intent i = new Intent(this, ConfirmarCambioActivity.class);
-
+    private void pulsarConfirmarCambios(View view){
         //Recogemos los datos introducidos por el usuario:
-        //String nombreNuevo = nombre.getText().toString();
+        String nombreNuevo = nombreApellidos.getText().toString();
         String emailNuevo = correo.getText().toString();
-        //String passNueva = contrasenya.getText().toString();
 
-        //Los mandamos a la actividad de ConfirmarCambios:
-        i.putExtra("email",emailNuevo);
-        //i.putExtra("contrasenya", passNueva);
+        //si no se ha cambiado el e-mail original, pero sí el nombre, cambiamos el nombre directamente.
+        if(!nombreNuevo.equals(nombreUsuario) && emailNuevo.equals(correoUsuario)){
+            actualizarNombreUsuario(nombreNuevo, firebaseUser);
 
-        activityResultLauncher.launch(i);
+        //si se ha cambiado el e-mail, lanzar un popUp de confirmación:
+        } else if(!emailNuevo.equals(correoUsuario)){
+            Intent intent = new Intent(this, PopUpComprobarCorreoActivity.class);
+            intent.putExtra("email", emailNuevo);
+            intent.putExtra("nombre", nombreNuevo);
+            activityResultLauncher.launch(intent);
+        }
+    }
+
+    private void actualizarNombreUsuario(String nombre, FirebaseUser usuario){
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(nombre)
+                .build();
+
+        usuario.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("nombreUsuario", "¡Nombre de usuario actualizado!");
+                        }
+                        else{
+                            Log.e("nombreUsuario", "Error en actualizar nombre usuario");
+                        }
+                    }
+                });
     }
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
@@ -283,17 +296,13 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        //Acciones a realizar
-                        Bundle extras = data.getExtras();
-                        String valor = extras.getString("valor");
-                        //Toast.makeText(PerfilUsuarioActivity.this, valor, Toast.LENGTH_SHORT).show();
-                        if(Objects.equals(valor, "correcto")){
-                            //Toast.makeText(PerfilUsuarioActivity.this, "Ha llegado correcto", Toast.LENGTH_SHORT).show();
 
-                            modificarDatosPerfil();
+                        Toast.makeText(PerfilUsuarioActivity.this, "Ha llegado correcto", Toast.LENGTH_SHORT).show();
+
+                        modificarDatosPerfil();
 
                         }
                     }
-                }
             });
-}
+
+}//Class

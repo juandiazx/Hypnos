@@ -117,18 +117,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/fotoPerfil" />
 
             <TextView
-                android:id="@+id/labelEmail3"
-                style="@style/TextoInterRegular.Inputs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/contrasenya"
-                app:layout_constraintEnd_toEndOf="@+id/labelEmail"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/labelEmail"
-                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
-
-            <TextView
                 android:id="@+id/textView"
                 style="@style/TextoInterBold.Subtitulo"
                 android:layout_width="wrap_content"
@@ -161,57 +149,53 @@
                 app:layout_constraintEnd_toEndOf="@+id/fotoPerfil"
                 app:srcCompat="@drawable/icono_lapiz" />
 
-            <EditText
-                android:id="@+id/inputContrasenya"
-                style="@style/Inputs"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp"
-                android:text="Hola1234"
-                app:layout_constraintEnd_toEndOf="@+id/inputEmail"
-                app:layout_constraintStart_toStartOf="@+id/inputEmail"
-                app:layout_constraintTop_toBottomOf="@+id/labelEmail3" />
 
             <Button
                 android:id="@+id/btnConfirmarCambios"
                 style="@style/EstiloBoton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="32dp"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="16dp"
                 android:text="@string/ConfirmarCambios"
-                app:layout_constraintEnd_toEndOf="@+id/inputContrasenya"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/inputContrasenya"
-                app:layout_constraintTop_toBottomOf="@+id/inputContrasenya" />
+                app:layout_constraintEnd_toEndOf="@+id/inputEmail"
+                app:layout_constraintStart_toStartOf="@+id/inputEmail"
+                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+
+            <Button
+                android:id="@+id/btnCambiarContrasenya"
+                style="@style/EstiloBoton.ConBorde"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/CambiarContrasenya"
+                app:layout_constraintEnd_toEndOf="@+id/btnConfirmarCambios"
+                app:layout_constraintStart_toStartOf="@+id/btnConfirmarCambios"
+                app:layout_constraintTop_toBottomOf="@+id/btnConfirmarCambios" />
 
             <Button
                 android:id="@+id/btnCerrarSesion"
                 style="@style/EstiloBoton.ConBorde"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:layout_marginBottom="72dp"
-                android:paddingStart="10dp"
-                android:paddingTop="12dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="12dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="112dp"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
                 android:text="@string/CerrarSesion"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/btnConfirmarCambios"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/btnConfirmarCambios"
-                app:layout_constraintTop_toBottomOf="@+id/btnConfirmarCambios"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintEnd_toEndOf="@+id/btnCambiarContrasenya"
+                app:layout_constraintStart_toStartOf="@+id/btnCambiarContrasenya"
+                app:layout_constraintTop_toBottomOf="@+id/btnCambiarContrasenya" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

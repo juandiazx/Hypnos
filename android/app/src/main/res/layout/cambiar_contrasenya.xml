@@ -6,31 +6,33 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/inputEmailNuevo"
+        android:id="@+id/inputPassNueva"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
-        android:hint="@string/CorreoElectronico"
-        android:inputType="textEmailAddress"
+        android:hint="@string/contrasenya"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
-    <!--
+
     <EditText
-        android:id="@+id/inputPassNueva"
+        android:id="@+id/inputPassRepetida"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
         android:ems="10"
         android:hint="@string/contrasenya"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/inputEmailNuevo"
-        app:layout_constraintStart_toStartOf="@+id/inputEmailNuevo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
--->
+
     <TextView
         android:id="@+id/textView5"
         style="@style/TextoInterRegular"
@@ -38,13 +40,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:padding="20dp"
-        android:text="@string/RepetirCorreo"
+        android:text="@string/EscribirContrasenya"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!--
+
     <TextView
         android:id="@+id/textView6"
         style="@style/TextoInterRegular"
@@ -57,19 +59,21 @@
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmailNuevo" />
--->
+        app:layout_constraintTop_toBottomOf="@+id/inputPassNueva" />
+
 
     <Button
         android:id="@+id/btnAceptar"
         style="@style/EstiloBoton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="24dp"
         android:text="@string/Aceptar"
-        app:layout_constraintEnd_toEndOf="@+id/inputEmailNuevo"
-        app:layout_constraintStart_toStartOf="@+id/inputEmailNuevo"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmailNuevo" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputPassRepetida" />
 
     <Button
         android:id="@+id/btnCancelar"
