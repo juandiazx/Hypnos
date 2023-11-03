@@ -1,4 +1,4 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.hypnosapp.R;
+import com.example.hypnosapp.mainpage.Pantalla_Principal;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -130,7 +132,7 @@ public class PreinicioDeSesion extends AppCompatActivity {
                             if (user != null) {
                                 try {
                                     AppCompatActivity thisActivity = PreinicioDeSesion.this;
-                                    Class<?> destinationClass = Class.forName("com.example.hypnosapp.Pantalla_Principal");
+                                    Class<?> destinationClass = Class.forName("com.example.hypnosapp.mainpage.Pantalla_Principal");
                                     Intent intent = new Intent(thisActivity, destinationClass);
                                     thisActivity.startActivity(intent);
                                     thisActivity.finish();

@@ -56,10 +56,7 @@ dependencies {
     implementation ("com.facebook.android:facebook-login:latest.release")
     //foto de perfil
     implementation("com.android.volley:volley:1.2.1")
-
-
-
-
-
+    //recyclerview
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
 
 }

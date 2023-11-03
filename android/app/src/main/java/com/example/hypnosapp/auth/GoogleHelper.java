@@ -1,10 +1,11 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.auth;
 
 import android.content.Intent;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hypnosapp.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -67,7 +68,7 @@ public class GoogleHelper {
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
                             try {
-                                Class<?> destinationClass = Class.forName("com.example.hypnosapp.Pantalla_Principal");
+                                Class<?> destinationClass = Class.forName("com.example.hypnosapp.mainpage.Pantalla_Principal");
                                 Intent intent = new Intent(activity, destinationClass);
                                 activity.startActivity(intent);
                                 activity.finish();

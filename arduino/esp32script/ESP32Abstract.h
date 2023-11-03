@@ -145,6 +145,11 @@ private:
         
         temperatura = temperatureSensor->takeMeasurement();
 
+        while(temperatura>100) {
+            temperatura = temperatureSensor->takeMeasurement();
+            delay(100);
+        }
+
         for (int i=0;i<maxMeasurements;i++) {
 
             // // Toma medidas de temperatura cada 5 segundos

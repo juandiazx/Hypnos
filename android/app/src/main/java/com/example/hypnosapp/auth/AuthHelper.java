@@ -1,6 +1,5 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.auth;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.EditText;
@@ -22,7 +21,6 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -207,7 +205,7 @@ public class AuthHelper {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         try {
-                            Class<?> destinationClass = Class.forName("com.example.hypnosapp.InicioDeSesion");
+                            Class<?> destinationClass = Class.forName("com.example.hypnosapp.auth.InicioDeSesion");
                             Intent intent = new Intent(activity, destinationClass);
                             activity.startActivity(intent);
                             activity.finish();

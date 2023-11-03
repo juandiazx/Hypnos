@@ -1,4 +1,4 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.auth;
 
 import android.app.Application;
 

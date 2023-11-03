@@ -1,4 +1,4 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -66,7 +66,7 @@ public class InicioDeSesion extends AppCompatActivity {
     private void pulsaRegistrate() {
         Class<?> destinationClass = null;
         try {
-            destinationClass = Class.forName("com.example.hypnosapp.Registro");
+            destinationClass = Class.forName("com.example.hypnosapp.auth.Registro");
             Intent intent = new Intent(InicioDeSesion.this, destinationClass);
             InicioDeSesion.this.startActivity(intent);
             InicioDeSesion.this.finish();

@@ -1,4 +1,4 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.appactivity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,12 +6,15 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AcercaDeActivity extends AppCompatActivity {
+import com.example.hypnosapp.other.MenuManager;
+import com.example.hypnosapp.R;
+
+public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acerca_de);
+        setContentView(R.layout.ajustes_de_sueno);
 
         //FUNCIONALIDAD BOTONES MENUS
         MenuManager funcionMenu = new MenuManager();
@@ -20,7 +23,7 @@ public class AcercaDeActivity extends AppCompatActivity {
         btnPerfilUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirPerfilUsuario(AcercaDeActivity.this);
+                funcionMenu.abrirPerfilUsuario(AjustesDeSuenyoActivity.this);
             }
         });
 
@@ -28,7 +31,7 @@ public class AcercaDeActivity extends AppCompatActivity {
         btnPantallaPrincipal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirPantallaPrincipal(AcercaDeActivity.this);
+                funcionMenu.abrirPantallaPrincipal(AjustesDeSuenyoActivity.this);
             }
         });
 
@@ -36,7 +39,7 @@ public class AcercaDeActivity extends AppCompatActivity {
         btnAjustesDescanso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirAjustesDescanso(AcercaDeActivity.this);
+                funcionMenu.abrirAjustesDescanso(AjustesDeSuenyoActivity.this);
             }
         });
 
@@ -44,9 +47,13 @@ public class AcercaDeActivity extends AppCompatActivity {
         btnPreferencias.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                funcionMenu.abrirAcercaDe(AcercaDeActivity.this);
+                funcionMenu.abrirAcercaDe(AjustesDeSuenyoActivity.this);
             }
         });
+
+
+
+
 
     }
 }

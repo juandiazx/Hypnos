@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlanco"
-    tools:context=".MainActivity">
+    tools:context=".appactivity.MainActivity">
 
     <!--FOOTER-->
 
@@ -68,7 +68,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:context=".MainActivity"
+        tools:context=".appactivity.MainActivity"
         tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
@@ -90,7 +90,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-                <com.example.hypnosapp.HalfDonutChart
+                <com.example.hypnosapp.other.HalfDonutChart
                     android:id="@+id/halfDonutChart"
                     android:layout_width="0dp"
                     android:layout_height="200dp"

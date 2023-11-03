@@ -1,4 +1,4 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.mainpage;
 
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +7,9 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.hypnosapp.other.MenuManager;
+import com.example.hypnosapp.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -72,16 +75,13 @@ public class Pantalla_Principal extends AppCompatActivity {
             }
         });
 
-
-        /*
-
-        ConstraintLayout constraintLayout = findViewById(R.id.frameLayout);
-
-        // Set the custom drawable as the background of the FrameLayout
-        frameLayout.setBackgroundResource(R.drawable.border_background);
-
-         */
+        FloatingActionButton btnHistorial = findViewById(R.id.floatingActiveButtonCalendarioSemanal);
+        btnHistorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { funcionMenu.abrirHistorial(Pantalla_Principal.this);}
+        });
 
     }
+
 }
 

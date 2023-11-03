@@ -1,10 +1,12 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.mainpage;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
+
+import com.example.hypnosapp.R;
 
 public class DiaFragment3 extends Fragment {
 
