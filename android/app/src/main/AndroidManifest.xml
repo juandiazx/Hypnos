@@ -47,6 +47,15 @@
         <activity android:name=".appactivity.ConfirmarCambioActivity"
             android:label="@string/ConfirmarCambios"
             android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+            
+        <activity 
+            android:name=".PopUpComprobarCorreoActivity">
+    
+        </activity>
+
+        <activity android:name=".CambiarContrasenyaActivity"
+            android:label="@string/ConfirmarCambios"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
 
         <activity
             android:name=".auth.Registro">
