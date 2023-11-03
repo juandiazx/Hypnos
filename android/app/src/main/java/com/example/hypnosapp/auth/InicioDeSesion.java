@@ -53,11 +53,11 @@ public class InicioDeSesion extends AppCompatActivity {
         String contraseña = etContraseña.getText().toString();
 
         // si los parametros cumplen los requisitos, se hace el inicio de sesion
-        if (AuthHelper.verificaCredenciales(etCorreo, etContraseña, tvCorreo, tvContraseña)) {
-            AuthHelper.iniciarSesion(auth, correo, contraseña, new OnCompleteListener<AuthResult>() {
+        if (AuthHelperViejo.verificaCredenciales(etCorreo, etContraseña, tvCorreo, tvContraseña)) {
+            AuthHelperViejo.iniciarSesion(auth, correo, contraseña, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    AuthHelper.manejoRespuestaFirebase(task, respuesta,InicioDeSesion.this,"com.example.hypnosapp.Pantalla_Principal");
+                    AuthHelperViejo.manejoRespuestaFirebase(task, respuesta,InicioDeSesion.this,"com.example.hypnosapp.Pantalla_Principal");
                 }
             });
         }

@@ -29,7 +29,7 @@
 
         </activity>
         <activity
-            android:name=".appactivity.PerfilUsuarioActivity">
+            android:name=".auth.PerfilUsuarioActivity">
 
         </activity>
         <activity
@@ -44,16 +44,16 @@
             android:name=".historial.Historial">
 
         </activity>
-        <activity android:name=".appactivity.ConfirmarCambioActivity"
+        <activity android:name=".auth.ConfirmarCambioActivity"
             android:label="@string/ConfirmarCambios"
             android:theme="@style/Theme.AppCompat.Light.Dialog"/>
             
         <activity 
-            android:name=".PopUpComprobarCorreoActivity">
+            android:name=".auth.PopUpComprobarCorreoActivity">
     
         </activity>
 
-        <activity android:name=".CambiarContrasenyaActivity"
+        <activity android:name=".auth.CambiarContrasenyaActivity"
             android:label="@string/ConfirmarCambios"
             android:theme="@style/Theme.AppCompat.Light.Dialog"/>
 

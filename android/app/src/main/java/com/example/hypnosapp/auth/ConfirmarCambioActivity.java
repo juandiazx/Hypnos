@@ -1,11 +1,10 @@
-package com.example.hypnosapp.appactivity;
+package com.example.hypnosapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +21,7 @@ public class ConfirmarCambioActivity extends AppCompatActivity {
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.confirmar_cambio);
+        setContentView(R.layout.confirmar_correo);
 
         Bundle extras = getIntent().getExtras();
         String emailNuevo = extras.getString("email");
@@ -33,6 +32,7 @@ public class ConfirmarCambioActivity extends AppCompatActivity {
         //repiteContrasenya = findViewById(R.id.inputPassNueva);
         aceptar = findViewById(R.id.btnAceptar);
         cancelar = findViewById(R.id.btnCancelar);
+
 
 
 

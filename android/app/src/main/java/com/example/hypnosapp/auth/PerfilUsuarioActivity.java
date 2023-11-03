@@ -1,4 +1,4 @@
-package com.example.hypnosapp.appactivity;
+package com.example.hypnosapp.auth;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,7 +26,6 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.example.hypnosapp.other.MenuManager;
 import com.example.hypnosapp.R;
-import com.example.hypnosapp.auth.PreinicioDeSesion;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

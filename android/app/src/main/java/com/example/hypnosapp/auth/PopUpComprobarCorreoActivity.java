@@ -1,4 +1,4 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.hypnosapp.R;
 
 import java.util.Objects;
 
@@ -25,7 +27,7 @@ public class PopUpComprobarCorreoActivity extends AppCompatActivity {
 
 
 
-        repiteCorreo = findViewById(R.id.inputPassNueva);
+        repiteCorreo = findViewById(R.id.inputEmailNuevo);
         aceptar = findViewById(R.id.btnAceptar);
         cancelar = findViewById(R.id.btnCancelar);
 

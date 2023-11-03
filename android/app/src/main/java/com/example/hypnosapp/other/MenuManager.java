@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import com.example.hypnosapp.appactivity.AcercaDeActivity;
 import com.example.hypnosapp.appactivity.AjustesDeSuenyoActivity;
-import com.example.hypnosapp.appactivity.PerfilUsuarioActivity;
+import com.example.hypnosapp.auth.PerfilUsuarioActivity;
 import com.example.hypnosapp.historial.Historial;
 import com.example.hypnosapp.mainpage.Pantalla_Principal;
 

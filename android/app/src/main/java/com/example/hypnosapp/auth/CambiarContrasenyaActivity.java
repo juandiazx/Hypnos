@@ -1,4 +1,4 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hypnosapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +28,7 @@ public class CambiarContrasenyaActivity extends AppCompatActivity {
         setContentView(R.layout.cambiar_contrasenya);
 
 
-        passNueva = findViewById(R.id.inputPassNueva);
+        passNueva = findViewById(R.id.inputEmailNuevo);
         passRepetida = findViewById(R.id.inputPassRepetida);
         aceptar = findViewById(R.id.btnAceptar);
         cancelar = findViewById(R.id.btnCancelar);

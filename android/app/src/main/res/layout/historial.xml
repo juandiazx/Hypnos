@@ -17,6 +17,7 @@
         android:elevation="20dp">
 
         <include
+            android:id="@+id/include3"
             layout="@layout/footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,13 +58,16 @@
         app:tabGravity="fill"
         app:tabMode="fixed" />
 
-    <!--denota el tab en la que te encuentras-->
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerHistorial"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayoutHistorial" />
+
+    <!--denota el tab en la que te encuentras-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

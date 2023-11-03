@@ -1,7 +1,11 @@
 package com.example.hypnosapp.auth;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,9 +22,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -152,7 +158,8 @@ public class AuthHelper {
                             FirebaseUser user = auth.getCurrentUser();
                             enviarCorreoDeVerificacion(user, appContext);
                             mostrarPopUpRegistro((AppCompatActivity) appContext);
-                            almacenarInformacionUsuario(user, nombre, fechaNacimiento);
+                            //almacenarInformacionUsuario(user, nombre, fechaNacimiento);
+                            asignarDisplayName(user,nombre);
                         }
                         onComplete.onComplete(task);
                     }
@@ -205,7 +212,7 @@ public class AuthHelper {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         try {
-                            Class<?> destinationClass = Class.forName("com.example.hypnosapp.auth.InicioDeSesion");
+                            Class<?> destinationClass = Class.forName("com.example.hypnosapp.InicioDeSesion");
                             Intent intent = new Intent(activity, destinationClass);
                             activity.startActivity(intent);
                             activity.finish();
@@ -217,13 +224,36 @@ public class AuthHelper {
                 .show();
     }
 
+    private static void asignarDisplayName(FirebaseUser user, String nombre) {
+        if (user != null) {
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(nombre)
+                    .build();
+
+            user.updateProfile(profileUpdates)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "User profile updated.");
+                            } else {
+                                Log.d(TAG, "Error en asignar displayname");
+                            }
+                        }
+                    });
+        }
+    }
+
     private static void almacenarInformacionUsuario(FirebaseUser user, String nombre, String fechaNacimiento) {
+
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
         String userID = user.getUid();
+
         Map<String, Object> userData = new HashMap<>();
         userData.put("nombre", nombre);
         userData.put("fechaNacimiento", fechaNacimiento);
         usersRef.child(userID).setValue(userData);
+
     }
 }
 

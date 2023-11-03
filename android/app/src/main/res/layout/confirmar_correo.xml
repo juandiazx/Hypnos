@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/inputPassNueva"
+        android:id="@+id/inputEmailNuevo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -41,9 +41,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/Aceptar"
-        app:layout_constraintEnd_toEndOf="@+id/inputPassNueva"
-        app:layout_constraintStart_toStartOf="@+id/inputPassNueva"
-        app:layout_constraintTop_toBottomOf="@+id/inputPassNueva" />
+        app:layout_constraintEnd_toEndOf="@+id/inputEmailNuevo"
+        app:layout_constraintStart_toStartOf="@+id/inputEmailNuevo"
+        app:layout_constraintTop_toBottomOf="@+id/inputEmailNuevo" />
 
     <Button
         android:id="@+id/btnCancelar"

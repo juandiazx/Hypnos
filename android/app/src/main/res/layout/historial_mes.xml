@@ -33,14 +33,22 @@
             android:orientation="vertical">
 
             <!--contraint layout de la grafica-->
+
+            <!--aqui hay un constraint layout que debe tener un textview que diga
+            datos de la semana, mes o año dependiendo del tab seleccionado y un botón
+            que diga exportar
+
+            ademas abajo un recyclerView en el cual cada item tenga una fecha y una
+            calificacion del 1 al 100.-->
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/frameLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/border_background"
                 app:layout_constraintBottom_toTopOf="@+id/frameLayoutMenu"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -83,19 +91,12 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--aqui hay un constraint layout que debe tener un textview que diga
-            datos de la semana, mes o año dependiendo del tab seleccionado y un botón
-            que diga exportar
-
-            ademas abajo un recyclerView en el cual cada item tenga una fecha y una
-            calificacion del 1 al 100.-->
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
-                android:layout_height="334dp"
+                android:layout_height="370dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/border_background"
                 app:layout_constraintEnd_toEndOf="parent"
