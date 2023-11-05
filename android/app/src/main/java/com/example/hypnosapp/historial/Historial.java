@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Historial extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    public AdaptadorDias adaptadorDias;
     private List<DiaModel> listaDias;
 
     @Override
@@ -29,18 +27,10 @@ public class Historial extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.historial);
 
-//        recyclerView = findViewById(R.id.recyclerViewHistorial);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//        listaDias = new ArrayList<>();
-//        listaDias.add(new DiaModel("05/11/2023", "88/100", "Muy buena", "24C", "8h 25min"));
-//        listaDias.add(new DiaModel("04/11/2023", "75/100", "Buena", "23C", "7h 45min"));
-//        listaDias.add(new DiaModel("03/11/2023", "90/100","Muy buena", "25C", "7h 55min"));
-//
-//        // Inicializa y establece el adaptador con la lista de días
-//        adaptadorDias = new AdaptadorDias(this, listaDias);
-//        recyclerView.setAdapter(adaptadorDias);
+        listaDias = new ArrayList<>();
+        listaDias.add(new DiaModel("05/11/2023", "88/100", "Muy buena", "24C", "8h 25min"));
+        listaDias.add(new DiaModel("04/11/2023", "75/100", "Buena", "23C", "7h 45min"));
+        listaDias.add(new DiaModel("03/11/2023", "90/100","Muy buena", "25C", "7h 55min"));
 
 
         // Encuentra el TabLayout y el ViewPager

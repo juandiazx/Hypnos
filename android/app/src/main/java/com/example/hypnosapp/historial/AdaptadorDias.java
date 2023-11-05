@@ -3,6 +3,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,14 +41,30 @@ public class AdaptadorDias extends RecyclerView.Adapter<AdaptadorDias.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Declarar las vistas del elemento del RecyclerView aquí, por ejemplo, TextViews para fecha y puntuación.
+        TextView fechaTextView;
+        TextView puntuacionRespiratoriaTextView;
+        TextView puntuacionTextoTextview;
+        TextView temperaturaMediaTextView;
+        TextView tiempoSuenioTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            // Inicializar las vistas aquí, por ejemplo, mediante findViewById.
+            // Inicializar las vistas aquí mediante findViewById con las referencias correctas
+            fechaTextView = itemView.findViewById(R.id.fechaElementoHistorial);
+            puntuacionRespiratoriaTextView = itemView.findViewById(R.id.puntuacionRespiratoriaHistorial);
+            puntuacionTextoTextview = itemView.findViewById(R.id.puntuacionTextoHistorial);
+            temperaturaMediaTextView = itemView.findViewById(R.id.temperaturaMediaHistorial);
+            tiempoSuenioTextView = itemView.findViewById(R.id.tiempoSuenioHistorial);
         }
 
         public void bind(DiaModel dia) {
-            // Asigna los valores de fecha y puntuación a las vistas aquí.
+            // Asigna los valores de fecha, puntuación, temperatura, tiempo de sueño, etc., a las vistas del elemento.
+            fechaTextView.setText(dia.getFecha());
+            puntuacionRespiratoriaTextView.setText(dia.getPuntuacion());
+            puntuacionTextoTextview.setText(dia.getPuntuacionTexto());
+            temperaturaMediaTextView.setText(dia.getTemperaturaMedia());
+            tiempoSuenioTextView.setText(dia.getTiempoSuenio());
+            // Asigna otros valores según sea necesario
         }
     }
 }

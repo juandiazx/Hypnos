@@ -17,7 +17,6 @@ import java.util.List;
 public class HistorialFragmentAnual extends Fragment {
     private RecyclerView recyclerView;
     public AdaptadorDias adaptadorDias;
-    private List<DiaModel> listaDias;
     public HistorialFragmentAnual() {
         // Constructor público vacío requerido
     }
@@ -34,10 +33,12 @@ public class HistorialFragmentAnual extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        listaDias = new ArrayList<>();
-        listaDias.add(new DiaModel("05/11/2023", "88/100", "Muy buena", "24C", "8h 25min"));
-        listaDias.add(new DiaModel("04/11/2023", "75/100", "Buena", "23C", "7h 45min"));
-        listaDias.add(new DiaModel("03/11/2023", "90/100","Muy buena", "25C", "7h 55min"));
+//        listaDias = new ArrayList<>();
+//        listaDias.add(new DiaModel("05/11/2023", "88/100", "Muy buena", "24C", "8h 25min"));
+//        listaDias.add(new DiaModel("04/11/2023", "75/100", "Buena", "23C", "7h 45min"));
+//        listaDias.add(new DiaModel("03/11/2023", "90/100","Muy buena", "25C", "7h 55min"));
+        // Obtén la lista de datos de la actividad principal
+        List<DiaModel> listaDias = ((Historial) getActivity()).getListaDias();
 
         // Inicializa y establece el adaptador con la lista de días
         adaptadorDias = new AdaptadorDias(getContext(), listaDias);
