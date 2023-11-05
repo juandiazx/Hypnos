@@ -7,6 +7,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 
@@ -14,15 +16,32 @@ import com.example.hypnosapp.other.MenuManager;
 import com.example.hypnosapp.R;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Historial extends AppCompatActivity {
-    //private RecyclerView recyclerView;
+    private RecyclerView recyclerView;
+    public AdaptadorDias adaptadorDias;
+    private List<DiaModel> listaDias;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.historial);
-//        recyclerView = findViewById(R.id.recyclerView);
+
+//        recyclerView = findViewById(R.id.recyclerViewHistorial);
 //        recyclerView.setHasFixedSize(true);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//        listaDias = new ArrayList<>();
+//        listaDias.add(new DiaModel("05/11/2023", "88/100", "Muy buena", "24C", "8h 25min"));
+//        listaDias.add(new DiaModel("04/11/2023", "75/100", "Buena", "23C", "7h 45min"));
+//        listaDias.add(new DiaModel("03/11/2023", "90/100","Muy buena", "25C", "7h 55min"));
+//
+//        // Inicializa y establece el adaptador con la lista de días
+//        adaptadorDias = new AdaptadorDias(this, listaDias);
+//        recyclerView.setAdapter(adaptadorDias);
+
 
         // Encuentra el TabLayout y el ViewPager
         TabLayout tabLayout = findViewById(R.id.tabLayoutHistorial);
@@ -74,6 +93,11 @@ public class Historial extends AppCompatActivity {
                 funcionMenu.abrirAcercaDe(Historial.this);
             }
         });
+    }
+
+    // Agrega este método para obtener la lista de días
+    public List<DiaModel> getListaDias() {
+        return listaDias;
     }
 }
 

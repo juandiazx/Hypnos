@@ -1,7 +1,8 @@
-package com.example.hypnosapp.auth;
+package com.example.hypnosapp.other;
 
 import android.app.Application;
 
+import com.example.hypnosapp.historial.AdaptadorDias;
 import com.google.firebase.FirebaseApp;
 
 public class HypnosInicializacion extends Application {
