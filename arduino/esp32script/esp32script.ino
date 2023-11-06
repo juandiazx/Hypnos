@@ -4,6 +4,7 @@
 #include <AsyncUDP.h>
 #include <ArduinoJson.h>
 #include <WiFi.h>
+#include <vector>
 //--------------------------------------------------------
 
 
@@ -42,8 +43,10 @@ void setup(){
 
 
 void loop() {
-  esp32Abstract->listenForMessages();
+  //esp32Abstract->listenForMessages();
+  Serial.println("Comienza toma de medidas");
+  int snoreCount = esp32Abstract->snoreCountComputation(2,5);//esp32Abstract->listenForMessages();
+  Serial.println(snoreCount);
   delay(4000);
-
 }
 
