@@ -32,6 +32,34 @@ import java.util.Map;
 
 public class AuthHelper {
 
+    public static void iniciarSesion(FirebaseAuth auth, String correo, String contraseña,
+                                     final OnCompleteListener<AuthResult> onComplete) {
+        auth.signInWithEmailAndPassword(correo, contraseña)
+                .addOnCompleteListener(onComplete);
+    }
+
+    public static void manejoRespuestaFirebase(Task<AuthResult> task, TextView respuesta, AppCompatActivity activity, String className) {
+        if (task.isSuccessful()) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) {
+                if (user.isEmailVerified()) {
+                    // Usuario autenticado y correo verificado, proceder con la lógica de la aplicación
+                    try {
+                        Class<?> destinationClass = Class.forName(className);
+                        Intent intent = new Intent(activity, destinationClass);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // Usuario autenticado pero correo no verificado, mostrar un mensaje
+                respuesta.setText("Por favor verifique su correo electronico");
+            }
+        }
+        respuesta.setText("Ha ocurrido un problema, las credenciales de inicio no son correctas");
+    }
+
     public static boolean verificaCredenciales(EditText etCorreo, EditText etContraseña, TextView tvCorreo, TextView tvContraseña) {
         String correo = etCorreo.getText().toString();
         String contraseña = etContraseña.getText().toString();
@@ -69,8 +97,6 @@ public class AuthHelper {
             tvFechaNac.setText("Introduce una fecha de nacimiento");
         } else if (!nombreApellido.matches("^[A-Za-z\\s]+$")) {
             tvNombreApellido.setText("Nombre/Apellido no válido");
-//        } else if (!fechaNac.matches("^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/\\d{4}$")) {
-//            tvFechaNac.setText("Fecha de Nacimiento no válida (formato dd/mm/yyyy)");
         } else {
             // Limpia los mensajes de error si todos los campos son válidos
             tvNombreApellido.setText(null);
@@ -90,12 +116,6 @@ public class AuthHelper {
         }
         tvRepContraseña.setText("Las contraseñas no coinciden");
         return false;
-    }
-
-    public static void iniciarSesion(FirebaseAuth auth, String correo, String contraseña,
-                                     final OnCompleteListener<AuthResult> onComplete) {
-        auth.signInWithEmailAndPassword(correo, contraseña)
-                .addOnCompleteListener(onComplete);
     }
 
     public static void registrarUsuario(final FirebaseAuth auth, final String correo,
@@ -118,33 +138,6 @@ public class AuthHelper {
                         }
                     }
                 });
-//        auth.createUserWithEmailAndPassword(correo, contraseña)
-//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            FirebaseUser user = auth.getCurrentUser();
-//                            // Envía un correo de verificación
-//                            user.sendEmailVerification()
-//                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<Void> emailVerificationTask) {
-//                                        if (emailVerificationTask.isSuccessful()) {
-//                                            //mostrarPopUpRegistro((AppCompatActivity) appContext);
-//                                            // Envío de correo exitoso
-//                                        } else {
-//                                            // Error al enviar el correo de verificación
-//                                            Toast.makeText(appContext, "No se ha podido enviar el codigo de verificación, "
-//                                                    , Toast.LENGTH_SHORT).show();
-//                                        }
-//                                    }
-//                                });
-//
-//                            almacenarInformacionUsuario(user, nombre, fechaNacimiento);
-//                        }
-//                        onComplete.onComplete(task);
-//                    }
-//                });
     }
 
     private static void registrarNuevaCuenta(final FirebaseAuth auth, final String correo,
@@ -178,30 +171,6 @@ public class AuthHelper {
                         }
                     }
                 });
-    }
-
-
-    //Se llama en inicio de sesion y registro para redirijir
-    public static void manejoRespuestaFirebase(Task<AuthResult> task, TextView respuesta, AppCompatActivity activity, String className) {
-        if (task.isSuccessful()) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
-                if (user.isEmailVerified()) {
-                    // Usuario autenticado y correo verificado, proceder con la lógica de la aplicación
-                    try {
-                        Class<?> destinationClass = Class.forName(className);
-                        Intent intent = new Intent(activity, destinationClass);
-                        activity.startActivity(intent);
-                        activity.finish();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                    // Usuario autenticado pero correo no verificado, mostrar un mensaje
-                    respuesta.setText("Por favor verifique su correo electronico");
-            }
-        }
-        respuesta.setText("Ha ocurrido un problema, las credenciales de inicio no son correctas");
     }
 
     public static void mostrarPopUpRegistro(AppCompatActivity activity) {
