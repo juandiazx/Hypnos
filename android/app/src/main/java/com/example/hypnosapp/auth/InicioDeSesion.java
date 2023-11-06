@@ -2,13 +2,16 @@ package com.example.hypnosapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hypnosapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -24,6 +27,8 @@ public class InicioDeSesion extends AppCompatActivity {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private EditText etCorreo, etContraseña;
     private TextView tvCorreo, tvContraseña, respuesta, tvRegistrate;
+    private ImageView imageViewPasswordToggle;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +43,22 @@ public class InicioDeSesion extends AppCompatActivity {
         tvContraseña = binding.tvContraseA;
         respuesta = binding.respuestaLogin;
         tvRegistrate = binding.tvRegistrate;
+        imageViewPasswordToggle = binding.imageViewPasswordToggle;
 
         tvRegistrate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pulsaRegistrate();
+            }
+        });
+
+        imageViewPasswordToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPasswordVisible = !isPasswordVisible;
+                int visibility = isPasswordVisible ? View.VISIBLE : View.GONE;
+                etContraseña.setInputType(isPasswordVisible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                imageViewPasswordToggle.setImageResource(isPasswordVisible ? R.drawable.ic_visibility_eye : R.drawable.ic_visibility_eye_off);
             }
         });
     }

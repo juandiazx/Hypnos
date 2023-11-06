@@ -2,15 +2,18 @@ package com.example.hypnosapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.app.DatePickerDialog;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hypnosapp.R;
 import com.example.hypnosapp.databinding.RegistroBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +28,8 @@ public class Registro extends AppCompatActivity {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private EditText etCorreo, etContraseña, etRepContraseña, etNombreApellido, etFecha;
     private TextView tvCorreo, tvContraseña, tvRepContraseña, tvNombreApellido, tvFecha, tvRespuesta, tvIniciaSesion;
+    private ImageView imageViewPasswordToggle;
+    private boolean isPasswordVisible=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,7 @@ public class Registro extends AppCompatActivity {
         tvFecha = binding.tvfecha;
         tvIniciaSesion = binding.tvIniciaSesion;
         tvRespuesta = binding.respuestaRegistro;
+        imageViewPasswordToggle = binding.imageViewPasswordToggleRegistro;
 
         etFecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +62,17 @@ public class Registro extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 pulsaIniciaSesion();
+            }
+        });
+
+        imageViewPasswordToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPasswordVisible = !isPasswordVisible;
+                int visibility = isPasswordVisible ? View.VISIBLE : View.GONE;
+                etContraseña.setInputType(isPasswordVisible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                etRepContraseña.setInputType(isPasswordVisible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                imageViewPasswordToggle.setImageResource(isPasswordVisible ? R.drawable.ic_visibility_eye : R.drawable.ic_visibility_eye_off);
             }
         });
     }
