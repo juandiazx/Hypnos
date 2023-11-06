@@ -1,4 +1,4 @@
-package com.example.hypnosapp.other;
+package com.example.hypnosapp.mainpage;
 
 import android.content.Context;
 import android.graphics.Canvas;

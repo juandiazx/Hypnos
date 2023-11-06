@@ -90,7 +90,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-                <com.example.hypnosapp.other.HalfDonutChart
+                <com.example.hypnosapp.mainpage.HalfDonutChart
                     android:id="@+id/halfDonutChart"
                     android:layout_width="0dp"
                     android:layout_height="200dp"
