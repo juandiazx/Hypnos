@@ -57,6 +57,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,19 +158,18 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     pulsarConfirmarCambios(v);
                 }
             });
-            /*
+
 
             //Boton cambiarContrasenya:
             Button btnCambiarContrasenya = findViewById(R.id.btnCambiarContrasenya);
             btnCambiarContrasenya.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(PerfilUsuarioActivity.this, CambiarContrasenyaActivity.class);
-                    activityResultLauncher.launch(intent);
+                    cambiarContrasenya();
                 }
             });
 
-             */
+
         }
 
 
@@ -386,7 +386,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
              */
         }
     }
-
     private void reautenticarUsuario(final ReauthenticationListener listener) {
         if (firebaseUser != null) {
 
@@ -529,17 +528,72 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void cambiarContrasenya(){
+        reautenticarUsuario(new ReauthenticationListener() {
+            @Override
+            public void onReauthenticationSuccess() {
+                popUpCambiarContrasenya();
+            }
 
+            @Override
+            public void onReauthenticationFailure(String errorMessage) {
+                Log.e("Reautenticacion", errorMessage);
+            }
+        });
+    }
+    private void popUpCambiarContrasenya(){
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.cambiar_contrasenya, null);
 
+        EditText inputPassNueva = dialogView.findViewById(R.id.inputPassNueva);
+        EditText inputPassRepe = dialogView.findViewById(R.id.inputPassRepe);
+        Button btnAceptar = dialogView.findViewById(R.id.btnAceptarCambioContrasenya);
+        Button btnCancelar = dialogView.findViewById(R.id.btnCancelarCambioContrasenya);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmar correo");
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String passNueva = inputPassNueva.getText().toString();
+                String passRepe = inputPassRepe.getText().toString();
 
+                if (passNueva.equals(passRepe)) {
+                    Toast.makeText(PerfilUsuarioActivity.this, "Pass Correcta", Toast.LENGTH_SHORT).show();
+                    Log.d("CambioContrasenya", "Contraseña repetida correctamente");
 
+                    firebaseUser.updatePassword(passNueva)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("password", "User password updated.");
+                                    }
+                                    else{
+                                        Log.e("password", "No se ha cambiado la contraseña. Error: " + task.getException().getMessage());
+                                    }
+                                }
+                            });
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(PerfilUsuarioActivity.this, "Contraseña incorrecta, vuelve a introducirla", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
 
-
-
-
+}//Class
 
 
 
@@ -562,4 +616,4 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
      */
 
-}//Class
+
