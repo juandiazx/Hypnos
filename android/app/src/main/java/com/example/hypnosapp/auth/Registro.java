@@ -84,10 +84,10 @@ public class Registro extends AppCompatActivity {
         String nombreCompleto = etNombreApellido.getText().toString();
         String fechaNacimiento = etFecha.getText().toString();
 
-        if (AuthHelperViejo.verificaCredenciales(etCorreo, etContraseña, tvCorreo, tvContraseña) &&
-                AuthHelperViejo.verificaCamposRegistro(etNombreApellido, etFecha, tvNombreApellido, tvFecha) &&
-                AuthHelperViejo.verificaContraseña(etContraseña, etRepContraseña, tvRepContraseña)) {
-            AuthHelperViejo.registrarUsuario(auth, correo, contraseña, nombreCompleto, fechaNacimiento, this, tvRespuesta, new OnCompleteListener<AuthResult>() {
+        if (AuthHelper.verificaCredenciales(etCorreo, etContraseña, tvCorreo, tvContraseña) &&
+                AuthHelper.verificaCamposRegistro(etNombreApellido, etFecha, tvNombreApellido, tvFecha) &&
+                AuthHelper.verificaContraseña(etContraseña, etRepContraseña, tvRepContraseña)) {
+            AuthHelper.registrarUsuario(auth, correo, contraseña, nombreCompleto, fechaNacimiento, this, tvRespuesta, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     //AuthHelper.manejoRespuestaFirebase(task, tvRespuesta, Registro.this, "com.example.hypnosapp.InicioDeSesion");

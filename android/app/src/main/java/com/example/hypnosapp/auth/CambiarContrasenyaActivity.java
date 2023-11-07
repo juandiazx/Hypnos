@@ -28,10 +28,10 @@ public class CambiarContrasenyaActivity extends AppCompatActivity {
         setContentView(R.layout.cambiar_contrasenya);
 
 
-        passNueva = findViewById(R.id.inputEmailNuevo);
-        passRepetida = findViewById(R.id.inputPassRepetida);
-        aceptar = findViewById(R.id.btnAceptar);
-        cancelar = findViewById(R.id.btnCancelar);
+        passNueva = findViewById(R.id.inputEmailReautenticacion);
+        passRepetida = findViewById(R.id.inputPassReautenticacion);
+        aceptar = findViewById(R.id.btnAceptarReautenticacion);
+        cancelar = findViewById(R.id.btnCancelarReautenticacion);
 
 
 

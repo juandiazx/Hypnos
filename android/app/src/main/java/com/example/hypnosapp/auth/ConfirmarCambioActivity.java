@@ -28,10 +28,10 @@ public class ConfirmarCambioActivity extends AppCompatActivity {
         //String passNueva = extras.getString("contrasenya");
 
 
-        repiteCorreo = findViewById(R.id.inputEmailNuevo);
+        repiteCorreo = findViewById(R.id.inputEmailReautenticacion);
         //repiteContrasenya = findViewById(R.id.inputPassNueva);
-        aceptar = findViewById(R.id.btnAceptar);
-        cancelar = findViewById(R.id.btnCancelar);
+        aceptar = findViewById(R.id.btnAceptarReautenticacion);
+        cancelar = findViewById(R.id.btnCancelarReautenticacion);
 
 
 
