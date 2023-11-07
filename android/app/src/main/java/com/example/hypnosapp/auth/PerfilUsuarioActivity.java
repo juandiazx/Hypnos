@@ -1,14 +1,18 @@
 package com.example.hypnosapp.auth;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.LruCache;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +33,8 @@ import com.example.hypnosapp.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -232,10 +238,69 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
         if(firebaseUser != null){
 
+            //Reautenticación:
+            LayoutInflater inflater = getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.reautenticacion_popup, null);
+
+            EditText inputemailRe = dialogView.findViewById(R.id.inputEmailReautenticacion);
+            EditText inputpassRe = dialogView.findViewById(R.id.inputPassReautenticacion);
+            Button btnAceptarRe = dialogView.findViewById(R.id.btnAceptarReautenticacion);
+            Button btnCancelarRe = dialogView.findViewById(R.id.btnCancelarReautenticacion);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Reautenticación");
+            builder.setView(dialogView);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            btnAceptarRe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String email = inputemailRe.getText().toString();
+                    String pass = inputpassRe.getText().toString();
+
+                    AuthCredential credential = EmailAuthProvider.getCredential(email,pass);
+                    firebaseUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Log.d("REAUTENTICACION", "¡¡¡¡Usuario Reautenticado!!!!");
+
+                            firebaseUser.updateEmail(emailNuevo)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d("EmailUsuario", "User email address updated.");
+                                            }else{
+                                                Log.e("EmailUsuario", "No se ha cambiado el email. Error: " + task.getException().getMessage());
+                                            }
+                                        }
+                                    });
+
+
+                            actualizarNombreUsuario(nombreNuevo, firebaseUser);
+                            dialog.dismiss();
+                        }
+                    });
+                }//onClickbtnAceptar
+            });
+            btnCancelarRe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+
+
+
 
             /*
+            TAMBIEN EN CONTRASEÑA
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // Get auth credentials from the user for re-authentication
+
+        AÑADIR DIALOG PARA PEDIR CONTRASEÑA
         AuthCredential credential = EmailAuthProvider
                 .getCredential("user@example.com", "password1234"); // Current Login Credentials \\
         // Prompt the user to re-provide their sign-in credentials
@@ -260,7 +325,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     }
                 });
              */
-
+/*
             firebaseUser.updateEmail(emailNuevo)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -275,7 +340,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
 
             actualizarNombreUsuario(nombreNuevo, firebaseUser);
-
+*/
         }else{
             Toast.makeText(this, "usuario es nulo!!!!!", Toast.LENGTH_SHORT).show();
         }

@@ -112,7 +112,7 @@ public class InicioDeSesion extends AppCompatActivity {
 
         final EditText correoOlvidaContra = dialogView.findViewById(R.id.correoOlvidaContra);
         Button btnEnviar = dialogView.findViewById(R.id.btnEnviar);
-        Button btnCancelar = dialogView.findViewById(R.id.btnCancelar);
+        Button btnCancelar = dialogView.findViewById(R.id.btnCancelarReautenticacion);
 
         AlertDialog dialog = builder.create();
         dialog.show();

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/inputEmailNuevo"
+        android:id="@+id/inputEmailReautenticacion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -35,18 +35,18 @@
 
 
     <Button
-        android:id="@+id/btnAceptar"
+        android:id="@+id/btnAceptarReautenticacion"
         style="@style/EstiloBoton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/Aceptar"
-        app:layout_constraintEnd_toEndOf="@+id/inputEmailNuevo"
-        app:layout_constraintStart_toStartOf="@+id/inputEmailNuevo"
-        app:layout_constraintTop_toBottomOf="@+id/inputEmailNuevo" />
+        app:layout_constraintEnd_toEndOf="@+id/inputEmailReautenticacion"
+        app:layout_constraintStart_toStartOf="@+id/inputEmailReautenticacion"
+        app:layout_constraintTop_toBottomOf="@+id/inputEmailReautenticacion" />
 
     <Button
-        android:id="@+id/btnCancelar"
+        android:id="@+id/btnCancelarReautenticacion"
         style="@style/EstiloBoton.ConBorde"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -54,8 +54,8 @@
         android:layout_marginBottom="40dp"
         android:text="@string/Cancelar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnAceptar"
-        app:layout_constraintStart_toStartOf="@+id/btnAceptar"
-        app:layout_constraintTop_toBottomOf="@+id/btnAceptar" />
+        app:layout_constraintEnd_toEndOf="@+id/btnAceptarReautenticacion"
+        app:layout_constraintStart_toStartOf="@+id/btnAceptarReautenticacion"
+        app:layout_constraintTop_toBottomOf="@+id/btnAceptarReautenticacion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
