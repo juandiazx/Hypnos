@@ -80,7 +80,7 @@ public class PreinicioDeSesion extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser !=null){
+        if(currentUser !=null && currentUser.isEmailVerified()){
             Intent intent = new Intent(PreinicioDeSesion.this, Pantalla_Principal.class);
             startActivity(intent);
         }
