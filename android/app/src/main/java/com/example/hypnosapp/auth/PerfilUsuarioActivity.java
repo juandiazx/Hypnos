@@ -378,6 +378,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         //si se ha cambiado el e-mail:
         } else if(!emailNuevo.equals(correoUsuario)){
             actualizarCorreo(emailNuevo, firebaseUser);
+            actualizarNombreUsuario(nombreNuevo, firebaseUser);
             /*
             Intent intent = new Intent(this, PopUpComprobarCorreoActivity.class);
             intent.putExtra("email", emailNuevo);
