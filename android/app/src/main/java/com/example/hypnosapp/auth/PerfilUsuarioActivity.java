@@ -157,6 +157,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     pulsarConfirmarCambios(v);
                 }
             });
+            /*
 
             //Boton cambiarContrasenya:
             Button btnCambiarContrasenya = findViewById(R.id.btnCambiarContrasenya);
@@ -167,6 +168,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     activityResultLauncher.launch(intent);
                 }
             });
+
+             */
         }
 
 
@@ -241,6 +244,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         finish();
     } //Fin cerrarSesion()
 
+    /*
     private void modificarDatosPerfil(){
 
         String nombreNuevo = nombreApellidos.getText().toString();
@@ -301,6 +305,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 }
             });
 
+     */
+
 
 
 
@@ -335,7 +341,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     }
                 });
              */
-/*
+            /*
             firebaseUser.updateEmail(emailNuevo)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -351,11 +357,14 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
             actualizarNombreUsuario(nombreNuevo, firebaseUser);
 */
+    /*
         }else{
             Toast.makeText(this, "usuario es nulo!!!!!", Toast.LENGTH_SHORT).show();
         }
 
     }
+
+     */
 
     private void pulsarConfirmarCambios(View view){
         //Recogemos los datos introducidos por el usuario:
@@ -381,7 +390,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     private void reautenticarUsuario(final ReauthenticationListener listener) {
         if (firebaseUser != null) {
 
-            //Reautenticación:
             LayoutInflater inflater = getLayoutInflater();
             View dialogView = inflater.inflate(R.layout.reautenticacion_popup, null);
 
@@ -438,32 +446,24 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 popupRepetirCorreo(new ConfirmarCorreoListener() {
                     @Override
                     public void onConfirmarCorreoListenerSuccess() {
-
+                        usuario.updateEmail(emailNuevo)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d("EmailUsuario", "User email address updated.");
+                                        }else{
+                                            Log.e("EmailUsuario", "No se ha cambiado el email. Error: " + task.getException().getMessage());
+                                        }
+                                    }
+                                });
                     }
-
                     @Override
                     public void onConfirmarCorreoListenerFailure(String errorMessage) {
-
+                        Toast.makeText(PerfilUsuarioActivity.this, "Se ha cancelado el cambio", Toast.LENGTH_SHORT).show();
+                        Log.e("CambiarCorreo", errorMessage);
                     }
                 }, emailNuevo);
-
-
-
-
-
-
-
-                usuario.updateEmail(emailNuevo)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("EmailUsuario", "User email address updated.");
-                                }else{
-                                    Log.e("EmailUsuario", "No se ha cambiado el email. Error: " + task.getException().getMessage());
-                                }
-                            }
-                        });
             }
 
             @Override
@@ -472,7 +472,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             }
         });
     }
-
     private void popupRepetirCorreo(final ConfirmarCorreoListener listener, String emailNuevo){
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.confirmar_correo, null);
@@ -493,6 +492,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 String emailRepetido = inputEmailRepetido.getText().toString();
                 if (emailRepetido.equals(emailNuevo)) {
                     Toast.makeText(PerfilUsuarioActivity.this, "Correo correcto", Toast.LENGTH_SHORT).show();
+                    Log.d("RepetirCorreo", "Correo repetido correctamente");
                     listener.onConfirmarCorreoListenerSuccess();
                     dialog.dismiss();
                 }else{
@@ -510,8 +510,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         });
 
     }
-
-
     private void actualizarNombreUsuario(String nombre, FirebaseUser usuario){
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
