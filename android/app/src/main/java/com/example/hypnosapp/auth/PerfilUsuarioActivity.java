@@ -44,7 +44,17 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     String nombreUsuario, correoUsuario;
-    TextView nombre, nombreApellidos, correo, contrasenya;
+    TextView nombre, nombreApellidos, correo;
+
+    public interface ReauthenticationListener {
+        void onReauthenticationSuccess();
+        void onReauthenticationFailure(String errorMessage);
+    }
+
+    public interface ConfirmarCorreoListener{
+        void onConfirmarCorreoListenerSuccess();
+        void onConfirmarCorreoListenerFailure(String errorMessage);
+    }
 
 
     @Override
@@ -356,14 +366,151 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         if(!nombreNuevo.equals(nombreUsuario) && emailNuevo.equals(correoUsuario)){
             actualizarNombreUsuario(nombreNuevo, firebaseUser);
 
-        //si se ha cambiado el e-mail, lanzar un popUp de confirmación:
+        //si se ha cambiado el e-mail:
         } else if(!emailNuevo.equals(correoUsuario)){
+            actualizarCorreo(emailNuevo, firebaseUser);
+            /*
             Intent intent = new Intent(this, PopUpComprobarCorreoActivity.class);
             intent.putExtra("email", emailNuevo);
             intent.putExtra("nombre", nombreNuevo);
             activityResultLauncher.launch(intent);
+             */
         }
     }
+
+    private void reautenticarUsuario(final ReauthenticationListener listener) {
+        if (firebaseUser != null) {
+
+            //Reautenticación:
+            LayoutInflater inflater = getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.reautenticacion_popup, null);
+
+            EditText inputemailRe = dialogView.findViewById(R.id.inputEmailReautenticacion);
+            EditText inputpassRe = dialogView.findViewById(R.id.inputPassReautenticacion);
+            Button btnAceptarRe = dialogView.findViewById(R.id.btnAceptarReautenticacion);
+            Button btnCancelarRe = dialogView.findViewById(R.id.btnCancelarReautenticacion);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Reautenticación");
+            builder.setView(dialogView);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            btnAceptarRe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String email = inputemailRe.getText().toString();
+                    String pass = inputpassRe.getText().toString();
+
+                    AuthCredential credential = EmailAuthProvider.getCredential(email, pass);
+                    firebaseUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("REAUTENTICACION", "¡¡¡¡Usuario Reautenticado!!!!");
+                                dialog.dismiss();
+                                listener.onReauthenticationSuccess();
+                            } else {
+                                String errorMessage = "Error al reautenticar el usuario.";
+                                Log.e("REAUTENTICACION", errorMessage);
+                                listener.onReauthenticationFailure(errorMessage);
+                            }
+                        }
+                    });
+                }
+            });
+            btnCancelarRe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+        }
+        else{
+            Log.e("Reautenticacion", "El usuario es nulo");
+        }
+    }
+    private void actualizarCorreo(String emailNuevo, FirebaseUser usuario){
+
+        reautenticarUsuario(new ReauthenticationListener() {
+            @Override
+            public void onReauthenticationSuccess() {
+                popupRepetirCorreo(new ConfirmarCorreoListener() {
+                    @Override
+                    public void onConfirmarCorreoListenerSuccess() {
+
+                    }
+
+                    @Override
+                    public void onConfirmarCorreoListenerFailure(String errorMessage) {
+
+                    }
+                }, emailNuevo);
+
+
+
+
+
+
+
+                usuario.updateEmail(emailNuevo)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("EmailUsuario", "User email address updated.");
+                                }else{
+                                    Log.e("EmailUsuario", "No se ha cambiado el email. Error: " + task.getException().getMessage());
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void onReauthenticationFailure(String errorMessage) {
+                Log.e("Reautenticacion", errorMessage);
+            }
+        });
+    }
+
+    private void popupRepetirCorreo(final ConfirmarCorreoListener listener, String emailNuevo){
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.confirmar_correo, null);
+
+        EditText inputEmailRepetido = dialogView.findViewById(R.id.inputEmailRepetido);
+        Button btnAceptar = dialogView.findViewById(R.id.btnAceptarConfirmarCorreo);
+        Button btnCancelar = dialogView.findViewById(R.id.btnCancelarConfirmarCorreo);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirmar correo");
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String emailRepetido = inputEmailRepetido.getText().toString();
+                if (emailRepetido.equals(emailNuevo)) {
+                    Toast.makeText(PerfilUsuarioActivity.this, "Correo correcto", Toast.LENGTH_SHORT).show();
+                    listener.onConfirmarCorreoListenerSuccess();
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(PerfilUsuarioActivity.this, "Correo incorrecto, vuelve a introducirlo", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onConfirmarCorreoListenerFailure("Se ha pulsado cancelar");
+                dialog.dismiss();
+            }
+        });
+
+    }
+
 
     private void actualizarNombreUsuario(String nombre, FirebaseUser usuario){
 
@@ -385,6 +532,20 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 });
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -400,5 +561,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                         }
                     }
             });
+
+     */
 
 }//Class
