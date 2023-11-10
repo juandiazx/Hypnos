@@ -28,10 +28,37 @@ M5StackAbstract* m5stackAbstract;
 void setup() {
     Serial.begin(115200);
     m5stackAbstract = M5StackAbstract::getInstance(ssid,password,udpPort);
+    M5.Speaker.begin(); //inicializamos sistema de sonido
 }
 
 
 void loop() {
+
+  m5stackAbstract->printLogoWhiteBackground();
+  Serial.println("se ha mostrado el logo");
+  while (1){
+        Serial.println(M5.BtnA.read());
+        if(M5.BtnA.read()){
+          Serial.println("se ha entrado al if del boton A");
+            delay(3000);
+
+            m5stackAbstract->switchLightM5StackAbstract(); //se hace de día y suena la alarma
+            m5stackAbstract->stopRestingTrackRoutine();
+            
+            delay(2000); 
+            m5stackAbstract->showDataInScreen();
+        }//BtnA
+        break;
+  }//while
+
+
+
+
+
+
+  /*ORIGINAL:
+
+
     m5stackAbstract->printLogoWhiteBackground();
     Serial.println("se ha mostrado el logo");
     while (1){
@@ -61,4 +88,5 @@ void loop() {
             break;
         }
     }
+    */
 }
