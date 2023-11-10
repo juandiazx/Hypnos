@@ -22,6 +22,7 @@ public:
             M5.Lcd.fillCircle(120, 55, 20, BLACK);
         } else {
             M5.Lcd.fillScreen(0xFFFFFF);  // Blanco (Día)
+            playAlarmSound();
         }
     }
 
@@ -83,6 +84,14 @@ public:
         //Dibujar luna
         M5.Lcd.fillCircle(110, 60, 20, 0x164499); // Coordenadas (170, 50), radio 20, color del texto azul
         M5.Lcd.fillCircle(120, 55, 20, WHITE);    // Otra luna blanca más fina
+    }
+
+    void playAlarmSound() { //sonido de alarma
+        M5.Speaker.tone(500, 200);  //tono de 500 Hz durante 200 ms
+        delay(300);
+        M5.Speaker.tone(500, 200);  
+        delay(300);
+        M5.Speaker.tone(500, 200); 
     }
 
 private:
