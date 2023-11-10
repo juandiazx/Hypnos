@@ -43,8 +43,12 @@ void loop() {
             delay(3000);
 
             m5stackAbstract->switchLightM5StackAbstract(); //se hace de día y suena la alarma
-            m5stackAbstract->stopRestingTrackRoutine(); 
+            m5stackAbstract->stopRestingTrackRoutine();
+            
+            delay(2000); 
+            m5stackAbstract->showDataInScreen();
         }//BtnA
+        break;
   }//while
 
 
