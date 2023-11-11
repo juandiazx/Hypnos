@@ -52,12 +52,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         void onReauthenticationFailure(String errorMessage);
     }
 
-    public interface ConfirmarCorreoListener{
-        void onConfirmarCorreoListenerSuccess();
-        void onConfirmarCorreoListenerFailure(String errorMessage);
-    }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,24 +133,44 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             correo = findViewById(R.id.emailGoogleFacebook);
             correo.setText(correoUsuario);
         }
-
         else{
             //si iniciamos sesión con correo electrónico:
             setContentView(R.layout.perfil_usuario);
 
-            nombreApellidos = findViewById(R.id.inputNombreApellidos);
+            nombreApellidos = findViewById(R.id.nombreApellidosPerfil);
             nombreApellidos.setText(nombreUsuario);
 
-            correo = findViewById(R.id.inputEmail);
+            inputNombreApellidos = findViewById(R.id.inputNombreApellidos);
+
+            correo = findViewById(R.id.emailPerfil);
             correo.setText(correoUsuario);
 
 
-            //Boton confirmar cambios:
-            Button btnConfirmarCambios = findViewById(R.id.btnConfirmarCambios);
-            btnConfirmarCambios.setOnClickListener(new View.OnClickListener() {
+            //Boton editar nombre:
+            ImageView editarNombre = findViewById(R.id.editarNombre);
+            editarNombre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pulsarConfirmarCambios(v);
+                    nombreApellidos.setVisibility(View.INVISIBLE);
+                    inputNombreApellidos.setVisibility(View.VISIBLE);
+
+                    //para confirmar el cambio de nombre:
+                    ImageView confirmarCambioNombre = findViewById(R.id.confirmarCambioNombre);
+                    editarNombre.setVisibility(View.GONE);
+                    confirmarCambioNombre.setVisibility(View.VISIBLE);
+                    confirmarCambioNombre.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String nombreNuevo = inputNombreApellidos.getText().toString();
+
+                            actualizarNombreUsuario(nombreNuevo, firebaseUser);
+                            confirmarCambioNombre.setVisibility(View.GONE);
+                            editarNombre.setVisibility(View.VISIBLE);
+                            inputNombreApellidos.setVisibility(View.INVISIBLE);
+                            nombreApellidos.setVisibility(View.VISIBLE);
+                        }
+                    });
+
                 }
             });
 
@@ -243,27 +257,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         startActivity(i);
         finish();
     } //Fin cerrarSesion()
-    private void pulsarConfirmarCambios(View view){
-        //Recogemos los datos introducidos por el usuario:
-        String nombreNuevo = nombreApellidos.getText().toString();
-        String emailNuevo = correo.getText().toString();
-
-        //si no se ha cambiado el e-mail original, pero sí el nombre, cambiamos el nombre directamente.
-        if(!nombreNuevo.equals(nombreUsuario) && emailNuevo.equals(correoUsuario)){
-            actualizarNombreUsuario(nombreNuevo, firebaseUser);
-
-        //si se ha cambiado el e-mail:
-        } else if(!emailNuevo.equals(correoUsuario)){
-            actualizarCorreo(emailNuevo, firebaseUser);
-            actualizarNombreUsuario(nombreNuevo, firebaseUser);
-            /*
-            Intent intent = new Intent(this, PopUpComprobarCorreoActivity.class);
-            intent.putExtra("email", emailNuevo);
-            intent.putExtra("nombre", nombreNuevo);
-            activityResultLauncher.launch(intent);
-             */
-        }
-    }
     private void reautenticarUsuario(final ReauthenticationListener listener) {
         if (firebaseUser != null) {
 
@@ -315,78 +308,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             Log.e("Reautenticacion", "El usuario es nulo");
         }
     }
-    private void actualizarCorreo(String emailNuevo, FirebaseUser usuario){
-
-        reautenticarUsuario(new ReauthenticationListener() {
-            @Override
-            public void onReauthenticationSuccess() {
-                popupRepetirCorreo(new ConfirmarCorreoListener() {
-                    @Override
-                    public void onConfirmarCorreoListenerSuccess() {
-                        usuario.updateEmail(emailNuevo)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d("EmailUsuario", "User email address updated.");
-                                        }else{
-                                            Log.e("EmailUsuario", "No se ha cambiado el email. Error: " + task.getException().getMessage());
-                                        }
-                                    }
-                                });
-                    }
-                    @Override
-                    public void onConfirmarCorreoListenerFailure(String errorMessage) {
-                        Toast.makeText(PerfilUsuarioActivity.this, "Se ha cancelado el cambio", Toast.LENGTH_SHORT).show();
-                        Log.e("CambiarCorreo", errorMessage);
-                    }
-                }, emailNuevo);
-            }
-
-            @Override
-            public void onReauthenticationFailure(String errorMessage) {
-                Log.e("Reautenticacion", errorMessage);
-            }
-        });
-    }
-    private void popupRepetirCorreo(final ConfirmarCorreoListener listener, String emailNuevo){
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.confirmar_correo, null);
-
-        EditText inputEmailRepetido = dialogView.findViewById(R.id.inputEmailRepetido);
-        Button btnAceptar = dialogView.findViewById(R.id.btnAceptarConfirmarCorreo);
-        Button btnCancelar = dialogView.findViewById(R.id.btnCancelarConfirmarCorreo);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirmar correo");
-        builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        btnAceptar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String emailRepetido = inputEmailRepetido.getText().toString();
-                if (emailRepetido.equals(emailNuevo)) {
-                    Toast.makeText(PerfilUsuarioActivity.this, "Correo correcto", Toast.LENGTH_SHORT).show();
-                    Log.d("RepetirCorreo", "Correo repetido correctamente");
-                    listener.onConfirmarCorreoListenerSuccess();
-                    dialog.dismiss();
-                }else{
-                    Toast.makeText(PerfilUsuarioActivity.this, "Correo incorrecto, vuelve a introducirlo", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        btnCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onConfirmarCorreoListenerFailure("Se ha pulsado cancelar");
-                dialog.dismiss();
-            }
-        });
-
-    }
     private void actualizarNombreUsuario(String nombre, FirebaseUser usuario){
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -399,6 +320,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("nombreUsuario", "¡Nombre de usuario actualizado!");
+                            nombreUsuario = firebaseUser.getDisplayName();
+                            nombreApellidos.setText(nombreUsuario);
                         }
                         else{
                             Log.e("nombreUsuario", "Error en actualizar nombre usuario");
@@ -473,25 +396,5 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
 }//Class
 
-
-
-    /*
-    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-
-                        Toast.makeText(PerfilUsuarioActivity.this, "Ha llegado correcto", Toast.LENGTH_SHORT).show();
-
-                        modificarDatosPerfil();
-
-                        }
-                    }
-            });
-
-     */
 
 
