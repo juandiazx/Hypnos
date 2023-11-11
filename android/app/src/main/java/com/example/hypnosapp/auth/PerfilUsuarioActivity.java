@@ -45,6 +45,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     String nombreUsuario, correoUsuario;
     TextView nombre, nombreApellidos, correo;
+    EditText inputNombreApellidos;
 
     public interface ReauthenticationListener {
         void onReauthenticationSuccess();
@@ -100,10 +101,10 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 foto.setImageUrl(urlFoto.toString(), lectorImagenes);
             }
 
-            nombre = findViewById(R.id.inputNombre);
+            nombre = findViewById(R.id.nombreGoogleFacebook);
             nombre.setText(nombreUsuario);
 
-            correo = findViewById(R.id.inputEmail);
+            correo = findViewById(R.id.emailGoogleFacebook);
             correo.setText(correoUsuario);
 
         }
@@ -132,10 +133,10 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 foto.setImageUrl(urlFoto.toString(), lectorImagenes);
             }
 
-            nombre = findViewById(R.id.inputNombre);
+            nombre = findViewById(R.id.nombreGoogleFacebook);
             nombre.setText(nombreUsuario);
 
-            correo = findViewById(R.id.inputEmail);
+            correo = findViewById(R.id.emailGoogleFacebook);
             correo.setText(correoUsuario);
         }
 
@@ -171,7 +172,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
 
         }
-
 
         //-------------------------------------------------------------------------------------
         // FUNCIONALIDAD BOTONES MENUS
@@ -210,6 +210,9 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 funcionMenu.abrirAcercaDe(PerfilUsuarioActivity.this);
             }
         });
+        //-------------------------------------------------------------------------------------
+        // FIN DE FUNCIONALIDAD BOTONES MENUS
+        //-------------------------------------------------------------------------------------
 
 
         //funcionalidad del botón de cerrar sesión:
@@ -220,9 +223,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 cerrarSesion(v);
             }
         });
-        //-------------------------------------------------------------------------------------
-        // FIN DE FUNCIONALIDAD BOTONES MENUS
-        //-------------------------------------------------------------------------------------
 
     }//Fin onCreate()
 
@@ -243,129 +243,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         startActivity(i);
         finish();
     } //Fin cerrarSesion()
-
-    /*
-    private void modificarDatosPerfil(){
-
-        String nombreNuevo = nombreApellidos.getText().toString();
-        String emailNuevo = correo.getText().toString();
-
-        if(firebaseUser != null){
-
-            //Reautenticación:
-            LayoutInflater inflater = getLayoutInflater();
-            View dialogView = inflater.inflate(R.layout.reautenticacion_popup, null);
-
-            EditText inputemailRe = dialogView.findViewById(R.id.inputEmailReautenticacion);
-            EditText inputpassRe = dialogView.findViewById(R.id.inputPassReautenticacion);
-            Button btnAceptarRe = dialogView.findViewById(R.id.btnAceptarReautenticacion);
-            Button btnCancelarRe = dialogView.findViewById(R.id.btnCancelarReautenticacion);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Reautenticación");
-            builder.setView(dialogView);
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-            btnAceptarRe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String email = inputemailRe.getText().toString();
-                    String pass = inputpassRe.getText().toString();
-
-                    AuthCredential credential = EmailAuthProvider.getCredential(email,pass);
-                    firebaseUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Log.d("REAUTENTICACION", "¡¡¡¡Usuario Reautenticado!!!!");
-
-                            firebaseUser.updateEmail(emailNuevo)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.d("EmailUsuario", "User email address updated.");
-                                            }else{
-                                                Log.e("EmailUsuario", "No se ha cambiado el email. Error: " + task.getException().getMessage());
-                                            }
-                                        }
-                                    });
-
-
-                            actualizarNombreUsuario(nombreNuevo, firebaseUser);
-                            dialog.dismiss();
-                        }
-                    });
-                }//onClickbtnAceptar
-            });
-            btnCancelarRe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-
-     */
-
-
-
-
-
-            /*
-            TAMBIEN EN CONTRASEÑA
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        // Get auth credentials from the user for re-authentication
-
-        AÑADIR DIALOG PARA PEDIR CONTRASEÑA
-        AuthCredential credential = EmailAuthProvider
-                .getCredential("user@example.com", "password1234"); // Current Login Credentials \\
-        // Prompt the user to re-provide their sign-in credentials
-        user.reauthenticate(credential)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.d(TAG, "User re-authenticated.");
-                        //Now change your email address \\
-                        //----------------Code for Changing Email Address----------\\
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        user.updateEmail("user@example.com")
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d(TAG, "User email address updated.");
-                                        }
-                                    }
-                                });
-                        //----------------------------------------------------------\\
-                    }
-                });
-             */
-            /*
-            firebaseUser.updateEmail(emailNuevo)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("EmailUsuario", "User email address updated.");
-                            }else{
-                                Log.e("EmailUsuario", "No se ha cambiado el email. Error: " + task.getException().getMessage());
-                            }
-                        }
-                    });
-
-
-            actualizarNombreUsuario(nombreNuevo, firebaseUser);
-*/
-    /*
-        }else{
-            Toast.makeText(this, "usuario es nulo!!!!!", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-     */
-
     private void pulsarConfirmarCambios(View view){
         //Recogemos los datos introducidos por el usuario:
         String nombreNuevo = nombreApellidos.getText().toString();
