@@ -44,19 +44,6 @@
             android:name=".historial.Historial">
 
         </activity>
-        <activity android:name=".auth.ConfirmarCambioActivity"
-            android:label="@string/ConfirmarCambios"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
-            
-        <activity 
-            android:name=".auth.PopUpComprobarCorreoActivity"
-            android:label="@string/ConfirmarCambios"
-            android:theme="@style/Theme.AppCompat.Light.Dialog">
-        </activity>
-
-        <activity android:name=".auth.CambiarContrasenyaActivity"
-            android:label="@string/ConfirmarCambios"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
 
         <activity
             android:name=".auth.Registro">
