@@ -1,8 +1,15 @@
 package com.example.hypnosapp.appactivity;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import com.example.hypnosapp.PermissionManager;
 import com.example.hypnosapp.R;
 
@@ -20,9 +27,6 @@ public class PermissionActivity extends AppCompatActivity {
 
         // Verificar y solicitar permisos al entrar por primera vez
         permissionManager.checkAndRequestPermission();
-
-        // Realizar la acción que requiere el permiso aquí
-        // Por ejemplo, puedes agregar código para activar el WAKE_LOCK
     }
 
     // Este método se llama cuando el usuario concede o deniega los permisos solicitados
@@ -33,5 +37,4 @@ public class PermissionActivity extends AppCompatActivity {
         // Delegar la respuesta de permisos al PermissionManager
         permissionManager.handlePermissionResult(requestCode, grantResults);
     }
-
 }
