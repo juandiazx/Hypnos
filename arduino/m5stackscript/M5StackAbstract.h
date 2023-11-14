@@ -3,6 +3,7 @@
 
 class M5StackAbstract {
 public:
+    int receivedSensorsData = 0;
     static M5StackAbstract* getInstance(const char *ssid, const char *pass, int udp) {
         if (instance == nullptr) {
             instance = new M5StackAbstract(ssid, pass, udp);
@@ -22,7 +23,7 @@ public:
             M5.Lcd.fillCircle(120, 55, 20, BLACK);
         } else {
             M5.Lcd.fillScreen(0xFFFFFF);  // Blanco (Día)
-            playAlarmSound();
+            //playAlarmSound();
         }
     }
 
@@ -34,31 +35,13 @@ public:
         StaticJsonDocument<200> jsonBuffer;
         
         jsonBuffer["mensaje"] = "START_TRACKING";
+
+        Serial.println("Se manda el start tracking");
         
         serializeJson(jsonBuffer, texto);
 
         udp.broadcastTo(texto, udpPort);
 
-    }
-
-    //Cuando el boton B se pulsa por 1,5 segundos en loop()
-    void stopRestingTrackRoutine(){
-        // Aquí se debe comunicar con el ESP32 mediante UDP para indicarle que ya puede enviar los datos
-        // Puedes usar la función receiveSensorsData() para recibir el JSON enviado por el ESP32
-        char texto[200];
-        StaticJsonDocument<200> jsonBuffer;
-
-        jsonBuffer["mensaje"] = "STOP_TRACKING";
-        
-        serializeJson(jsonBuffer, texto);
-
-        udp.broadcastTo(texto, udpPort);
-        
-        delay(5000);
-        // Aquí se reciben los datos por UTP y se guardan en snoreAmount y averageTemperature
-        receiveSensorsData();
-        //AQUI PUEDE QUE HAGA FALTA ESPERAR A QUE EL ESP32 ENVIE LAS MEDIDAS
-        //DEBIDO A QUE ES ASINCRONO
     }
 
     //Cuando el boton C se pulsa por 1,5 segundos en loop() se muestran lo
@@ -69,6 +52,9 @@ public:
         M5.Lcd.setTextColor(0x164499); // Establece el color del texto
         M5.Lcd.println("Temperatura: " + String(this->averageTemperature) + " C"); // Muestra la temperatura en la pantalla
         M5.Lcd.println("Ronquidos: " + String(this->snoreAmount));
+        M5.Lcd.println("Tiempo Descanso: " + String((this->tiempoEncendido)/1000) + " s");
+        this->receivedSensorsData = -1;
+        playAlarmSound();
     }
 
     void printLogoWhiteBackground() {
@@ -86,13 +72,63 @@ public:
         M5.Lcd.fillCircle(120, 55, 20, WHITE);    // Otra luna blanca más fina
     }
 
-    void playAlarmSound() { //sonido de alarma
-        M5.Speaker.tone(500, 200);  //tono de 500 Hz durante 200 ms
-        delay(300);
-        M5.Speaker.tone(500, 200);  
-        delay(300);
-        M5.Speaker.tone(500, 200); 
+    void receiveSensorsData() {
+    udp.onPacket([this](AsyncUDPPacket &packet) {
+        char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
+        int len = packet.length();
+        
+        // Leer los datos del paquete en el buffer
+        for (int i = 0; i < len; i++) {
+            packetBuffer[i] = packet.data()[i];
+        }
+        packetBuffer[len] = '\0';
+
+        // Parsear el JSON recibido
+        DynamicJsonDocument jsonDoc(200);  // Ajusta el tamaño según tus necesidades
+        DeserializationError error = deserializeJson(jsonDoc, packetBuffer);
+
+        if (!error) {
+            // Acceder a los valores recibidos y almacenarlos según tus necesidades
+            Serial.println("Recibe los datos");
+            this->averageTemperature = jsonDoc["averageTemperature"];
+            this->snoreAmount = jsonDoc["snoreAmount"];
+            this->tiempoEncendido = jsonDoc["Tiempo Descanso"];
+            
+            Serial.println(averageTemperature);
+            Serial.println(snoreAmount);
+            Serial.println(tiempoEncendido);
+            Serial.println("Se han recibido los datos");
+            this->receivedSensorsData +=1;
+        } else {
+            Serial.println("Error al analizar los datos JSON recibidos");
+        }
+    });
+}
+
+    void playAlarmSound() { // Sonido de alarma
+    unsigned long startTime = millis(); // Guardar el tiempo inicial
+    unsigned long maxDuration = 5000;   // Duración máxima en milisegundos (en este caso, 5 segundos)
+    int numBeeps = 5;                   // Número de pitidos
+    unsigned long beepDuration = 200;   // Duración de cada pitido en milisegundos
+    unsigned long beepInterval = 1500;  // Intervalo entre pitidos en milisegundos
+
+    while (millis() - startTime < maxDuration) {
+        for (int i = 0; i < numBeeps; ++i) {
+            M5.Speaker.tone(500, beepDuration);  // Tono de 500 Hz durante la duración del pitido
+            delay(beepInterval);                 // Espera breve entre tonos
+            M5.Speaker.mute();                    // Silencio entre pitidos
+            delay(beepInterval);                 // Espera breve entre pitidos
+            Serial.println("BEEP");
+        }
     }
+
+    // Detener el sonido
+    M5.Speaker.mute();
+}
+
+
+
+
 
 private:
     bool isNight = false;
@@ -103,6 +139,7 @@ private:
 
     int averageTemperature;
     unsigned int snoreAmount;
+    unsigned int tiempoEncendido;
 
     uint16_t mainColor = 0x164499;
     AsyncUDP udp;
@@ -139,33 +176,7 @@ private:
         }
     }
 
-    void receiveSensorsData() {
-    udp.onPacket([this](AsyncUDPPacket &packet) {
-        char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
-        int len = packet.length();
-        
-        // Leer los datos del paquete en el buffer
-        for (int i = 0; i < len; i++) {
-            packetBuffer[i] = packet.data()[i];
-        }
-        packetBuffer[len] = '\0';
-
-        // Parsear el JSON recibido
-        DynamicJsonDocument jsonDoc(200);  // Ajusta el tamaño según tus necesidades
-        DeserializationError error = deserializeJson(jsonDoc, packetBuffer);
-
-        if (!error) {
-            // Acceder a los valores recibidos y almacenarlos según tus necesidades
-            Serial.println("Recibe los datos");
-            this->averageTemperature = jsonDoc["averageTemperature"];
-            this->snoreAmount = jsonDoc["snoreAmount"];
-            Serial.println(averageTemperature);
-            Serial.println(snoreAmount);
-        } else {
-            Serial.println("Error al analizar los datos JSON recibidos");
-        }
-    });
-}
+    
 
     static M5StackAbstract* instance;
 };

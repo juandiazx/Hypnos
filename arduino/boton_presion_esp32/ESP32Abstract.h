@@ -9,9 +9,9 @@
 
 class ESP32Abstract {
 public:
-    static ESP32Abstract* getInstance(const char *ssid, const char *pass, int udp, int tempPIN, int soundPIN, int ledPIN) {
+    static ESP32Abstract* getInstance(const char *ssid, const char *pass, int udp, int BOTONPIN, int LEDPIN_2) {
         if (instance == nullptr) {
-            instance = new ESP32Abstract(ssid, pass, udp, tempPIN, soundPIN, ledPIN);
+            instance = new ESP32Abstract(ssid, pass, udp, BOTONPIN, LEDPIN_2);
             instance->openUDPConnection();
         }
         return instance;
@@ -54,49 +54,24 @@ public:
     });
     }
 
-    int snoreCountComputation(int min, int max){
-      //Un ronquido sera mas o menos un intervalo de 4-7 medidas
-      saveSoundDetections();
-      int counter = 0;
-      snoreAmount = 0;
-      for(int p1=0 ;p1 < soundDetectionsList.size();p1++){
-        if(soundDetectionsList[p1]){
-          counter++;
-        }
-        else if(!soundDetectionsList[p1] && counter >= min && counter <= max){
-          snoreAmount++;
-          counter = 0;
-        }
-        else if(!soundDetectionsList[p1] && counter < min){
-          counter = 0;
-        }
-      }
-      soundDetectionsList.clear();
-      return snoreAmount;
-    }
-
+    
 private:
     int udpPort;
     char ssid[32];
     char pass[64];
     AsyncUDP udp;
     static const int UDP_TX_PACKET_MAX_SIZE = 200;
+    unsigned long tiempoEmpieza; // Guardar el tiempo inicial
+    unsigned long duration; 
 
-    TemperatureSensor* temperatureSensor;
-    SoundSensor* soundSensor;
-    LedLight* ledLight;
+    PressureSensor* pressureSensor;
 
-    int snoreAmount=0;
-    int frecuenciaMinimaSonido = 400; // Numero aleatorio que hace de minimo valor de medida para los ronquidos
-    const unsigned int maxMeasurements = 256;
-    int temperatura=0;
-    std::vector<bool> soundDetectionsList;   
+    bool stopMeasurements;
+    const unsigned int maxMeasurements = 256;  
 
-    ESP32Abstract(const char *ssidConstructor, const char *passConstructor, int udp, int TEMPERATUREPIN, int SOUNDPIN, int LEDPIN) {
+    ESP32Abstract(const char *ssidConstructor, const char *passConstructor, int udp, int BOTONPIN, int LEDPIN_2) {
         udpPort = udp;
-        temperatureSensor = TemperatureSensor::getInstance(TEMPERATUREPIN);  // Crea una instancia del sensor de temperatura
-        soundSensor = SoundSensor::getInstance(SOUNDPIN);  // Crea una instancia del sensor de sonido
-        ledLight = LedLight::getInstance(LEDPIN);  // Crea una instancia del controlador de luz LED
+        pressureSensor = PressureSensor::getInstance(BOTONPIN, LEDPIN_2);
 
         strncpy(ssid, ssidConstructor, sizeof(ssid) - 1);
         ssid[sizeof(ssid) - 1] = '\0';
@@ -126,64 +101,56 @@ private:
         }
     }
 
-    void saveSoundDetections() {
-      int i=0;
-      while(i < 50){
-        int sonido = soundSensor->takeMeasurement();
-        Serial.println(sonido);
-        if(sonido >= frecuenciaMinimaSonido) {
-          soundDetectionsList.push_back(true);
-        }
-        else{
-          soundDetectionsList.push_back(false);
-        }
-        delay(100);
-        i++;
-      }
-    }
-
 
     void obtainSensorsData() {
+
+        tiempoEmpieza = millis(); // Guardar el tiempo inicial
+        duration = 27000;     // Duración en milisegundos (en este caso, 15 segundos)
+
         // Implementa la obtención de datos de los sensores (temperatureSensor, soundSensor, etc.)
 
         Serial.println("Se entro a obtainSensorsData, bucle infinito de toma de medidas");
-        ledLight->turnOn();
         delay(6000);
-        ledLight->turnOff();
-        
-        temperatura = temperatureSensor->takeMeasurement();
-        saveSoundDetections();
-        snoreAmount = snoreCountComputation(2,5);
 
+        Serial.println(pressureSensor->tiempoEncendido);
+        delay(6000);
+ 
+        while (millis() - tiempoEmpieza <= duration) {
+
+        pressureSensor->detectPressure();
+        
+        Serial.println(pressureSensor->tiempoEncendido);
+        
+        }
+        if(pressureSensor->tiempoInicio !=0){
+          pressureSensor->tiempoEncendido += millis() - pressureSensor->tiempoInicio; // Calcula el tiempo que estuvo encendido el LED
+          digitalWrite(pressureSensor->LedPin_2, LOW);  // Apaga el LED
+
+        }
+        
         delay(3000);
 
         sendDataToM5Stack(udpPort);
-
     }
 
     void sendDataToM5Stack(int puerto) {
         // Implementa el envío de datos al M5Stack
         // Crear un objeto JSON para almacenar los datos
-        Serial.print("Se enciende el led");
-        ledLight->turnOn();
+        Serial.print("Datos enviados");
         delay(5000);
-        ledLight->turnOff();
         Serial.println("esp32 denota que se hace de dia");
 
         StaticJsonDocument<200> jsonBuffer;
         char medidas[200];
 
-        Serial.print("muestra de temperatura");
-        Serial.println(temperatura);
-        Serial.print("muestra de ronquidos");
-        Serial.println(snoreAmount);
+        stopMeasurements = true;
+        Serial.print("tiempo de descanso");
+        Serial.println(pressureSensor->tiempoEncendido);
 
-        //snoreSummary(&soundMeasurements[0], soundIndex);
-
-        //jsonBuffer["averageTemperature"] = averageMeasurements(&temperatureMeasurements[0], tempIndex);
-        jsonBuffer["averageTemperature"] = temperatura;
-        jsonBuffer["snoreAmount"] = snoreAmount;
-
+        jsonBuffer["Tiempo Descanso"] = pressureSensor->tiempoEncendido;
+        pressureSensor->tiempoEncendido = 0;
+        pressureSensor->tiempoInicio = 0;
+        pressureSensor->estadoAnterior = LOW;
         // Serializar el objeto JSON en una cadena
         serializeJson(jsonBuffer, medidas);
 
