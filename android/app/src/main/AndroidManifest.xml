@@ -83,6 +83,7 @@
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NOTIFICATION_POLICY_ACCESS_SETTINGS" />
 
     <uses-permission android:name="android.permission.NOTIFY_POSTED" />
     <uses-permission android:name="android.permission.VIBRATE" />
