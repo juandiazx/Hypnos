@@ -12,7 +12,7 @@ public:
     static ESP32Abstract* getInstance(const char *ssid, const char *pass, int udp, int tempPIN, int soundPIN, int ledPIN) {
         if (instance == nullptr) {
             instance = new ESP32Abstract(ssid, pass, udp, tempPIN, soundPIN, ledPIN);
-            //instance->openUDPConnection();
+            instance->openUDPConnection();
         }
         return instance;
     }
@@ -42,11 +42,8 @@ public:
                 if (strcmp(message, "START_TRACKING") == 0) {
                     // Recibido un mensaje para iniciar el seguimiento
                     obtainSensorsData();
-                } else if (strcmp(message, "STOP_TRACKING") == 0) {
-                    Serial.println("recibio stoptracking");
-                    // Recibido un mensaje para detener el seguimiento
-                    sendDataToM5Stack(udpPort);
-                } else {
+                } 
+                 else {
                     // Mensaje desconocido, podrías manejarlo de alguna manera
                     Serial.println("No se reconoce la orden del mensaje JSON");
                 }
@@ -89,7 +86,6 @@ private:
     SoundSensor* soundSensor;
     LedLight* ledLight;
 
-    bool stopMeasurements;
     int snoreAmount=0;
     int frecuenciaMinimaSonido = 400; // Numero aleatorio que hace de minimo valor de medida para los ronquidos
     const unsigned int maxMeasurements = 256;
@@ -132,7 +128,6 @@ private:
 
     void saveSoundDetections() {
       int i=0;
-      //!stopMeasurements, should be fully repeated until 
       while(i < 50){
         int sonido = soundSensor->takeMeasurement();
         Serial.println(sonido);
@@ -153,12 +148,17 @@ private:
 
         Serial.println("Se entro a obtainSensorsData, bucle infinito de toma de medidas");
         ledLight->turnOn();
-        delay(6000);
+        delay(3000);
         ledLight->turnOff();
         
-        stopMeasurements = false;
         temperatura = temperatureSensor->takeMeasurement();
         saveSoundDetections();
+        snoreAmount = snoreCountComputation(2,5);
+
+        delay(3000);
+
+        sendDataToM5Stack(udpPort);
+
     }
 
     void sendDataToM5Stack(int puerto) {
@@ -166,14 +166,13 @@ private:
         // Crear un objeto JSON para almacenar los datos
         Serial.print("Se enciende el led");
         ledLight->turnOn();
-        delay(5000);
+        delay(2000);
         ledLight->turnOff();
         Serial.println("esp32 denota que se hace de dia");
 
         StaticJsonDocument<200> jsonBuffer;
         char medidas[200];
 
-        stopMeasurements = true;
         Serial.print("muestra de temperatura");
         Serial.println(temperatura);
         Serial.print("muestra de ronquidos");
