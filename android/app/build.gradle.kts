@@ -55,11 +55,13 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
     implementation ("com.google.firebase:firebase-core:21.1.1")
     implementation ("com.facebook.android:facebook-login:latest.release")
+    implementation("com.google.firebase:firebase-firestore:24.0.0")
     //foto de perfil
     implementation("com.android.volley:volley:1.2.1")
     //recyclerview
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     //material apps
     implementation ("com.google.android.material:material:1.4.0")
+
 
 }
