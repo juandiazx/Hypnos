@@ -17,6 +17,7 @@ public:
 
         Serial.println("listening for messages");
         udp.onPacket([this](AsyncUDPPacket &packet) {
+          Serial.println("llega algo");
         char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
         int len = packet.length();
         
@@ -31,6 +32,7 @@ public:
         DeserializationError error = deserializeJson(jsonDoc, packetBuffer);
 
         if (!error) {
+            Serial.println("Tu puta madre");
             const char *message = jsonDoc["mensaje"];
             if (message) {
                 if (strcmp(message, "START_TRACKING") == 0) {
@@ -95,7 +97,7 @@ private:
         duration = 17000;     // Duración en milisegundos (en este caso, 15 segundos)
 
         digitalWrite(pinLedField, HIGH); // Enciende el LED
-        delay(2000);
+        delay(3000);
         digitalWrite(pinLedField, LOW);
  
         while (millis() - tiempoEmpieza <= duration) {
@@ -105,11 +107,15 @@ private:
         //En el caso si se quedó pulsado y no se soltó
         if(pressureSensor->tiempoInicio !=0){
           pressureSensor->tiempoEncendido += millis() - pressureSensor->tiempoInicio; // Calcula el tiempo que estuvo encendido el LED
-
+          Serial.println(pressureSensor->tiempoEncendido);
         }
 
         delay(3000);
         sendDataToM5Stack(udpPort);
+
+        Serial.print(pressureSensor->tiempoEncendido);
+        //Serial.flush();  // Asegura que los datos se envíen completamente
+
         //Reseteamos los tiempos y estados del sensor de presion desde fuera
         pressureSensor->tiempoEncendido = 0;
         pressureSensor->tiempoInicio = 0;

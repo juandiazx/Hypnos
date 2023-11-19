@@ -26,6 +26,7 @@ ESP32Abstract* esp32Abstract;
 
 void setup() {
   Serial.begin(115200);      // Inicializamos la comunicación serie a 115200
+  //Serial.setTimeout(1000);  // Establece el timeout en 1000 milisegundos (1 segundo)
   esp32Abstract = ESP32Abstract::getInstance(ssid, password, udpPort, PinDelSensor, PinDelLed);
 }
 

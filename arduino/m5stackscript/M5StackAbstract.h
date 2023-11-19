@@ -83,9 +83,7 @@ public:
         if (!error) {
             // Acceder a los valores recibidos y almacenarlos según tus necesidades
             Serial.println("Recibe los datos");
-            int isTemperatureReceived = jsonDoc["averageTemperature"];
-            Serial.println(isTemperatureReceived);
-            if(isTemperatureReceived >0){
+            if(jsonDoc["averageTemperature"] >0 && jsonDoc["averageTemperature"] < 100){
               this->averageTemperature = jsonDoc["averageTemperature"];
               this->snoreAmount = jsonDoc["snoreAmount"];
             }
