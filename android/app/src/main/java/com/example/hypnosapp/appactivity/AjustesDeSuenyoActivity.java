@@ -2,7 +2,9 @@ package com.example.hypnosapp.appactivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +12,9 @@ import com.example.hypnosapp.other.MenuManager;
 import com.example.hypnosapp.R;
 
 public class AjustesDeSuenyoActivity extends AppCompatActivity {
+    ImageView btnPerfilUsuario;
+    EditText toneLocationClock, wakeUpHourGoal, sleepTimeGoal;
+    Switch isGradualClock, isAutoClock, goalNotifications, warmLight, coldLight, autoLight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +24,17 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         //FUNCIONALIDAD BOTONES MENUS
         MenuManager funcionMenu = new MenuManager();
 
-        ImageView btnPerfilUsuario = findViewById(R.id.logoUsuarioHeader);
+        btnPerfilUsuario= findViewById(R.id.logoUsuarioHeader);
+        isGradualClock = findViewById(R.id.switchGradualClock);
+        isAutoClock = findViewById(R.id.switchAutoClock);
+        goalNotifications = findViewById(R.id.switchNotifications);
+        warmLight = findViewById(R.id.switchWarmLight);
+        coldLight = findViewById(R.id.switchColdLight);
+        autoLight = findViewById(R.id.switchAutoLight);
+        toneLocationClock = findViewById(R.id.toneLocationClock);
+        wakeUpHourGoal = findViewById(R.id.wakeUpHourGoal);
+        sleepTimeGoal = findViewById(R.id.sleepTimeGoal);
+
         btnPerfilUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,10 +65,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                 funcionMenu.abrirAcercaDe(AjustesDeSuenyoActivity.this);
             }
         });
-
-
-
-
 
     }
 }

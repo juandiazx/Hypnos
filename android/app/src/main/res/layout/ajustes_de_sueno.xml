@@ -110,7 +110,7 @@
                         android:background="#00000000"
                         android:text="@string/Gradual"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toTopOf="@+id/spinner"
+                        app:layout_constraintBottom_toTopOf="@+id/toneLocationClock"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.747"
                         app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +118,7 @@
                         app:layout_constraintVertical_bias="0.0" />
 
                     <Switch
-                        android:id="@+id/switch1"
+                        android:id="@+id/switchGradualClock"
                         style="@style/SwitchStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                         android:background="#00000000"
                         android:text="@string/Automatico"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toTopOf="@+id/spinner"
+                        app:layout_constraintBottom_toTopOf="@+id/toneLocationClock"
                         app:layout_constraintEnd_toEndOf="@+id/textView2"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/textView2"
@@ -161,12 +161,12 @@
                         app:layout_constraintVertical_bias="0.534" />
 
                     <Switch
-                        android:id="@+id/switch6"
+                        android:id="@+id/switchAutoClock"
                         style="@style/SwitchStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@+id/textView8"
-                        app:layout_constraintEnd_toEndOf="@+id/switch1"
+                        app:layout_constraintEnd_toEndOf="@+id/switchGradualClock"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toEndOf="@+id/textView8"
                         app:layout_constraintTop_toTopOf="@+id/textView8"
@@ -191,24 +191,25 @@
                         style="@style/TextoInterRegular.Texto"
                         android:layout_width="wrap_content"
                         android:layout_height="27dp"
+                        android:layout_marginStart="62dp"
                         android:background="#00000000"
                         android:text="@string/Tono"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/spinner"
-                        app:layout_constraintHorizontal_bias="0.428"
                         app:layout_constraintStart_toEndOf="@+id/imageView6"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.915" />
 
-                    <Spinner
-                        android:id="@+id/spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="27dp"
+                    <EditText
+                        android:id="@+id/toneLocationClock"
+                        style="@style/TextoInterRegular.Texto"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="null"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.875"
-                        app:layout_constraintStart_toEndOf="@+id/imageView6"
+                        app:layout_constraintEnd_toEndOf="@+id/switchAutoClock"
+                        app:layout_constraintStart_toEndOf="@+id/textView9"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.915" />
 
@@ -259,16 +260,17 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.119" />
 
-                    <Spinner
-                        android:id="@+id/spinner2"
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/wakeUpHourGoal"
+                        style="@style/TextoInterRegular.Texto"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:text="null"
                         app:layout_constraintBottom_toBottomOf="@+id/textView18"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.807"
-                        app:layout_constraintStart_toEndOf="@+id/textView18"
+                        app:layout_constraintEnd_toEndOf="@+id/sleepTimeGoal"
+                        app:layout_constraintStart_toStartOf="@+id/sleepTimeGoal"
                         app:layout_constraintTop_toTopOf="@+id/textView18"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.526" />
 
                     <TextView
                         android:id="@+id/textView20"
@@ -286,16 +288,18 @@
                         app:layout_constraintVertical_bias="0.477" />
 
 
-                    <Spinner
-                        android:id="@+id/spinner4"
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/sleepTimeGoal"
+                        style="@style/TextoInterRegular.Texto"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
+                        android:text="null"
                         app:layout_constraintBottom_toBottomOf="@+id/textView20"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.804"
+                        app:layout_constraintHorizontal_bias="0.518"
                         app:layout_constraintStart_toEndOf="@+id/textView20"
                         app:layout_constraintTop_toTopOf="@+id/textView20"
-                        app:layout_constraintVertical_bias="1.0" />
+                        app:layout_constraintVertical_bias="0.352" />
 
                     <TextView
                         android:id="@+id/textView13"
@@ -313,7 +317,7 @@
                         app:layout_constraintVertical_bias="0.865" />
 
                     <Switch
-                        android:id="@+id/switch7"
+                        android:id="@+id/switchNotifications"
                         style="@style/SwitchStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
@@ -359,7 +363,7 @@
                         app:layout_constraintVertical_bias="0.488" />
 
                     <Switch
-                        android:id="@+id/switch9"
+                        android:id="@+id/switchWarmLight"
                         style="@style/SwitchStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -396,7 +400,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <Switch
-                        android:id="@+id/switch10"
+                        android:id="@+id/switchColdLight"
                         style="@style/SwitchStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -434,7 +438,7 @@
                         app:layout_constraintVertical_bias="0.51" />
 
                     <Switch
-                        android:id="@+id/switch11"
+                        android:id="@+id/switchAutoLight"
                         style="@style/SwitchStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

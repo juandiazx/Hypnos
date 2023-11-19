@@ -34,29 +34,38 @@ public class FirebaseHelper {
         // Retrieve clock settings from Firestore and return as a HashMap
         DocumentReference userDocRef = db.collection("user").document(userId);
 
-        userDocRef.collection("preferencesData")
-                .document("clockSettings")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                // DocumentSnapshot data represents the clockSettings map
-                                Map<String, Object> clockSettings = document.getData();
-                                successListener.onSuccess(clockSettings);
-                            } else {
-                                Log.d(TAG, "No such document");
-                                successListener.onSuccess(Collections.emptyMap()); // Return an empty map if document doesn't exist
+        userDocRef.get()
+            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // DocumentSnapshot data represents the user document
+                            Map<String, Object> userData = document.getData();
+
+                            if (userData != null && userData.containsKey("preferences")) {
+                                // Extract the preferences map from the user document
+                                Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
+
+                                // Extract the clockSettings map from preferences
+                                if (preferences != null && preferences.containsKey("clockSettings")) {
+                                    Map<String, Object> clockSettings = (Map<String, Object>) preferences.get("clockSettings");
+                                    successListener.onSuccess(clockSettings);
+                                    return;
+                                }
                             }
-                        } else {
-                            Log.e(TAG, "Error getting clock settings", task.getException());
-                            failureListener.onFailure(task.getException());
                         }
+                        Log.d(TAG, "No clockSettings document found");
+                        successListener.onSuccess(Collections.emptyMap()); // Return an empty map if clockSettings document doesn't exist
+                    } else {
+                        Log.e(TAG, "Error getting user document", task.getException());
+                        failureListener.onFailure(task.getException());
                     }
-                });
+                }
+            });
     }
+
 
     /*----------------------------------------------------------------------------------------
                    String hour, songLocation     ----> setClock()
@@ -84,29 +93,35 @@ public class FirebaseHelper {
                 option has been selected before.
     ----------------------------------------------------------------------------------------*/
     public void getLightSettings(String userId, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
-        final String[] selectedLightCode = {null}; // Using an array to make it effectively final
-
         // Retrieve light settings from Firestore and return the selectedLightCode
         DocumentReference userDocRef = db.collection("user").document(userId);
 
-        userDocRef.collection("preferencesData")
-                .document("lightSettings")
-                .get()
+        userDocRef.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                // DocumentSnapshot data represents the lightSettings value
-                                selectedLightCode[0] = document.getString("lightSettings");
-                                successListener.onSuccess(selectedLightCode[0]);
-                            } else {
-                                Log.d(TAG, "No such document");
-                                successListener.onSuccess(null); // Return null if document doesn't exist
+                                // DocumentSnapshot data represents the user document
+                                Map<String, Object> userData = document.getData();
+
+                                if (userData != null && userData.containsKey("preferences")) {
+                                    // Extract the preferences map from the user document
+                                    Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
+
+                                    // Extract the lightSettings string from preferences
+                                    if (preferences != null && preferences.containsKey("lightSettings")) {
+                                        String lightSettings = (String) preferences.get("lightSettings");
+                                        successListener.onSuccess(lightSettings);
+                                        return;
+                                    }
+                                }
                             }
+                            Log.d(TAG, "No lightSettings document found");
+                            successListener.onSuccess(null); // Return null if lightSettings document doesn't exist
                         } else {
-                            Log.e(TAG, "Error getting light settings", task.getException());
+                            Log.e(TAG, "Error getting user document", task.getException());
                             failureListener.onFailure(task.getException());
                         }
                     }
