@@ -148,7 +148,7 @@ private:
 
         Serial.println("Se entro a obtainSensorsData, bucle infinito de toma de medidas");
         ledLight->turnOn();
-        delay(6000);
+        delay(3000);
         ledLight->turnOff();
         
         temperatura = temperatureSensor->takeMeasurement();
@@ -166,7 +166,7 @@ private:
         // Crear un objeto JSON para almacenar los datos
         Serial.print("Se enciende el led");
         ledLight->turnOn();
-        delay(5000);
+        delay(2000);
         ledLight->turnOff();
         Serial.println("esp32 denota que se hace de dia");
 

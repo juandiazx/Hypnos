@@ -1,10 +1,8 @@
 //Incluimos librerías externas
 //--------------------------------------------------------
-#include <DHT.h>
 #include <AsyncUDP.h>
 #include <ArduinoJson.h>
 #include <WiFi.h>
-#include <vector>
 //--------------------------------------------------------
 
 //Incluimos cabeceras de nuestras clases
@@ -20,15 +18,15 @@
 //#define password "89776513"
 #define ssid "darkasa"
 #define password "0Spoilerspls"
-
-#define PinDelSensor 4  // Pin del botón en el Wemos Lolin32
-#define PinDelLed 2  // Pin del LED en el Wemos Lolin32
+#define PinDelSensor 4
+#define PinDelLed 2
 
 PressureSensor* pressureSensor;
 ESP32Abstract* esp32Abstract;
 
 void setup() {
   Serial.begin(115200);      // Inicializamos la comunicación serie a 115200
+  //Serial.setTimeout(1000);  // Establece el timeout en 1000 milisegundos (1 segundo)
   esp32Abstract = ESP32Abstract::getInstance(ssid, password, udpPort, PinDelSensor, PinDelLed);
 }
 
