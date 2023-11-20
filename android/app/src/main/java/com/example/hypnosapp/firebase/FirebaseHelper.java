@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -164,6 +165,25 @@ public class FirebaseHelper {
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Light settings updated successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error updating light settings", e));
     }
+
+    /*----------------------------------------------------------------------------------------------
+        getAllNights() --> int pages, returns the number of pages that will be shown on the pager
+    ------------------------------------------------------------------------------------------------*/
+    public void getPagesFromAllNights(String userId, OnSuccessListener<Integer> successListener, OnFailureListener failureListener) {
+        CollectionReference userNightsRef = db.collection("users").document(userId).collection("nightsData");
+
+        userNightsRef.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        int numberOfNights = task.getResult().size();
+                        int pages = (int) Math.ceil((double) numberOfNights / 15);
+                        successListener.onSuccess(pages);
+                    } else {
+                        Log.e(TAG, "Error getting nightsData documents", task.getException());
+                        failureListener.onFailure(task.getException());
+                    }
+                });
+    }
 }
 
 
@@ -174,6 +194,6 @@ public class FirebaseHelper {
         int Page --> getFifteenNights() --> Fifteen Pages, if page = 0, returns the last fifteen,
         else if page = 1, returns the nights of 16 to 30 last days.
 
-        getAllNights() --> int pages, returns the number of pages that will be shown on the pager
+
 
     */
