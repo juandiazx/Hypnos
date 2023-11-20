@@ -1,6 +1,6 @@
 package com.example.hypnosapp.firebase;
 
-import com.example.hypnosapp.model.User;
+import com.example.hypnosapp.model.Night;
 
 import android.util.Log;
 
@@ -13,9 +13,14 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseHelper {
@@ -184,16 +189,53 @@ public class FirebaseHelper {
                     }
                 });
     }
+
+    /*----------------------------------------------------------------------------------------------
+        int Page --> getFifteenNights() --> Fifteen Pages, if page equals 1, returns the last
+        fifteen, else if page = 2, returns the nights from the last 16 to 30 days.
+    ----------------------------------------------------------------------------------------------*/
+    public void getFifteenNights(String userId, int page,
+                                 final OnSuccessListener<List<Night>> successListener,
+                                 final OnFailureListener failureListener) {
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        // Define the query to get the relevant nights
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+
+                            // Sort the nightsList based on date (assuming it's a Date type)
+                            Collections.sort(nightsList, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+
+                            // Determine the range of nights to return based on the page number
+                            int startIdx = (page - 1) * 15;
+                            int endIdx = startIdx + 15;
+
+                            // Ensure the indices are within the bounds of the list
+                            if (startIdx < nightsList.size()) {
+                                endIdx = Math.min(endIdx, nightsList.size());
+                                List<Night> selectedNights = nightsList.subList(startIdx, endIdx);
+                                successListener.onSuccess(selectedNights);
+                            } else {
+                                // No nights found for the given page
+                                successListener.onSuccess(Collections.emptyList());
+                            }
+                        } else {
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
 }
-
-
-    /*
-
-    functions for nightHistory
-
-        int Page --> getFifteenNights() --> Fifteen Pages, if page = 0, returns the last fifteen,
-        else if page = 1, returns the nights of 16 to 30 last days.
-
-
-
-    */

@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import com.example.hypnosapp.firebase.FirebaseHelper;
+import com.example.hypnosapp.model.Night;
 import com.example.hypnosapp.other.MenuManager;
 import com.example.hypnosapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -107,6 +108,22 @@ public class Historial extends AppCompatActivity {
                     @Override
                     public void onFailure(Exception e) {
                         Log.e(TAG, "Error getting pages");
+                    }
+                });
+
+        firebaseHelper.getFifteenNights(userID, 1,
+                new OnSuccessListener<List<Night>>() {
+                    @Override
+                    public void onSuccess(List<Night> nights) {
+                        for (Night night : nights) {
+                            Log.d(TAG, "Night: " + night.getDate() + ", Score: " + night.getScore());
+                        }
+                    }
+                },
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.e(TAG, "Error getting nights", e);
                     }
                 });
     }
