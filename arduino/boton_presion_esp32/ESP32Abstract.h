@@ -15,9 +15,9 @@ public:
     //ESTO SE REPITE CADA 4 SEGUNDOS Y PUEDE ESTAR CREANDO UN SOBREPROCESAMIENTO EN EL MICRO O PERDIDA DE DATOS U OCUPANDO MEMORIA
     void listenForMessages() {
 
-        Serial.println("listening for messages");
+        //Serial.println("listening for messages");
         udp.onPacket([this](AsyncUDPPacket &packet) {
-          Serial.println("llega algo");
+          //Serial.println("llega algo");
         char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
         int len = packet.length();
         
@@ -32,7 +32,7 @@ public:
         DeserializationError error = deserializeJson(jsonDoc, packetBuffer);
 
         if (!error) {
-            Serial.println("Tu puta madre");
+            //Serial.println("Tu puta madre");
             const char *message = jsonDoc["mensaje"];
             if (message) {
                 if (strcmp(message, "START_TRACKING") == 0) {
@@ -68,26 +68,25 @@ private:
         ssid[sizeof(ssid) - 1] = '\0';
         strncpy(pass, passConstructor, sizeof(pass) - 1);
         pass[sizeof(pass) - 1] = '\0';
-        Serial.println("Wifi: ");
+        /*Serial.println("Wifi: ");
         Serial.print(ssid);
-        Serial.print(pass);
+        Serial.print(pass);*/
     }
 
     void openUDPConnection(){
-        Serial.println("openUDPConnection");
+        //Serial.println("openUDPConnection");
         WiFi.mode(WIFI_STA);
         WiFi.begin(ssid, pass);
         if(WiFi.waitForConnectResult()!=WL_CONNECTED) {
-            Serial.println("Conectando a WiFi...");
+            //Serial.println("Conectando a WiFi...");
             while(1) {
               delay(1000);
             }
         }
-        Serial.println("Conexión WiFi establecida");
-
+        //Serial.println("Conexión WiFi establecida");
+        
         if(udp.listen(udpPort)) {
-        Serial.print("UDP Listening on IP: ");
-        Serial.println(WiFi.localIP());
+          
         }
     }
 
@@ -114,7 +113,7 @@ private:
         sendDataToM5Stack(udpPort);
 
         Serial.print(pressureSensor->tiempoEncendido);
-        //Serial.flush();  // Asegura que los datos se envíen completamente
+        Serial.flush();  // Asegura que los datos se envíen completamente
 
         //Reseteamos los tiempos y estados del sensor de presion desde fuera
         pressureSensor->tiempoEncendido = 0;
