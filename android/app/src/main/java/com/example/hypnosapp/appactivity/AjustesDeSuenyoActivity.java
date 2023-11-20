@@ -1,6 +1,7 @@
 package com.example.hypnosapp.appactivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Map;
 
 public class AjustesDeSuenyoActivity extends AppCompatActivity {
+    private static final String TAG = "AjustesDeSuenyo";
     ImageView btnPerfilUsuario, btnPantallaPrincipal, btnAjustesDescanso, btnPreferencias;
     EditText toneLocationClock, wakeUpHourClock, wakeUpHourGoal, sleepTimeGoal;
     Switch isGradualClock, isAutoClock, goalNotifications, warmLight, coldLight, autoLight;
@@ -42,7 +44,8 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         firebaseHelper = new FirebaseHelper();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        userID = firebaseUser.getUid();
+        //userID = firebaseUser.getUid();
+        userID = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
 
         btnPerfilUsuario= findViewById(R.id.logoUsuarioHeader);
         isGradualClock = findViewById(R.id.switchGradualClock);
@@ -67,8 +70,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         btnGuardarClock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String userId = userID;
-                String userId = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
+                String userId = userID;
                 String hour = wakeUpHourClock.getText().toString();
                 String songLocation = toneLocationClock.getText().toString();
                 boolean isSongGradual = isGradualClock.isChecked();
@@ -110,8 +112,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
     private void loadSleepSettings() {
 
-        //String userId = userID;
-        String userId = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
+        String userId = userID;
 
         firebaseHelper.getClock(userId,
                 new OnSuccessListener<Map<String, Object>>() {
@@ -148,11 +149,39 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
     private void updateClockSettingsUI(Map<String, Object> clockSettings) {
         if (clockSettings != null) {
-            isGradualClock.setChecked((Boolean) clockSettings.get("isGradual"));
-            isAutoClock.setChecked((Boolean) clockSettings.get("isAutomatic"));
-            toneLocationClock.setText((String) clockSettings.get("toneLocation"));
+            Boolean isGradual = (Boolean) clockSettings.get("isGradual");
+            Boolean isAutomatic = (Boolean) clockSettings.get("isAutomatic");
+
+            if (isGradual != null) {
+                isGradualClock.setChecked(isGradual);
+            } else {
+                Log.e(TAG, "isGradual is null");
+            }
+
+            if (isAutomatic != null) {
+                isAutoClock.setChecked(isAutomatic);
+            } else {
+                Log.e(TAG, "isAutomatic is null");
+            }
+
+            String toneLocation = (String) clockSettings.get("toneLocation");
+            if (toneLocation != null) {
+                toneLocationClock.setText(toneLocation);
+            } else {
+                Log.e(TAG, "toneLocation is null");
+            }
+
+            String alarmHour = (String) clockSettings.get("alarmHour");
+            if (alarmHour != null) {
+                wakeUpHourClock.setText(alarmHour);
+            } else {
+                Log.e(TAG, "alarmHour is null");
+            }
+        } else {
+            Log.e(TAG, "clockSettings is null");
         }
     }
+
 
     private void updateLightSettingsUI(String lightSettings) {
         if ("COL".equals(lightSettings)) {

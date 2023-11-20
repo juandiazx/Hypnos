@@ -20,7 +20,7 @@ import java.util.Map;
 public class FirebaseHelper {
     private static final String TAG = "FirebaseHelper";
 
-    private FirebaseFirestore db;
+    private final FirebaseFirestore db;
 
     public FirebaseHelper() {
         db = FirebaseFirestore.getInstance();
@@ -30,40 +30,44 @@ public class FirebaseHelper {
                 getClock() --> HASHMAP[String hour, songLocation
                               bool isSongGradual, isClockAutomatic]
     ----------------------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------------------
+                getClock() --> HASHMAP[String hour, songLocation
+                              bool isSongGradual, isClockAutomatic]
+    ----------------------------------------------------------------------------------------*/
     public void getClock(String userId, final OnSuccessListener<Map<String, Object>> successListener, final OnFailureListener failureListener) {
         // Retrieve clock settings from Firestore and return as a HashMap
-        DocumentReference userDocRef = db.collection("user").document(userId);
+        DocumentReference userDocRef = db.collection("users").document(userId);
 
         userDocRef.get()
-            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // DocumentSnapshot data represents the user document
-                            Map<String, Object> userData = document.getData();
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // DocumentSnapshot data represents the user document
+                                Map<String, Object> userData = document.getData();
 
-                            if (userData != null && userData.containsKey("preferences")) {
-                                // Extract the preferences map from the user document
-                                Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
+                                if (userData != null && userData.containsKey("preferences")) {
+                                    // Extract the preferences map from the user document
+                                    Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
 
-                                // Extract the clockSettings map from preferences
-                                if (preferences != null && preferences.containsKey("clockSettings")) {
-                                    Map<String, Object> clockSettings = (Map<String, Object>) preferences.get("clockSettings");
-                                    successListener.onSuccess(clockSettings);
-                                    return;
+                                    // Extract the clockSettings map from preferences
+                                    if (preferences != null && preferences.containsKey("clockSettings")) {
+                                        Map<String, Object> clockSettings = (Map<String, Object>) preferences.get("clockSettings");
+                                        successListener.onSuccess(clockSettings);
+                                        return;
+                                    }
                                 }
                             }
+                            Log.d(TAG, "No clockSettings map found");
+                            successListener.onSuccess(Collections.emptyMap()); // Return an empty map if clockSettings document doesn't exist
+                        } else {
+                            Log.e(TAG, "Error getting user document", task.getException());
+                            failureListener.onFailure(task.getException());
                         }
-                        Log.d(TAG, "No clockSettings document found");
-                        successListener.onSuccess(Collections.emptyMap()); // Return an empty map if clockSettings document doesn't exist
-                    } else {
-                        Log.e(TAG, "Error getting user document", task.getException());
-                        failureListener.onFailure(task.getException());
                     }
-                }
-            });
+                });
     }
 
 
@@ -73,20 +77,19 @@ public class FirebaseHelper {
     ----------------------------------------------------------------------------------------*/
     public void setClock(String userId, String hour, String songLocation, boolean isSongGradual, boolean isClockAutomatic) {
         // Update clock settings in Firestore
-        DocumentReference userDocRef = db.collection("user").document(userId);
+        DocumentReference userDocRef = db.collection("users").document(userId);
 
         Map<String, Object> clockSettings = new HashMap<>();
+        clockSettings.put("alarmHour", hour);
         clockSettings.put("isAutomatic", isClockAutomatic);
         clockSettings.put("isGradual", isSongGradual);
         clockSettings.put("toneLocation", songLocation);
 
-        userDocRef.collection("preferencesData")
-                .document("clockSettings")
-                .set(clockSettings)
+        userDocRef
+                .update("preferences.clockSettings", clockSettings)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Clock settings updated successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error updating clock settings", e));
     }
-
 
     /*----------------------------------------------------------------------------------------
                 getLightSettings() --> returns WAR, COL or AUT depending on which
@@ -94,7 +97,7 @@ public class FirebaseHelper {
     ----------------------------------------------------------------------------------------*/
     public void getLightSettings(String userId, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
         // Retrieve light settings from Firestore and return the selectedLightCode
-        DocumentReference userDocRef = db.collection("user").document(userId);
+        DocumentReference userDocRef = db.collection("users").document(userId);
 
         userDocRef.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -153,15 +156,11 @@ public class FirebaseHelper {
     /*----------------------------------------------------------------------------------------
             updateLightSettings() --> Sets selectedLightCode to the code received
     ----------------------------------------------------------------------------------------*/
-    private void updateLightSettings(String userId, String selectedLightCode) {
-        DocumentReference userDocRef = db.collection("user").document(userId);
+    public void updateLightSettings(String userId, String selectedLightCode) {
+        DocumentReference userDocRef = db.collection("users").document(userId);
 
-        Map<String, Object> lightSettings = new HashMap<>();
-        lightSettings.put("lightSettings", selectedLightCode);
-
-        userDocRef.collection("preferencesData")
-                .document("lightSettings")
-                .set(lightSettings)
+        userDocRef
+                .update("preferences.lightSettings", selectedLightCode)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Light settings updated successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error updating light settings", e));
     }
