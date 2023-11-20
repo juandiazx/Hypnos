@@ -2,6 +2,7 @@ package com.example.hypnosapp.appactivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
     ImageView btnPerfilUsuario, btnPantallaPrincipal, btnAjustesDescanso, btnPreferencias;
     EditText toneLocationClock, wakeUpHourClock, wakeUpHourGoal, sleepTimeGoal;
     Switch isGradualClock, isAutoClock, goalNotifications, warmLight, coldLight, autoLight;
+    Button btnGuardarClock, btnGuardarGoals;
     private FirebaseHelper firebaseHelper;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
@@ -53,6 +55,8 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         wakeUpHourClock = findViewById(R.id.wakeUpHourClock);
         wakeUpHourGoal = findViewById(R.id.wakeUpHourGoal);
         sleepTimeGoal = findViewById(R.id.sleepTimeGoal);
+        btnGuardarGoals = findViewById(R.id.guardarGoals);
+        btnGuardarClock = findViewById(R.id.guardarClock);
         btnPantallaPrincipal = findViewById(R.id.btnPantallaPrincipal);
         btnAjustesDescanso = findViewById(R.id.btnAjustesDescanso);
         btnPreferencias = findViewById(R.id.btnPreferencias);
@@ -60,7 +64,24 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         loadSleepSettings();
         setSwitchListeners();
 
-
+        btnGuardarClock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //String userId = userID;
+                String userId = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
+                String hour = wakeUpHourClock.getText().toString();
+                String songLocation = toneLocationClock.getText().toString();
+                boolean isSongGradual = isGradualClock.isChecked();
+                boolean isClockAutomatic = isAutoClock.isChecked();
+                firebaseHelper.setClock(userId, hour, songLocation, isSongGradual, isClockAutomatic);
+            }
+        });
+        btnGuardarGoals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Elena
+            }
+        });
         btnPerfilUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +111,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
     private void loadSleepSettings() {
 
         //String userId = userID;
-        String userId = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database
+        String userId = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
 
         firebaseHelper.getClock(userId,
                 new OnSuccessListener<Map<String, Object>>() {
