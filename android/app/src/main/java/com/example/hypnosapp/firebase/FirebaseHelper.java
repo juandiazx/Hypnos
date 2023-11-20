@@ -150,6 +150,21 @@ public class FirebaseHelper {
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Light settings updated successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error updating light settings", e));
     }
+
+    /*----------------------------------------------------------------------------------------
+                              String --> setIdealWakeUpHour()
+    ----------------------------------------------------------------------------------------*/
+    public void setIdealWakeUpHour(String userId, String selectedIdealWakeUpHour){
+        DocumentReference userDocRef = db.collection("user").document(userId);
+
+        Map<String, Object> wakeUpHour = new HashMap<>();
+        wakeUpHour.put("preferences.goals.wakeUpTime", selectedIdealWakeUpHour);
+
+        userDocRef.set(wakeUpHour)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "wakeUpTime updated successfully"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error updating wakeUpTime", e));
+    }
+
 }
 
 

@@ -2,14 +2,21 @@ package com.example.hypnosapp.appactivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.other.MenuManager;
 import com.example.hypnosapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class AjustesDeSuenyoActivity extends AppCompatActivity {
+
+    FirebaseHelper firebaseHelper = new FirebaseHelper();
+    FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +57,20 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                 funcionMenu.abrirAcercaDe(AjustesDeSuenyoActivity.this);
             }
         });
+        //FIN DE FUNCIONALIDAD BOTONES MENUS
 
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = firebaseUser.getUid();
+
+        //PRUEBA
+        Button btnPrueba = findViewById(R.id.btnPrueba);
+        btnPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebaseHelper.setIdealWakeUpHour(userId, "EstoEs una prueba");
+            }
+        });
 
 
 
