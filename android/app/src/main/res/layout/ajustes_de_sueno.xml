@@ -55,12 +55,10 @@
                     android:layout_marginTop="32dp"
                     android:layout_marginEnd="16dp"
                     android:text="@string/AjustesDeSueno"
-                    app:layout_constraintBottom_toTopOf="@+id/frameLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.051" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView10"
@@ -69,36 +67,33 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/Despertador"
-                    app:layout_constraintBottom_toTopOf="@+id/frameLayout"
                     app:layout_constraintEnd_toEndOf="@+id/frameLayout"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/frameLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/ajustes_de_sueno"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/ajustes_de_sueno" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/frameLayout"
                     android:layout_width="0dp"
-                    android:layout_height="169dp"
+                    android:layout_height="200dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="120dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/border_background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@+id/textView10">
 
                     <ImageView
                         android:id="@+id/imageView6"
                         android:layout_width="139dp"
                         android:layout_height="122dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginTop="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.07"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.746"
                         app:srcCompat="@drawable/reloj_provisional" />
 
                     <TextView
@@ -106,7 +101,7 @@
                         style="@style/TextoInterRegular.Texto"
                         android:layout_width="86dp"
                         android:layout_height="27dp"
-                        android:layout_marginTop="48dp"
+                        android:layout_marginTop="72dp"
                         android:background="#00000000"
                         android:text="@string/Gradual"
                         android:textSize="16sp"
@@ -150,15 +145,14 @@
                         style="@style/TextoInterRegular.Texto"
                         android:layout_width="wrap_content"
                         android:layout_height="27dp"
+                        android:layout_marginTop="8dp"
                         android:background="#00000000"
                         android:text="@string/Automatico"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toTopOf="@+id/toneLocationClock"
                         app:layout_constraintEnd_toEndOf="@+id/textView2"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/textView2"
-                        app:layout_constraintTop_toBottomOf="@+id/textView2"
-                        app:layout_constraintVertical_bias="0.534" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
                     <Switch
                         android:id="@+id/switchAutoClock"
@@ -191,27 +185,59 @@
                         style="@style/TextoInterRegular.Texto"
                         android:layout_width="wrap_content"
                         android:layout_height="27dp"
-                        android:layout_marginStart="62dp"
                         android:background="#00000000"
                         android:text="@string/Tono"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/imageView6"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.915" />
+                        app:layout_constraintBottom_toBottomOf="@+id/toneLocationClock"
+                        app:layout_constraintStart_toStartOf="@+id/textView8"
+                        app:layout_constraintTop_toTopOf="@+id/toneLocationClock" />
 
                     <EditText
                         android:id="@+id/toneLocationClock"
                         style="@style/TextoInterRegular.Texto"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="22dp"
                         android:text="null"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/switchAutoClock"
-                        app:layout_constraintStart_toEndOf="@+id/textView9"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.915" />
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@+id/textView9" />
+
+                    <EditText
+                        android:id="@+id/wakeUpHourClock"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:ems="7"
+                        android:inputType="text"
+                        android:text="Null"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toTopOf="@+id/textView2"
+                        app:layout_constraintEnd_toEndOf="@+id/switchGradualClock"
+                        app:layout_constraintStart_toStartOf="@+id/imageView10"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Button
+                        android:id="@+id/guardarClock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="guardar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/imageView6"
+                        app:layout_constraintStart_toStartOf="@+id/imageView6" />
+
+                    <ImageView
+                        android:id="@+id/imageView9"
+                        android:layout_width="20dp"
+                        android:layout_height="25dp"
+                        android:background="#00000000"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView9"
+                        app:layout_constraintStart_toStartOf="@+id/imageView14"
+                        app:layout_constraintTop_toTopOf="@+id/textView9"
+                        app:srcCompat="@drawable/icono_exclamacion" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -233,7 +259,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/frameLayout2"
                     android:layout_width="0dp"
-                    android:layout_height="161dp"
+                    android:layout_height="200dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/border_background"
@@ -272,6 +298,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textView18"
                         app:layout_constraintVertical_bias="0.526" />
 
+
                     <TextView
                         android:id="@+id/textView20"
                         style="@style/TextoInterRegular.Texto"
@@ -285,8 +312,7 @@
                         app:layout_constraintHorizontal_bias="0.073"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.477" />
-
+                        app:layout_constraintVertical_bias="0.323" />
 
                     <EditText
                         android:id="@+id/sleepTimeGoal"
@@ -311,10 +337,10 @@
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.124"
+                        app:layout_constraintHorizontal_bias="0.119"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.865" />
+                        app:layout_constraintVertical_bias="0.59" />
 
                     <Switch
                         android:id="@+id/switchNotifications"
@@ -329,6 +355,16 @@
                         app:layout_constraintVertical_bias="1.0"
                         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
+                    <Button
+                        android:id="@+id/guardarGoals"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="guardar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/switchNotifications"
+                        app:layout_constraintStart_toStartOf="@+id/textView13" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -338,7 +374,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="70dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="32dp"
                     android:background="@drawable/border_background"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
