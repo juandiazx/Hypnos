@@ -101,12 +101,12 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="40dp"
                 android:ems="10"
+                android:hint="@string/NombreApellidos"
                 android:inputType="textEmailAddress"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="16dp"
-                android:hint="@string/NombreApellidos"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -164,12 +164,12 @@
                 android:layout_height="30dp"
                 android:layout_marginEnd="-10dp"
                 android:layout_marginBottom="-10dp"
-                android:clickable="true"
                 android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="@+id/fotoPerfil"
                 app:layout_constraintEnd_toEndOf="@+id/fotoPerfil"
-                app:srcCompat="@drawable/icono_lapiz"
-                android:focusable="true" />
+                app:srcCompat="@drawable/edit_icon" />
 
 
             <ImageView
@@ -184,7 +184,7 @@
                 app:layout_constraintHorizontal_bias="0.96"
                 app:layout_constraintStart_toStartOf="@+id/nombreApellidosPerfil"
                 app:layout_constraintTop_toTopOf="@+id/nombreApellidosPerfil"
-                app:srcCompat="@drawable/icono_lapiz" />
+                app:srcCompat="@drawable/edit_icon" />
 
             <Button
                 android:id="@+id/btnCambiarContrasenya"
@@ -221,18 +221,30 @@
             <ImageView
                 android:id="@+id/confirmarCambioNombre"
                 android:visibility="gone"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:srcCompat="@drawable/check_icon"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:background="@android:color/transparent"
                 android:clickable="true"
                 android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="@+id/nombreApellidosPerfil"
                 app:layout_constraintEnd_toEndOf="@+id/nombreApellidosPerfil"
-                app:layout_constraintHorizontal_bias="0.96"
+                app:layout_constraintHorizontal_bias="0.921"
                 app:layout_constraintStart_toStartOf="@+id/nombreApellidosPerfil"
-                app:layout_constraintTop_toTopOf="@+id/nombreApellidosPerfil"/>
+                app:layout_constraintTop_toTopOf="@+id/nombreApellidosPerfil"
+                app:srcCompat="@drawable/check_icon_1" />
 
+            <ImageView
+                android:id="@+id/cancelarCambioNombre"
+                android:visibility="gone"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/confirmarCambioNombre"
+                app:layout_constraintStart_toEndOf="@+id/confirmarCambioNombre"
+                app:layout_constraintTop_toTopOf="@+id/confirmarCambioNombre"
+                app:srcCompat="@drawable/cancel_icon_1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

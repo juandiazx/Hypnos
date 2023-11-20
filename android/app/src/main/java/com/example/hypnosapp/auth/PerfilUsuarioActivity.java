@@ -156,8 +156,11 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
                     //para confirmar el cambio de nombre:
                     ImageView confirmarCambioNombre = findViewById(R.id.confirmarCambioNombre);
+                    ImageView cancelarCambioNombre = findViewById(R.id.cancelarCambioNombre);
+
                     editarNombre.setVisibility(View.GONE);
                     confirmarCambioNombre.setVisibility(View.VISIBLE);
+                    cancelarCambioNombre.setVisibility(View.VISIBLE);
                     confirmarCambioNombre.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -165,6 +168,18 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
                             actualizarNombreUsuario(nombreNuevo, firebaseUser);
                             confirmarCambioNombre.setVisibility(View.GONE);
+                            cancelarCambioNombre.setVisibility(View.GONE);
+                            editarNombre.setVisibility(View.VISIBLE);
+                            inputNombreApellidos.setVisibility(View.INVISIBLE);
+                            nombreApellidos.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                    cancelarCambioNombre.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            confirmarCambioNombre.setVisibility(View.GONE);
+                            cancelarCambioNombre.setVisibility(View.GONE);
                             editarNombre.setVisibility(View.VISIBLE);
                             inputNombreApellidos.setVisibility(View.INVISIBLE);
                             nombreApellidos.setVisibility(View.VISIBLE);
