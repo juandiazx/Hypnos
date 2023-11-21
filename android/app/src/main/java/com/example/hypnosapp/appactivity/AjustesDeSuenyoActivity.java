@@ -186,6 +186,25 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                                 "We couldn't obtain your ideal rest time", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        firebaseHelper.getNotifications(userId,
+                new OnSuccessListener<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean notificationSetting) {
+                        if(notificationSetting){
+                            goalNotifications.setChecked(true);
+                        } else{
+                            goalNotifications.setChecked(false);
+                        }
+                    }
+                },
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText( AjustesDeSuenyoActivity.this,
+                                "We couldn't obtain your sleep notifications settings", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
     private void updateClockSettingsUI(Map<String, Object> clockSettings) {
         if (clockSettings != null) {
@@ -275,6 +294,17 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
                     // Update setting in the database
                     firebaseHelper.setLightAuto(userID);
+                }
+            }
+        });
+
+        goalNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if(isChecked){
+                    firebaseHelper.setNotifications(userID, true);
+                } else{
+                    firebaseHelper.setNotifications(userID, false);
                 }
             }
         });

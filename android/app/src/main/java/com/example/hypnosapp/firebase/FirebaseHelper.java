@@ -391,6 +391,60 @@ public class FirebaseHelper {
                 });
     }
 
+    /*----------------------------------------------------------------------------------------
+                             bool --> setNotifications()
+    ----------------------------------------------------------------------------------------*/
+    public void setNotifications(String userId, boolean decision) {
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        userDocRef
+                .update("preferences.goals.sleepNotifications", decision)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "notifications updated successfully"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error updating notifications", e));
+    }
+
+    /*----------------------------------------------------------------------------------------
+                             getNotifications() --> bool
+    ----------------------------------------------------------------------------------------*/
+    public void getNotifications(String userId, final OnSuccessListener<Boolean> successListener, final OnFailureListener failureListener){
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        userDocRef.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+
+                            if(document.exists()) {
+                                Map<String, Object> userData = document.getData();
+
+                                if (userData != null && userData.containsKey("preferences")) {
+                                    Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
+
+                                    if (preferences != null && preferences.containsKey("goals")) {
+                                        Map<String, Object> goals = (Map<String, Object>) preferences.get("goals");
+
+                                        if (goals != null && goals.containsKey("sleepNotifications")) {
+                                            Boolean notifications = (Boolean) goals.get("sleepNotifications");
+                                            successListener.onSuccess(notifications);
+                                        }
+                                    }
+                                }
+                            } else{
+                                Log.d(TAG, "No wakeUpTimeGoal document found");
+                                successListener.onSuccess(null);
+                            }
+
+                        }
+                        else{
+                            Log.e(TAG, "Error getting user document", task.getException());
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
 
 }//class
 
