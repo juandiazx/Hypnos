@@ -81,7 +81,8 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         btnGuardarGoals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Elena
+                String selectedWakeUpHour = wakeUpHourGoal.getText().toString();
+                firebaseHelper.setIdealWakeUpHour(userID, selectedWakeUpHour);
             }
         });
         btnPerfilUsuario.setOnClickListener(new View.OnClickListener() {
@@ -111,15 +112,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
         //FIN DE FUNCIONALIDAD BOTONES MENUS
 
-        //PRUEBA
-        String userId = firebaseUser.getUid();
-        Button btnPrueba = findViewById(R.id.btnPrueba);
-        btnPrueba.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            firebaseHelper.setIdealWakeUpHour(userId, "EstoEs una prueba");
-        }
-    }); }
+    }//onCreate
     private void loadSleepSettings() {
 
         String userId = userID;
@@ -251,4 +244,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
