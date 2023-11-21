@@ -139,6 +139,8 @@
                 android:text="@string/PoliticaDePrivTexto"
                 android:textSize="14sp" />
 
+
+
             <!-- FIN DE FOOTER -->
 
         </LinearLayout>

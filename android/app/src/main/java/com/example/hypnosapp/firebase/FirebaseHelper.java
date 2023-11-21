@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,13 @@ public class FirebaseHelper {
 
     public FirebaseHelper() {
         db = FirebaseFirestore.getInstance();
+    }
+
+    // Interfaz para manejar la carga exitosa de la Night o los errores
+    public interface OnNightLoadedListener {
+        void onNightLoaded(Night night);
+
+        void onNightLoadError(Exception e);
     }
 
     /*----------------------------------------------------------------------------------------
@@ -144,6 +153,7 @@ public class FirebaseHelper {
         // Update lightSettings in Firestore to AUT
         updateLightSettings(userId, "AUT");
     }
+
     /*----------------------------------------------------------------------------------------
                setLightWarm() --> Sets selectedLightCode to WAR in the database
     ----------------------------------------------------------------------------------------*/
@@ -151,6 +161,7 @@ public class FirebaseHelper {
         // Update lightSettings in Firestore to WAR
         updateLightSettings(userId, "WAR");
     }
+
     /*----------------------------------------------------------------------------------------
                setLightCold() --> Sets selectedLightCode to COL in the database
     ----------------------------------------------------------------------------------------*/
@@ -238,4 +249,66 @@ public class FirebaseHelper {
                     }
                 });
     }
+
+    /*----------------------------------------------------------------------------------------------
+                              UserID --> getLastNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    public void getLastNight(String userId, final OnSuccessListener<List<Night>> successListener, final OnFailureListener failureListener) {
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            successListener.onSuccess(nightsList);
+                        } else {
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
 }
+
+
+
+    /*
+    public void getLastNight(String userID, final OnNightLoadedListener listener) {
+
+        CollectionReference nightsRef = db.collection("users").document(userID).collection("nightsData");
+
+        // Consulta para obtener la noche más reciente basada en la fecha
+        Query query = nightsRef.orderBy("date", Query.Direction.DESCENDING).limit(1);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NotNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (Night night : task.getResult().toObjects(Night.class)) {
+                        //Date date = night.getDate();
+                        Log.d(TAG, "SE CONTACTA CON FIREBASE");
+
+                        listener.onNightLoaded(night);
+                    }
+                } else {
+                    Log.e(TAG, "Error getting documents: ", task.getException());
+                    listener.onNightLoadError(task.getException());
+                }
+            }
+        });
+
+
+
+    }
+
+     */
+
+
+
