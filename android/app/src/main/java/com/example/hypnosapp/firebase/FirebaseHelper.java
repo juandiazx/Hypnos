@@ -335,7 +335,19 @@ public class FirebaseHelper {
         });
     }
 
+    /*----------------------------------------------------------------------------------------
+                             String --> setIdealRestTime()
+    ----------------------------------------------------------------------------------------*/
+    public void setIdealRestTime(String userId, String selectedIdealRestTime){
+        DocumentReference userDocRef = db.collection("users").document(userId);
 
+        Map<String, Object> idealRestTime = new HashMap<>();
+        idealRestTime.put("preferences.goals.restTime", selectedIdealRestTime);
+
+        userDocRef.update(idealRestTime)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "idealRestTime updated successfully"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error updating wakeUpTime", e));
+    }
 
 }//class
 

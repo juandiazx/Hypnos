@@ -83,7 +83,11 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String selectedWakeUpHour = wakeUpHourGoal.getText().toString();
+                String selectedIdelRestTime = sleepTimeGoal.getText().toString();
+
                 firebaseHelper.setIdealWakeUpHour(userID, selectedWakeUpHour);
+                firebaseHelper.setIdealRestTime(userID, selectedIdelRestTime);
+
             }
         });
         btnPerfilUsuario.setOnClickListener(new View.OnClickListener() {
