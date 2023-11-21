@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.hypnosapp.ManejoPermisosUbicacion;
 import com.example.hypnosapp.NotificacionService;
 import com.example.hypnosapp.R;
 import com.example.hypnosapp.appactivity.AcercaDeActivity;
@@ -47,9 +48,20 @@ public class PreinicioDeSesion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.preinicio_de_sesion);
 
+        // ------- INICIAR EL SERIVICIO PARA MOSTRAR LA NOTIFICACIÓN --------------
+
         // Iniciar el servicio para mostrar la notificación
         Intent intent = new Intent(this, NotificacionService.class);
         startService(intent);
+
+        // ------------------------------------------------------------------------
+
+
+        // ----------  Llamada para solicitar permiso de ubicación
+
+        ManejoPermisosUbicacion.solicitarPermisoUbicacion(this);
+
+        // ----------------------------------------------------------
 
         btnGoogle = findViewById(R.id.btnGoogle);
         btnFacebook = findViewById(R.id.btnFacebook);
@@ -92,6 +104,17 @@ public class PreinicioDeSesion extends AppCompatActivity {
             }
         });
     }
+
+    // PARA SOLICITAR EL PERMISO DE UBICACIÓN
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        ManejoPermisosUbicacion.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    // --------------------------------------
+
 
     public void pulsaEmail() {
         Intent intent = new Intent(PreinicioDeSesion.this, InicioDeSesion.class);

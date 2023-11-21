@@ -34,15 +34,15 @@ public class NotificacionService extends IntentService {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
-                    CANAL_ID, "Canal de Bienvenida",
+                    CANAL_ID, "Canal de consejos",
                     NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setDescription("Canal para mensajes de bienvenida");
+            notificationChannel.setDescription("Canal para consejos");
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
         NotificationCompat.Builder notificacion = new NotificationCompat.Builder(this, CANAL_ID)
-                .setContentTitle("¡Bienvenido a Hypnos!")
-                .setContentText("Inicia sesión o regístrate para explorar todas las funciones.")
+                .setContentTitle("¡Consejo diario!")
+                .setContentText(" Revisa las estadísticas de la última noche.")
                 .setSmallIcon(R.drawable.luna_peque)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.img));
         // Otros detalles de la notificación...
