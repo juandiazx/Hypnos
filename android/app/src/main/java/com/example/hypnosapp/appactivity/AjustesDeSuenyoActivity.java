@@ -171,6 +171,21 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                                 "We couldn't obtain your ideal wake up hour", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        firebaseHelper.getIdealRestTime(userId,
+                new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String idealRestTime) {
+                        sleepTimeGoal.setText(idealRestTime);
+                    }
+                },
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText( AjustesDeSuenyoActivity.this,
+                                "We couldn't obtain your ideal rest time", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
     private void updateClockSettingsUI(Map<String, Object> clockSettings) {
         if (clockSettings != null) {

@@ -349,6 +349,49 @@ public class FirebaseHelper {
                 .addOnFailureListener(e -> Log.e(TAG, "Error updating wakeUpTime", e));
     }
 
+    /*----------------------------------------------------------------------------------------
+                             getIdealRestTime() --> String
+    ----------------------------------------------------------------------------------------*/
+    public void getIdealRestTime(String userId, final OnSuccessListener<String> successListener, final OnFailureListener failureListener){
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        userDocRef.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+
+                            if(document.exists()) {
+                                Map<String, Object> userData = document.getData();
+
+                                if (userData != null && userData.containsKey("preferences")) {
+                                    Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
+
+                                    if (preferences != null && preferences.containsKey("goals")) {
+                                        Map<String, Object> goals = (Map<String, Object>) preferences.get("goals");
+
+                                        if (goals != null && goals.containsKey("restTime")) {
+                                            String wakeUpTimeGoal = (String) goals.get("restTime");
+                                            successListener.onSuccess(wakeUpTimeGoal);
+                                        }
+                                    }
+                                }
+                            } else{
+                                Log.d(TAG, "No wakeUpTimeGoal document found");
+                                successListener.onSuccess(null);
+                            }
+
+                        }
+                        else{
+                            Log.e(TAG, "Error getting user document", task.getException());
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+
 }//class
 
 
