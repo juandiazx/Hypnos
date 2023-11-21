@@ -42,11 +42,7 @@ public class FirebaseHelper {
 
         void onNightLoadError(Exception e);
     }
-
-    /*----------------------------------------------------------------------------------------
-                getClock() --> HASHMAP[String hour, songLocation
-                              bool isSongGradual, isClockAutomatic]
-    ----------------------------------------------------------------------------------------*/
+    
     /*----------------------------------------------------------------------------------------
                 getClock() --> HASHMAP[String hour, songLocation
                               bool isSongGradual, isClockAutomatic]
