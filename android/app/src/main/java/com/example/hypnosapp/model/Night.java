@@ -48,5 +48,19 @@ public class Night {
     public void setTime(int time) {
         this.time = time;
     }
+
+    public Night() {
+    }
+
+    public Night(Date date, String breathing, int score, int temperature, int time) {
+
+        this.date = date;
+        this.breathing = breathing;
+        this.score = score;
+        this.temperature = temperature;
+        this.time = time;
+
+    }
+
 }
 

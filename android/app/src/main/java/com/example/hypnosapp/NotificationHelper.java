@@ -15,7 +15,6 @@ import com.example.hypnosapp.appactivity.MainActivity;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
-
 public class NotificationHelper {
 
     public static final String CHANNEL_ID = "SleepAppChannel";

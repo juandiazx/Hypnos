@@ -1,16 +1,15 @@
 package com.example.hypnosapp.model;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class User {
     private String birth;
     private String email;
-    private Map<String, Object> goals; // El mapa goals ahora contiene goBedTime, time y wakeUpTime
     private String name;
     private String picture;
     private List<String> problems;
-    private Map<String, Boolean> settings;
+    private Preferences preferences;
 
     public String getBirth() {
         return birth;
@@ -26,14 +25,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Map<String, Object> getGoals() {
-        return goals;
-    }
-
-    public void setGoals(Map<String, Object> goals) {
-        this.goals = goals;
     }
 
     public String getName() {
@@ -60,12 +51,41 @@ public class User {
         this.problems = problems;
     }
 
-    public Map<String, Boolean> getSettings() {
-        return settings;
+    public Preferences getPreferences() {
+        return preferences;
     }
 
-    public void setSettings(Map<String, Boolean> settings) {
-        this.settings = settings;
+    public void setPreferences(Preferences preferences) {
+        this.preferences = preferences;
+    }
+
+    public static class Preferences {
+        private Map<String, Object> clockSettings; // Map for clockSettings
+        private String lightSettings;
+        private Map<String, Object> goals; // Map for goals
+
+        public Map<String, Object> getClockSettings() {
+            return clockSettings;
+        }
+
+        public void setClockSettings(Map<String, Object> clockSettings) {
+            this.clockSettings = clockSettings;
+        }
+
+        public String getLightSettings() {
+            return lightSettings;
+        }
+
+        public void setLightSettings(String lightSettings) {
+            this.lightSettings = lightSettings;
+        }
+
+        public Map<String, Object> getGoals() {
+            return goals;
+        }
+
+        public void setGoals(Map<String, Object> goals) {
+            this.goals = goals;
+        }
     }
 }
-
