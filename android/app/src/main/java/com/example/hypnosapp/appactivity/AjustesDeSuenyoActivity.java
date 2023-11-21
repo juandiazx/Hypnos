@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
@@ -151,6 +152,21 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                                 "We couldn't obtain your light settings", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        firebaseHelper.getIdealWakeUpHour(userId,
+                new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String idealWakeUpHour) {
+                        wakeUpHourGoal.setText(idealWakeUpHour);
+                    }
+                },
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText( AjustesDeSuenyoActivity.this,
+                                "We couldn't obtain your ideal wake up hour", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
     private void updateClockSettingsUI(Map<String, Object> clockSettings) {
         if (clockSettings != null) {
@@ -244,6 +260,4 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

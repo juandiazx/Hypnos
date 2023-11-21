@@ -4,6 +4,8 @@ import com.example.hypnosapp.model.Night;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -284,13 +286,58 @@ public class FirebaseHelper {
         DocumentReference userDocRef = db.collection("users").document(userId);
 
         Map<String, Object> wakeUpHour = new HashMap<>();
-        wakeUpHour.put("preferences.clockSettings.wakeUpTime", selectedIdealWakeUpHour);
+        wakeUpHour.put("preferences.goals.wakeUpTimeGoal", selectedIdealWakeUpHour);
 
         userDocRef.update(wakeUpHour)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "wakeUpTime updated successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error updating wakeUpTime", e));
     }
-}
+
+    /*----------------------------------------------------------------------------------------
+                             getIdealWakeUpHour() --> String
+    ----------------------------------------------------------------------------------------*/
+    public void getIdealWakeUpHour(String userId, final OnSuccessListener<String> successListener, final OnFailureListener failureListener){
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        userDocRef.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+
+                            if(document.exists()) {
+                                Map<String, Object> userData = document.getData();
+
+                                if (userData != null && userData.containsKey("preferences")) {
+                                    Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
+
+                                    if (preferences != null && preferences.containsKey("goals")) {
+                                        Map<String, Object> goals = (Map<String, Object>) preferences.get("goals");
+
+                                        if (goals != null && goals.containsKey("wakeUpTimeGoal")) {
+                                            String wakeUpTimeGoal = (String) goals.get("wakeUpTimeGoal");
+                                            successListener.onSuccess(wakeUpTimeGoal);
+                                        }
+                                    }
+                                }
+                            } else{
+                                Log.d(TAG, "No wakeUpTimeGoal document found");
+                                successListener.onSuccess(null);
+                            }
+
+                            }
+                            else{
+                                Log.e(TAG, "Error getting user document", task.getException());
+                                failureListener.onFailure(task.getException());
+                            }
+                        }
+        });
+    }
+
+
+
+}//class
 
 
 
