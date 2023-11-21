@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.hypnosapp.NotificacionService;
 import com.example.hypnosapp.R;
 import com.example.hypnosapp.appactivity.AcercaDeActivity;
 import com.example.hypnosapp.mainpage.Pantalla_Principal;
@@ -45,6 +46,10 @@ public class PreinicioDeSesion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.preinicio_de_sesion);
+
+        // Iniciar el servicio para mostrar la notificación
+        Intent intent = new Intent(this, NotificacionService.class);
+        startService(intent);
 
         btnGoogle = findViewById(R.id.btnGoogle);
         btnFacebook = findViewById(R.id.btnFacebook);
