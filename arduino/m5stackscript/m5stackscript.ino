@@ -67,3 +67,69 @@ void loop() {
         delay(10);
     }
 }
+
+//CODIGO POSIBLE MQTT
+/*
+#include <M5Stack.h>
+#include <AsyncUDP.h>
+#include <ArduinoJson.h>
+#include <WiFi.h>
+#include <PubSubClient.h>
+
+#include "M5StackAbstract.h"
+
+M5StackAbstract* m5stackAbstract;
+WiFiClient espClient;
+PubSubClient mqttClient(espClient);
+
+void setup() {
+    Serial.begin(115200);
+    m5stackAbstract = M5StackAbstract::getInstance(ssid, password, udpPort);
+    M5.Speaker.begin(); // Inicializamos sistema de sonido
+
+    // Inicializar conexión MQTT
+    mqttClient.setServer("IP_RASPBERRY_PI", 1883);  // Cambia esto con la IP de tu Raspberry Pi
+    //mqttClient.setCallback(callback);  // Agrega un callback si lo necesitas
+}
+
+void loop() {
+    m5stackAbstract->printLogoWhiteBackground();
+    bool previousButtonState = false;
+    bool currentButtonState;
+    
+    while (1) {
+        // ... (Código existente)
+
+        // Después de mostrar los datos en la pantalla
+        if (m5stackAbstract->receivedSensorsData == 2) {
+            m5stackAbstract->switchLightM5StackAbstract();
+            delay(2000);
+            m5stackAbstract->showDataInScreen();
+            delay(6000);
+
+            // Aquí es donde agregarás la funcionalidad MQTT
+            if (mqttClient.connect("M5StackClient")) {
+                // Publicar un mensaje en el topic deseado
+                const char* topic = "m5stack_topic";
+                const char* message = "Mensaje que quieres enviar por MQTT";
+                mqttClient.publish(topic, message);
+                Serial.println("Mensaje MQTT enviado con éxito");
+                
+                // Puedes agregar más lógica MQTT aquí si es necesario
+
+                // Desconectar del broker MQTT
+                mqttClient.disconnect();
+            } else {
+                Serial.println("Error al conectar al broker MQTT");
+            }
+
+            break;
+        }
+
+        // ... (Código existente)
+    }
+}
+
+// ... (Resto del código)
+
+*/
