@@ -26,13 +26,7 @@
 
 
         <activity
-            android:name=".appactivity.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".appactivity.MainActivity">
         </activity>
 
         <activity
@@ -44,27 +38,30 @@
             android:name=".mainpage.Pantalla_Principal">
 
         </activity>
+
         <activity
             android:name=".auth.PerfilUsuarioActivity">
 
         </activity>
+
         <activity
             android:name=".appactivity.AcercaDeActivity">
 
         </activity>
+
         <activity
             android:name=".appactivity.AjustesDeSuenyoActivity">
 
         </activity>
+
         <activity
             android:name=".historial.Historial">
-
         </activity>
 
         <activity
             android:name=".auth.Registro">
-
         </activity>
+
         <activity
             android:name=".auth.PreinicioDeSesion"
             android:exported="true">
@@ -80,6 +77,7 @@
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -91,15 +89,10 @@
             </intent-filter>
         </activity>
 
-
-
-
-
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
 
-
-
+        <service android:name=".NotificacionService" />
 
     </application>
 

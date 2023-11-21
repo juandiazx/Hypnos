@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.hypnosapp.NotificacionService;
 import com.example.hypnosapp.R;
+import com.example.hypnosapp.appactivity.AcercaDeActivity;
 import com.example.hypnosapp.mainpage.Pantalla_Principal;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -35,11 +39,23 @@ public class PreinicioDeSesion extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static final String TAG = "FacebookLogin";
+    Button btnGoogle, btnFacebook, btnEmail;
+    TextView tvRegistrate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.preinicio_de_sesion);
+
+        // Iniciar el servicio para mostrar la notificación
+        Intent intent = new Intent(this, NotificacionService.class);
+        startService(intent);
+
+        btnGoogle = findViewById(R.id.btnGoogle);
+        btnFacebook = findViewById(R.id.btnFacebook);
+        btnEmail = findViewById(R.id.btnEmail);
+        tvRegistrate = findViewById(R.id.tvRegistratePreinicio);
+
         //binding = PreinicioDeSesionBinding.inflate(getLayoutInflater());
         //setContentView(binding.getRoot());
         // Inicializa la instancia de GoogleHelper
@@ -47,19 +63,47 @@ public class PreinicioDeSesion extends AppCompatActivity {
 
         //Llamada de inicio al método de facebook iniciar auth
         handleFacebookStart();
+
+        btnGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pulsaIniciarConGoogle();
+            }
+        });
+
+        btnFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pulsaIniciarConFacebook();
+            }
+        });
+
+        btnEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pulsaEmail();
+            }
+        });
+
+        tvRegistrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pulsaRegistrar();
+            }
+        });
     }
 
-    public void pulsaEmail(View view) {
+    public void pulsaEmail() {
         Intent intent = new Intent(PreinicioDeSesion.this, InicioDeSesion.class);
         startActivity(intent);
     }
 
-    public void pulsaRegistrar(View view) {
+    public void pulsaRegistrar() {
         Intent intent = new Intent(PreinicioDeSesion.this, Registro.class);
         startActivity(intent);
     }
 
-    public void pulsaIniciarConGoogle(View view) {
+    public void pulsaIniciarConGoogle() {
         googleHelper.iniciarConGoogle();
     }
 
@@ -90,9 +134,10 @@ public class PreinicioDeSesion extends AppCompatActivity {
     //FACEBOOK
     //----------------------------------------------------------------------------------------------------------
     //Metodo onClick del boton personalizado de facebook, llama al boton escondido de facebook y hace click
-    public void pulsaIniciarConFacebook(View view) {
+    public void pulsaIniciarConFacebook() {
         loginButtonFacebookEscondido.performClick();
     }
+
     //Metodo inicial llamado en el onCreate()
     private void handleFacebookStart(){
         // Initialize Facebook Login button

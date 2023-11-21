@@ -1,6 +1,6 @@
 package com.example.hypnosapp.firebase;
 
-import com.example.hypnosapp.model.User;
+import com.example.hypnosapp.model.Night;
 
 import android.util.Log;
 
@@ -9,54 +9,82 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.database.annotations.NotNull;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseHelper {
     private static final String TAG = "FirebaseHelper";
 
-    private FirebaseFirestore db;
+    private final FirebaseFirestore db;
 
     public FirebaseHelper() {
         db = FirebaseFirestore.getInstance();
+    }
+
+    // Interfaz para manejar la carga exitosa de la Night o los errores
+    public interface OnNightLoadedListener {
+        void onNightLoaded(Night night);
+
+        void onNightLoadError(Exception e);
     }
 
     /*----------------------------------------------------------------------------------------
                 getClock() --> HASHMAP[String hour, songLocation
                               bool isSongGradual, isClockAutomatic]
     ----------------------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------------------
+                getClock() --> HASHMAP[String hour, songLocation
+                              bool isSongGradual, isClockAutomatic]
+    ----------------------------------------------------------------------------------------*/
     public void getClock(String userId, final OnSuccessListener<Map<String, Object>> successListener, final OnFailureListener failureListener) {
         // Retrieve clock settings from Firestore and return as a HashMap
-        DocumentReference userDocRef = db.collection("user").document(userId);
+        DocumentReference userDocRef = db.collection("users").document(userId);
 
-        userDocRef.collection("preferencesData")
-                .document("clockSettings")
-                .get()
+        userDocRef.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                // DocumentSnapshot data represents the clockSettings map
-                                Map<String, Object> clockSettings = document.getData();
-                                successListener.onSuccess(clockSettings);
-                            } else {
-                                Log.d(TAG, "No such document");
-                                successListener.onSuccess(Collections.emptyMap()); // Return an empty map if document doesn't exist
+                                // DocumentSnapshot data represents the user document
+                                Map<String, Object> userData = document.getData();
+
+                                if (userData != null && userData.containsKey("preferences")) {
+                                    // Extract the preferences map from the user document
+                                    Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
+
+                                    // Extract the clockSettings map from preferences
+                                    if (preferences != null && preferences.containsKey("clockSettings")) {
+                                        Map<String, Object> clockSettings = (Map<String, Object>) preferences.get("clockSettings");
+                                        successListener.onSuccess(clockSettings);
+                                        return;
+                                    }
+                                }
                             }
+                            Log.d(TAG, "No clockSettings map found");
+                            successListener.onSuccess(Collections.emptyMap()); // Return an empty map if clockSettings document doesn't exist
                         } else {
-                            Log.e(TAG, "Error getting clock settings", task.getException());
+                            Log.e(TAG, "Error getting user document", task.getException());
                             failureListener.onFailure(task.getException());
                         }
                     }
                 });
     }
+
 
     /*----------------------------------------------------------------------------------------
                    String hour, songLocation     ----> setClock()
@@ -64,49 +92,54 @@ public class FirebaseHelper {
     ----------------------------------------------------------------------------------------*/
     public void setClock(String userId, String hour, String songLocation, boolean isSongGradual, boolean isClockAutomatic) {
         // Update clock settings in Firestore
-        DocumentReference userDocRef = db.collection("user").document(userId);
+        DocumentReference userDocRef = db.collection("users").document(userId);
 
         Map<String, Object> clockSettings = new HashMap<>();
+        clockSettings.put("alarmHour", hour);
         clockSettings.put("isAutomatic", isClockAutomatic);
         clockSettings.put("isGradual", isSongGradual);
         clockSettings.put("toneLocation", songLocation);
 
-        userDocRef.collection("preferencesData")
-                .document("clockSettings")
-                .set(clockSettings)
+        userDocRef
+                .update("preferences.clockSettings", clockSettings)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Clock settings updated successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error updating clock settings", e));
     }
-
 
     /*----------------------------------------------------------------------------------------
                 getLightSettings() --> returns WAR, COL or AUT depending on which
                 option has been selected before.
     ----------------------------------------------------------------------------------------*/
     public void getLightSettings(String userId, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
-        final String[] selectedLightCode = {null}; // Using an array to make it effectively final
-
         // Retrieve light settings from Firestore and return the selectedLightCode
-        DocumentReference userDocRef = db.collection("user").document(userId);
+        DocumentReference userDocRef = db.collection("users").document(userId);
 
-        userDocRef.collection("preferencesData")
-                .document("lightSettings")
-                .get()
+        userDocRef.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                // DocumentSnapshot data represents the lightSettings value
-                                selectedLightCode[0] = document.getString("lightSettings");
-                                successListener.onSuccess(selectedLightCode[0]);
-                            } else {
-                                Log.d(TAG, "No such document");
-                                successListener.onSuccess(null); // Return null if document doesn't exist
+                                // DocumentSnapshot data represents the user document
+                                Map<String, Object> userData = document.getData();
+
+                                if (userData != null && userData.containsKey("preferences")) {
+                                    // Extract the preferences map from the user document
+                                    Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
+
+                                    // Extract the lightSettings string from preferences
+                                    if (preferences != null && preferences.containsKey("lightSettings")) {
+                                        String lightSettings = (String) preferences.get("lightSettings");
+                                        successListener.onSuccess(lightSettings);
+                                        return;
+                                    }
+                                }
                             }
+                            Log.d(TAG, "No lightSettings document found");
+                            successListener.onSuccess(null); // Return null if lightSettings document doesn't exist
                         } else {
-                            Log.e(TAG, "Error getting light settings", task.getException());
+                            Log.e(TAG, "Error getting user document", task.getException());
                             failureListener.onFailure(task.getException());
                         }
                     }
@@ -120,6 +153,7 @@ public class FirebaseHelper {
         // Update lightSettings in Firestore to AUT
         updateLightSettings(userId, "AUT");
     }
+
     /*----------------------------------------------------------------------------------------
                setLightWarm() --> Sets selectedLightCode to WAR in the database
     ----------------------------------------------------------------------------------------*/
@@ -127,6 +161,7 @@ public class FirebaseHelper {
         // Update lightSettings in Firestore to WAR
         updateLightSettings(userId, "WAR");
     }
+
     /*----------------------------------------------------------------------------------------
                setLightCold() --> Sets selectedLightCode to COL in the database
     ----------------------------------------------------------------------------------------*/
@@ -138,17 +173,108 @@ public class FirebaseHelper {
     /*----------------------------------------------------------------------------------------
             updateLightSettings() --> Sets selectedLightCode to the code received
     ----------------------------------------------------------------------------------------*/
-    private void updateLightSettings(String userId, String selectedLightCode) {
-        DocumentReference userDocRef = db.collection("user").document(userId);
+    public void updateLightSettings(String userId, String selectedLightCode) {
+        DocumentReference userDocRef = db.collection("users").document(userId);
 
-        Map<String, Object> lightSettings = new HashMap<>();
-        lightSettings.put("lightSettings", selectedLightCode);
-
-        userDocRef.collection("preferencesData")
-                .document("lightSettings")
-                .set(lightSettings)
+        userDocRef
+                .update("preferences.lightSettings", selectedLightCode)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Light settings updated successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error updating light settings", e));
+    }
+
+    /*----------------------------------------------------------------------------------------------
+        getAllNights() --> int pages, returns the number of pages that will be shown on the pager
+    ------------------------------------------------------------------------------------------------*/
+    public void getPagesFromAllNights(String userId, OnSuccessListener<Integer> successListener, OnFailureListener failureListener) {
+        CollectionReference userNightsRef = db.collection("users").document(userId).collection("nightsData");
+
+        userNightsRef.get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        int numberOfNights = task.getResult().size();
+                        int pages = (int) Math.ceil((double) numberOfNights / 15);
+                        successListener.onSuccess(pages);
+                    } else {
+                        Log.e(TAG, "Error getting nightsData documents", task.getException());
+                        failureListener.onFailure(task.getException());
+                    }
+                });
+    }
+
+    /*----------------------------------------------------------------------------------------------
+        int Page --> getFifteenNights() --> Fifteen Pages, if page equals 1, returns the last
+        fifteen, else if page = 2, returns the nights from the last 16 to 30 days.
+    ----------------------------------------------------------------------------------------------*/
+    public void getFifteenNights(String userId, int page,
+                                 final OnSuccessListener<List<Night>> successListener,
+                                 final OnFailureListener failureListener) {
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        // Define the query to get the relevant nights
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+
+                            // Sort the nightsList based on date (assuming it's a Date type)
+                            Collections.sort(nightsList, (o1, o2) -> o2.getDate().compareTo(o1.getDate()));
+
+                            // Determine the range of nights to return based on the page number
+                            int startIdx = (page - 1) * 15;
+                            int endIdx = startIdx + 15;
+
+                            // Ensure the indices are within the bounds of the list
+                            if (startIdx < nightsList.size()) {
+                                endIdx = Math.min(endIdx, nightsList.size());
+                                List<Night> selectedNights = nightsList.subList(startIdx, endIdx);
+                                successListener.onSuccess(selectedNights);
+                            } else {
+                                // No nights found for the given page
+                                successListener.onSuccess(Collections.emptyList());
+                            }
+                        } else {
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+    /*----------------------------------------------------------------------------------------------
+                              UserID --> getLastNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    public void getLastNight(String userId, final OnSuccessListener<List<Night>> successListener, final OnFailureListener failureListener) {
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            successListener.onSuccess(nightsList);
+                        } else {
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
     }
 
     /*----------------------------------------------------------------------------------------
@@ -168,13 +294,36 @@ public class FirebaseHelper {
 }
 
 
+
     /*
+    public void getLastNight(String userID, final OnNightLoadedListener listener) {
 
-    functions for nightHistory
+        CollectionReference nightsRef = db.collection("users").document(userID).collection("nightsData");
 
-        int Page --> getFifteenNights() --> Fifteen Pages, if page = 0, returns the last fifteen,
-        else if page = 1, returns the nights of 16 to 30 last days.
+        // Consulta para obtener la noche más reciente basada en la fecha
+        Query query = nightsRef.orderBy("date", Query.Direction.DESCENDING).limit(1);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NotNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (Night night : task.getResult().toObjects(Night.class)) {
+                        //Date date = night.getDate();
+                        Log.d(TAG, "SE CONTACTA CON FIREBASE");
 
-        getAllNights() --> int pages, returns the number of pages that will be shown on the pager
+                        listener.onNightLoaded(night);
+                    }
+                } else {
+                    Log.e(TAG, "Error getting documents: ", task.getException());
+                    listener.onNightLoadError(task.getException());
+                }
+            }
+        });
 
-    */
+
+
+    }
+
+     */
+
+
+
