@@ -34,9 +34,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     String userID;
 
-    FirebaseHelper firebaseHelper = new FirebaseHelper();
-    FirebaseUser firebaseUser;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,14 +108,23 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                 funcionMenu.abrirAcercaDe(AjustesDeSuenyoActivity.this);
             }
         });
-    }
+
         //FIN DE FUNCIONALIDAD BOTONES MENUS
 
+        //PRUEBA
+        String userId = firebaseUser.getUid();
+        Button btnPrueba = findViewById(R.id.btnPrueba);
+        btnPrueba.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            firebaseHelper.setIdealWakeUpHour(userId, "EstoEs una prueba");
+        }
+    }); }
     private void loadSleepSettings() {
 
         String userId = userID;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = firebaseUser.getUid();
+
 
         firebaseHelper.getClock(userId,
                 new OnSuccessListener<Map<String, Object>>() {
@@ -135,14 +141,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                                 "We couldn't obtain your alarm settings", Toast.LENGTH_SHORT).show();
                     }
                 });
-        //PRUEBA
-        Button btnPrueba = findViewById(R.id.btnPrueba);
-        btnPrueba.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebaseHelper.setIdealWakeUpHour(userId, "EstoEs una prueba");
-            }
-        });
+
 
         firebaseHelper.getLightSettings(userId,
                 new OnSuccessListener<String>() {
@@ -160,7 +159,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                     }
                 });
     }
-
     private void updateClockSettingsUI(Map<String, Object> clockSettings) {
         if (clockSettings != null) {
             Boolean isGradual = (Boolean) clockSettings.get("isGradual");
@@ -195,8 +193,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             Log.e(TAG, "clockSettings is null");
         }
     }
-
-
     private void updateLightSettingsUI(String lightSettings) {
         if ("COL".equals(lightSettings)) {
             coldLight.setChecked(true);
@@ -212,7 +208,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             coldLight.setChecked(false);
         }
     }
-
     private void setSwitchListeners() {
         warmLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

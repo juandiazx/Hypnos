@@ -281,12 +281,12 @@ public class FirebaseHelper {
                               String --> setIdealWakeUpHour()
     ----------------------------------------------------------------------------------------*/
     public void setIdealWakeUpHour(String userId, String selectedIdealWakeUpHour){
-        DocumentReference userDocRef = db.collection("user").document(userId);
+        DocumentReference userDocRef = db.collection("users").document("lr3SPEtJqt493dpfWoDd");
 
         Map<String, Object> wakeUpHour = new HashMap<>();
-        wakeUpHour.put("preferences.goals.wakeUpTime", selectedIdealWakeUpHour);
+        wakeUpHour.put("preferences.clockSettings.wakeUpTime", selectedIdealWakeUpHour);
 
-        userDocRef.set(wakeUpHour)
+        userDocRef.update(wakeUpHour)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "wakeUpTime updated successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error updating wakeUpTime", e));
     }
