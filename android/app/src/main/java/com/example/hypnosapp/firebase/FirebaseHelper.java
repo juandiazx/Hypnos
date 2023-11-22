@@ -509,7 +509,6 @@ public class FirebaseHelper {
     /*----------------------------------------------------------------------------------------------
                                     getLastNight() --> Night
     ----------------------------------------------------------------------------------------------*/
-
     public void getLastNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
 
         CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
@@ -544,24 +543,6 @@ public class FirebaseHelper {
     /*----------------------------------------------------------------------------------------------
                            Date, List --> searchLastNight --> Night
     ----------------------------------------------------------------------------------------------*/
-    /*
-    private static Night searchLastNight(List<Night> nights, Date fechaActual) {
-        Night nightMasCercana = null;
-        long minDiferencia = Long.MAX_VALUE;
-
-        for (Night night : nights) {
-            long diferencia = Math.abs(night.getDate().getTime() - fechaActual.getTime());
-            if (diferencia < minDiferencia) {
-                minDiferencia = diferencia;
-                nightMasCercana = night;
-            }
-        }
-
-        return nightMasCercana;
-    }
-
-     */
-
     private static Night searchLastNight(List<Night> nights, Date fechaActual) {
     Night lastNight = null;
 
@@ -579,15 +560,14 @@ public class FirebaseHelper {
 
     return lastNight;
 }
+    private static boolean isSameDay(Date date1, Date date2) {
+        java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyyMMdd");
+        return fmt.format(date1).equals(fmt.format(date2));
+    }
 
-// Método auxiliar para verificar si dos fechas son del mismo día
-private static boolean isSameDay(Date date1, Date date2) {
-    java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyyMMdd");
-    return fmt.format(date1).equals(fmt.format(date2));
-}
-
-
-
+    /*----------------------------------------------------------------------------------------------
+                                    getYesterdayNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
     public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
         CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
 
@@ -617,51 +597,29 @@ private static boolean isSameDay(Date date1, Date date2) {
                     }
                 });
     }
-
-
-    private static Night searchYesterdayNight(List<Night> nights, Date todaysDate) {
+    /*----------------------------------------------------------------------------------------------
+                     List, Date --> searchYesterdayNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    private static Night searchYesterdayNight(List<Night> nights, Date currentDate) {
         Night yesterdayNight = null;
         long aDayInMillis = 24 * 60 * 60 * 1000; // Un día en milisegundos
 
-        for (Night night : nights) {
-            long diference = todaysDate.getTime() - night.getDate().getTime();
+        // Obtén la fecha del día antes de currentDate
+        Date yesterdayDate = new Date(currentDate.getTime() - aDayInMillis);
 
+        for (Night night : nights) {
             // Verifica si la Night es del día antes
-            if (diference >= aDayInMillis && (yesterdayNight == null || night.getDate().after(yesterdayNight.getDate()))) {
+            if (isSameDay(night.getDate(), yesterdayDate) && (yesterdayNight == null || night.getDate().after(yesterdayNight.getDate()))) {
                 yesterdayNight = night;
             }
         }
 
         if (yesterdayNight == null) {
-            Log.d(TAG,"No hay registros de la noche del día antes.");
+            Log.d(TAG, "No hay registros de la noche del día antes.");
         }
 
         return yesterdayNight;
     }
-
-
-/*
-private static Night getNightDelDiaAntes(List<Night> nights, Date fechaActual) {
-    Night nightDelDiaAntes = null;
-    long unDiaEnMillis = 24 * 60 * 60 * 1000; // Un día en milisegundos
-
-    for (Night night : nights) {
-        long diferencia = fechaActual.getTime() - night.getDate().getTime();
-
-        // Verifica si la Night es del día antes
-        if (diferencia >= unDiaEnMillis && (nightDelDiaAntes == null || night.getDate().after(nightDelDiaAntes.getDate()))) {
-            nightDelDiaAntes = night;
-        }
-    }
-
-    if (nightDelDiaAntes == null) {
-        System.out.println("No hay registros de la noche del día antes.");
-    }
-
-    return nightDelDiaAntes;
-}
-
- */
 
 
 
@@ -669,35 +627,7 @@ private static Night getNightDelDiaAntes(List<Night> nights, Date fechaActual) {
 
 
 
-    /*
-    public void getLastNight(String userID, final OnNightLoadedListener listener) {
 
-        CollectionReference nightsRef = db.collection("users").document(userID).collection("nightsData");
-
-        // Consulta para obtener la noche más reciente basada en la fecha
-        Query query = nightsRef.orderBy("date", Query.Direction.DESCENDING).limit(1);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NotNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (Night night : task.getResult().toObjects(Night.class)) {
-                        //Date date = night.getDate();
-                        Log.d(TAG, "SE CONTACTA CON FIREBASE");
-
-                        listener.onNightLoaded(night);
-                    }
-                } else {
-                    Log.e(TAG, "Error getting documents: ", task.getException());
-                    listener.onNightLoadError(task.getException());
-                }
-            }
-        });
-
-
-
-    }
-
-     */
 
 
 

@@ -115,8 +115,6 @@ public class Pantalla_Principal extends AppCompatActivity {
             }
         });
 
-
-
         firebaseHelper.getYesterdayNight(userID, new OnSuccessListener<Night>() {
             @Override
             public void onSuccess(Night night) {
