@@ -97,7 +97,7 @@ public class Pantalla_Principal extends AppCompatActivity {
 
         String userID = "lr3SPEtJqt493dpfWoDd";
 
-
+/*
         firebaseHelper.getLastNight(userID, new OnSuccessListener<Night>() {
             @Override
             public void onSuccess(Night night) {
@@ -114,6 +114,8 @@ public class Pantalla_Principal extends AppCompatActivity {
 
             }
         });
+
+ */
 
         firebaseHelper.getYesterdayNight(userID, new OnSuccessListener<Night>() {
             @Override

@@ -95,17 +95,18 @@
                     android:layout_width="0dp"
                     android:layout_height="200dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="20dp"
                     android:background="#00000000"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/txtTituloDescansoAnoche" />
 
                 <TextView
-                    android:id="@+id/txtNumeroPuntuacionDescanso"
+                    android:id="@+id/txtNumeroPuntuacionDescansoAnoche"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:background="#00000000"
                     android:text="85"
                     android:textSize="34sp"
@@ -113,7 +114,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/halfDonutChart"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
                     app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
-                    app:layout_constraintTop_toBottomOf="@+id/txtTituloDescanso"
+                    app:layout_constraintTop_toBottomOf="@+id/txtTituloDescansoAnoche"
                     app:layout_constraintVertical_bias="0.179" />
 
                 <TextView
@@ -127,7 +128,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
-                    app:layout_constraintTop_toBottomOf="@+id/txtNumeroPuntuacionDescanso"
+                    app:layout_constraintTop_toBottomOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
@@ -145,12 +146,13 @@
                     app:layout_constraintTop_toBottomOf="@+id/txtPuntuacionRespiracion" />
 
                 <TextView
-                    android:id="@+id/txtTituloDescanso"
+                    android:id="@+id/txtTituloDescansoAnoche"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="#00000000"
                     android:text="Puntuación Descanso"
+                    android:textAlignment="center"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -198,17 +200,17 @@
                     app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
                     app:layout_constraintTop_toTopOf="@+id/iconoTiempoSueño"
                     app:layout_constraintVertical_bias="0.0" />
-
+<!--
                 <TextView
                     android:id="@+id/txtHoraDespertar"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="5dp"
                     android:background="#00000000"
-                    android:text="Hora de despertar:"
+                    android:gravity="center_vertical"
+                    android:text="Te despertaste:"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoHoraDespertar"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
                     app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
@@ -220,29 +222,31 @@
                     android:layout_height="0dp"
                     android:layout_marginStart="5dp"
                     android:background="#00000000"
-                    android:text="Hora de dormir:"
+                    android:gravity="center_vertical"
+                    android:text="Te acostaste:"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoHoraDormir"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
                     app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
                     app:layout_constraintTop_toTopOf="@+id/iconoHoraDormir" />
-
+-->
                 <TextView
                     android:id="@+id/txtTemperaturaMediaNoche"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="5dp"
                     android:background="#00000000"
-                    android:text="Temperatura media:"
+                    android:gravity="center_vertical"
+                    android:text="Temperatura:"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoTemperaturaMediaNoche"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
-                    app:layout_constraintTop_toTopOf="@+id/iconoTemperaturaMediaNoche" />
+                    app:layout_constraintTop_toTopOf="@+id/iconoTemperaturaMediaNoche"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/txtPuntuacionRespiracion"
@@ -250,17 +254,17 @@
                     android:layout_height="0dp"
                     android:layout_marginStart="5dp"
                     android:background="#00000000"
-                    android:text="Puntuación respiración:"
+                    android:gravity="center_vertical"
+                    android:text="Respiración:"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoPuntuacionRespiracion"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
                     app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
                     app:layout_constraintTop_toTopOf="@+id/iconoPuntuacionRespiracion" />
 
                 <TextView
-                    android:id="@+id/txtTiempoSueñoHoras"
+                    android:id="@+id/txtTiempoSueñoHorasAnoche"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="#00000000"
@@ -271,11 +275,11 @@
                     android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoTiempoSueño"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
-                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescanso"
+                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:layout_constraintTop_toTopOf="@+id/iconoTiempoSueño" />
-
+<!--
                 <TextView
-                    android:id="@+id/txtHoraDespertarHoras"
+                    android:id="@+id/txtHoraDespertarHorasAnoche"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="#00000000"
@@ -287,12 +291,12 @@
                     app:layout_constraintBottom_toBottomOf="@+id/iconoHoraDespertar"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescanso"
+                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:layout_constraintTop_toTopOf="@+id/iconoHoraDespertar"
                     app:layout_constraintVertical_bias="1.0" />
 
                 <TextView
-                    android:id="@+id/txtHoraDormirHoras"
+                    android:id="@+id/txtHoraDormirHorasAnoche"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="#00000000"
@@ -304,41 +308,41 @@
                     app:layout_constraintBottom_toBottomOf="@+id/iconoHoraDormir"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescanso"
+                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:layout_constraintTop_toTopOf="@+id/iconoHoraDormir"
                     app:layout_constraintVertical_bias="1.0" />
-
+-->
                 <TextView
-                    android:id="@+id/txtTemperaturaMediaNocheGrados"
+                    android:id="@+id/txtTemperaturaMediaNocheGradosAnoche"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="#00000000"
+                    android:gravity="center_vertical"
                     android:text="24ºC"
                     android:textAlignment="center"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoTemperaturaMediaNoche"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescanso"
+                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:layout_constraintTop_toTopOf="@+id/iconoTemperaturaMediaNoche"
                     app:layout_constraintVertical_bias="1.0" />
 
                 <TextView
-                    android:id="@+id/txtTemperaturaMediaNocheGrados2"
+                    android:id="@+id/txtRespiracionAnoche"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="#00000000"
+                    android:gravity="center_vertical"
                     android:text="Buena"
                     android:textAlignment="center"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoPuntuacionRespiracion"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescanso"
+                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:layout_constraintTop_toTopOf="@+id/iconoPuntuacionRespiracion"
                     app:layout_constraintVertical_bias="1.0" />
 
@@ -351,7 +355,7 @@
                     app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
                     app:layout_constraintTop_toBottomOf="@+id/txtEstimacionDescanso"
                     app:srcCompat="@drawable/icons8_sleeping_in_bed_96" />
-
+<!--
                 <ImageView
                     android:id="@+id/iconoHoraDespertar"
                     android:layout_width="30dp"
@@ -371,6 +375,7 @@
                     app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
                     app:layout_constraintTop_toBottomOf="@+id/iconoHoraDespertar"
                     app:srcCompat="@drawable/icons8_sunset_96" />
+                    -->
 
                 <ImageView
                     android:id="@+id/iconoTemperaturaMediaNoche"
@@ -379,7 +384,7 @@
                     android:layout_marginTop="20dp"
                     android:background="#00000000"
                     app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
-                    app:layout_constraintTop_toBottomOf="@+id/iconoHoraDormir"
+                    app:layout_constraintTop_toBottomOf="@+id/iconoTiempoSueño"
                     app:srcCompat="@drawable/icons8_temperature_96" />
 
                 <ImageView
