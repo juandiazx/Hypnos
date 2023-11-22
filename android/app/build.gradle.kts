@@ -35,6 +35,12 @@ android {
         viewBinding = true
     }
 
+    packagingOptions {
+        resources {
+            excludes.add("META-INF/DEPENDENCIES")
+        }
+    }
+
 }
 
 
@@ -60,4 +66,6 @@ dependencies {
     implementation("com.android.volley:volley:1.2.1")
     //recyclerview
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    //pdfExporter
+    implementation ("org.apache.pdfbox:pdfbox:2.0.27")
 }

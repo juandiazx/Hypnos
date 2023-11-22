@@ -251,34 +251,6 @@ public class FirebaseHelper {
                     }
                 });
     }
-
-    /*----------------------------------------------------------------------------------------------
-                              UserID --> getLastNight() --> Night
-    ----------------------------------------------------------------------------------------------*/
-    public void getLastNight(String userId, final OnSuccessListener<List<Night>> successListener, final OnFailureListener failureListener) {
-        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
-        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
-        // Execute the query
-        query.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Night> nightsList = new ArrayList<>();
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Convert each document to a Night object
-                                Night night = document.toObject(Night.class);
-                                nightsList.add(night);
-                            }
-                            successListener.onSuccess(nightsList);
-                        } else {
-                            failureListener.onFailure(task.getException());
-                        }
-                    }
-                });
-    }
-
     /*----------------------------------------------------------------------------------------
                               String --> setIdealWakeUpHour()
     ----------------------------------------------------------------------------------------*/
@@ -536,6 +508,61 @@ public class FirebaseHelper {
 
         return filteredList;
     }
+
+    /*----------------------------------------------------------------------------------------------
+                                    getLastNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    public void getLastNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        // Define the query to get the relevant nights
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            Date fechaActual = new Date();
+                            Night nightMasReciente = getNightMasReciente(nightsList, fechaActual);
+                            successListener.onSuccess(nightMasReciente);
+                        }
+                        else{
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+    /*----------------------------------------------------------------------------------------------
+                           Date, List --> getNightMasReciente --> Night
+    ----------------------------------------------------------------------------------------------*/
+    private static Night getNightMasReciente(List<Night> nights, Date fechaActual) {
+        Night nightMasCercana = null;
+        long minDiferencia = Long.MAX_VALUE;
+
+        for (Night night : nights) {
+            long diferencia = Math.abs(night.getDate().getTime() - fechaActual.getTime());
+            if (diferencia < minDiferencia) {
+                minDiferencia = diferencia;
+                nightMasCercana = night;
+            }
+        }
+
+        return nightMasCercana;
+    }
+
+
+
 
 
 }//class
