@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
@@ -28,8 +29,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Historial extends AppCompatActivity {
@@ -40,8 +44,9 @@ public class Historial extends AppCompatActivity {
     FirebaseUser firebaseUser;
     String userID;
     ImageView btnPerfilUsuario, btnPantallaPrincipal, btnAjustesDescanso, btnPreferencias;
-
+    TextView lblErrorDates;
     Button btnSearch,inputDateFrom, inputDateTo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,7 @@ public class Historial extends AppCompatActivity {
         btnSearch = findViewById(R.id.btnSearch);
         inputDateFrom = findViewById(R.id.inputDateFrom);
         inputDateTo = findViewById(R.id.inputDateTo);
+        lblErrorDates = findViewById(R.id.lblErrorDates);
 
 
         btnPerfilUsuario.setOnClickListener(new View.OnClickListener() {
@@ -159,23 +165,28 @@ public class Historial extends AppCompatActivity {
                 String initialDate = inputDateFrom.getText().toString();
                 String finalDate = inputDateTo.getText().toString();
 
-
-
-                firebaseHelper.searchNights(userID, initialDate, finalDate,
-                        new OnSuccessListener<List<Night>>() {
-                            @Override
-                            public void onSuccess(List<Night> nightList) {
-                                for (Night night : nightList) {
-                                    Log.d(TAG, "Night: " + night.getDate() + ", Score: " + night.getScore());
+                if(!areDatesCorrect(initialDate, finalDate)){
+                    lblErrorDates.setVisibility(View.VISIBLE);
+                }else{
+                    lblErrorDates.setVisibility(View.GONE);
+                    firebaseHelper.searchNights(userID, initialDate, finalDate,
+                            new OnSuccessListener<List<Night>>() {
+                                @Override
+                                public void onSuccess(List<Night> nightList) {
+                                    for (Night night : nightList) {
+                                        Log.d(TAG, "Night: " + night.getDate() + ", Score: " + night.getScore());
+                                    }
                                 }
-                            }
-                        },
-                        new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(TAG, "Error getting nights", e);
-                            }
-                        });
+                            },
+                            new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e(TAG, "Error getting nights", e);
+                                }
+                            });
+                }
+
+
             }
         });
     }//onCreate
@@ -219,7 +230,33 @@ public class Historial extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    private boolean areDatesCorrect(String fromDate, String toDate){
 
+        //in order to transform Strings into dates:
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date fromDateTransformed;
+        Date toDateTransformed;
 
+        try {
+            fromDateTransformed = sdf.parse(fromDate);
+            toDateTransformed = sdf.parse(toDate);
+
+            if (fromDateTransformed.after(toDateTransformed)) {
+                Log.e(TAG,"La fecha de inicio es posterior a la fecha de fin.");
+                return false;
+            } else if (fromDateTransformed.before(toDateTransformed)) {
+                Log.d(TAG,"La fecha de inicio es anterior a la fecha de fin.");
+                return true;
+            } else {
+                Log.d(TAG,"Las fechas son iguales.");
+                return true;
+            }
+
+        } catch (ParseException e) {
+                e.printStackTrace();
+                Log.e(TAG, "Error in converting String dates to Date dates");
+                return false;
+            }
+    }
 }
 
