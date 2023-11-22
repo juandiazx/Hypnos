@@ -98,24 +98,6 @@ public class Pantalla_Principal extends AppCompatActivity {
         String userID = "lr3SPEtJqt493dpfWoDd";
 
 /*
-        firebaseHelper.getLastNight(userID, new OnSuccessListener<Night>() {
-            @Override
-            public void onSuccess(Night night) {
-                if (night != null) {
-                    Log.d("FirebaseHelper", "Fecha LAST NIGHT: "+ night.getDate().toString() + " Puntuación: " + night.getScore());
-                } else {
-                    Log.d("FirebaseHelper", "No se encontró información para LAST NIGHT.");
-                }
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("FirebaseHelper", "Ha habido un error con getLastNight! -----" + e);
-
-            }
-        });
-
- */
 
         firebaseHelper.getYesterdayNight(userID, new OnSuccessListener<Night>() {
             @Override
@@ -150,10 +132,7 @@ public class Pantalla_Principal extends AppCompatActivity {
 
             }
         });
-
+*/
     }
-
-
-
 }
 

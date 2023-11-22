@@ -91,7 +91,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
                 <com.example.hypnosapp.mainpage.HalfDonutChart
-                    android:id="@+id/halfDonutChart"
+                    android:id="@+id/halfDonutChartAnoche"
                     android:layout_width="0dp"
                     android:layout_height="200dp"
                     android:layout_marginStart="20dp"
@@ -111,12 +111,13 @@
                     android:text="85"
                     android:textSize="34sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/halfDonutChart"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
-                    app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
+                    app:layout_constraintBottom_toBottomOf="@+id/halfDonutChartAnoche"
+                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAnoche"
+                    app:layout_constraintStart_toStartOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintTop_toBottomOf="@+id/txtTituloDescansoAnoche"
                     app:layout_constraintVertical_bias="0.179" />
 
+                <!--
                 <TextView
                     android:id="@+id/txtEstimacionDescanso"
                     android:layout_width="wrap_content"
@@ -124,13 +125,13 @@
                     android:background="#00000000"
                     android:text="Muy Buena"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/halfDonutChart"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
+                    app:layout_constraintBottom_toBottomOf="@+id/halfDonutChartAnoche"
+                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintHorizontal_bias="0.498"
-                    app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
+                    app:layout_constraintStart_toStartOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintTop_toBottomOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:layout_constraintVertical_bias="0.0" />
-
+-->
                 <TextView
                     android:id="@+id/txtConsejoSalud"
                     android:layout_width="wrap_content"
@@ -140,9 +141,9 @@
                     android:text="Consejo de salud"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
+                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintHorizontal_bias="0.005"
-                    app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
+                    app:layout_constraintStart_toStartOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintTop_toBottomOf="@+id/txtPuntuacionRespiracion" />
 
                 <TextView
@@ -180,7 +181,7 @@
                     android:textSize="13sp"
                     android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoConsejoSalud"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
+                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
                     app:layout_constraintTop_toBottomOf="@+id/txtConsejoSalud" />
 
@@ -195,7 +196,7 @@
                     android:textStyle="bold"
                     android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoTiempoSueño"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
+                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
                     app:layout_constraintTop_toTopOf="@+id/iconoTiempoSueño"
@@ -242,7 +243,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoTemperaturaMediaNoche"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
+                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
                     app:layout_constraintTop_toTopOf="@+id/iconoTemperaturaMediaNoche"
@@ -259,7 +260,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoPuntuacionRespiracion"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
+                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
                     app:layout_constraintTop_toTopOf="@+id/iconoPuntuacionRespiracion" />
 
@@ -274,7 +275,7 @@
                     android:textStyle="bold"
                     android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoTiempoSueño"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
+                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:layout_constraintTop_toTopOf="@+id/iconoTiempoSueño" />
 <!--
@@ -323,7 +324,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoTemperaturaMediaNoche"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
+                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:layout_constraintTop_toTopOf="@+id/iconoTemperaturaMediaNoche"
@@ -340,7 +341,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoPuntuacionRespiracion"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
+                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:layout_constraintTop_toTopOf="@+id/iconoPuntuacionRespiracion"
@@ -352,8 +353,8 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="40dp"
                     android:background="#00000000"
-                    app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
-                    app:layout_constraintTop_toBottomOf="@+id/txtEstimacionDescanso"
+                    app:layout_constraintStart_toStartOf="@+id/halfDonutChartAnoche"
+                    app:layout_constraintTop_toBottomOf="@+id/txtNumeroPuntuacionDescansoAnoche"
                     app:srcCompat="@drawable/icons8_sleeping_in_bed_96" />
 <!--
                 <ImageView
@@ -383,7 +384,7 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="20dp"
                     android:background="#00000000"
-                    app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
+                    app:layout_constraintStart_toStartOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintTop_toBottomOf="@+id/iconoTiempoSueño"
                     app:srcCompat="@drawable/icons8_temperature_96" />
 
@@ -393,7 +394,7 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="20dp"
                     android:background="#00000000"
-                    app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
+                    app:layout_constraintStart_toStartOf="@+id/halfDonutChartAnoche"
                     app:layout_constraintTop_toBottomOf="@+id/iconoTemperaturaMediaNoche"
                     app:srcCompat="@drawable/icons8_breath_100" />
 

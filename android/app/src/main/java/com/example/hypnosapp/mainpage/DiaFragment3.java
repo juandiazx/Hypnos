@@ -25,6 +25,7 @@ public class DiaFragment3 extends Fragment {
         // Constructor público vacío requerido
     }
 
+    HalfDonutChart halfDonutChartAnoche;
     TextView txtRestScoreLastNight, txtTituloDescansoAnoche, txtTiempoSueñoHorasAnoche, txtTemperaturaMediaNocheGradosAnoche, txtRespiracionAnoche;
     FirebaseHelper firebaseHelper = new FirebaseHelper();
     String userID = "lr3SPEtJqt493dpfWoDd";
@@ -40,6 +41,7 @@ public class DiaFragment3 extends Fragment {
         txtTiempoSueñoHorasAnoche = view.findViewById(R.id.txtTiempoSueñoHorasAnoche);
         txtTemperaturaMediaNocheGradosAnoche = view.findViewById(R.id.txtTemperaturaMediaNocheGradosAnoche);
         txtRespiracionAnoche = view.findViewById(R.id.txtRespiracionAnoche);
+        halfDonutChartAnoche = view.findViewById(R.id.halfDonutChartAnoche);
 
         firebaseHelper.getLastNight(userID, new OnSuccessListener<Night>() {
             @Override
@@ -65,6 +67,15 @@ public class DiaFragment3 extends Fragment {
                     txtRespiracionAnoche.setText(night.getBreathing());
                 } else {
                     Log.d("FirebaseHelper", "No se encontró información para LAST NIGHT.");
+                    txtTituloDescansoAnoche.setText("No hay datos de sueño");
+                    halfDonutChartAnoche.setVisibility(View.INVISIBLE);
+                    txtRestScoreLastNight.setText("-");
+                    txtTiempoSueñoHorasAnoche.setText("-");
+                    txtTemperaturaMediaNocheGradosAnoche.setText("-");
+                    txtRespiracionAnoche.setText("-");
+
+
+
                 }
             }
         }, new OnFailureListener() {
