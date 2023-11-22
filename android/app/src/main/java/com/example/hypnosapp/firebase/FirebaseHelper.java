@@ -621,6 +621,67 @@ public class FirebaseHelper {
         return yesterdayNight;
     }
 
+    /*----------------------------------------------------------------------------------------------
+                                    getBeforeYesterdayNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    public void getBeforeYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        // Define the query to get the relevant nights
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            Date fechaActual = new Date();
+                            Night beforeYesterdayNight = searchBeforeYesterdayNight(nightsList, fechaActual);
+                            successListener.onSuccess(beforeYesterdayNight);
+                        }
+                        else{
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+    /*----------------------------------------------------------------------------------------------
+                     List, Date --> searchBeforeYesterdayNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    private static Night searchBeforeYesterdayNight(List<Night> nights, Date currentDate) {
+        Night beforeYesterdayNight = null;
+        long aDayInMillis = 24 * 60 * 60 * 1000; // Un día en milisegundos
+
+        // Obtén la fecha de dos días antes de currentDate
+        Date beforeYesterdayDate = new Date(currentDate.getTime() - (2 * aDayInMillis));
+
+        for (Night night : nights) {
+            // Verifica si la Night es de dos días antes
+            if (isSameDay(night.getDate(), beforeYesterdayDate) && (beforeYesterdayNight == null || night.getDate().after(beforeYesterdayNight.getDate()))) {
+                beforeYesterdayNight = night;
+            }
+        }
+
+        if (beforeYesterdayNight == null) {
+            Log.d(TAG, "No hay registros de la noche de antes de ayer.");
+        }
+
+        return beforeYesterdayNight;
+    }
+
+
+
+
+
 
 
 }//class
