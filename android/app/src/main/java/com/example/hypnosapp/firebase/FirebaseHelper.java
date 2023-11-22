@@ -4,14 +4,11 @@ import com.example.hypnosapp.model.Night;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -20,12 +17,16 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class FirebaseHelper {
     private static final String TAG = "FirebaseHelper";
@@ -43,10 +44,6 @@ public class FirebaseHelper {
         void onNightLoadError(Exception e);
     }
 
-    /*----------------------------------------------------------------------------------------
-                getClock() --> HASHMAP[String hour, songLocation
-                              bool isSongGradual, isClockAutomatic]
-    ----------------------------------------------------------------------------------------*/
     /*----------------------------------------------------------------------------------------
                 getClock() --> HASHMAP[String hour, songLocation
                               bool isSongGradual, isClockAutomatic]
@@ -251,34 +248,6 @@ public class FirebaseHelper {
                     }
                 });
     }
-
-    /*----------------------------------------------------------------------------------------------
-                              UserID --> getLastNight() --> Night
-    ----------------------------------------------------------------------------------------------*/
-    public void getLastNight(String userId, final OnSuccessListener<List<Night>> successListener, final OnFailureListener failureListener) {
-        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
-        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
-        // Execute the query
-        query.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Night> nightsList = new ArrayList<>();
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Convert each document to a Night object
-                                Night night = document.toObject(Night.class);
-                                nightsList.add(night);
-                            }
-                            successListener.onSuccess(nightsList);
-                        } else {
-                            failureListener.onFailure(task.getException());
-                        }
-                    }
-                });
-    }
-
     /*----------------------------------------------------------------------------------------
                               String --> setIdealWakeUpHour()
     ----------------------------------------------------------------------------------------*/
@@ -445,40 +414,278 @@ public class FirebaseHelper {
                 });
     }
 
+    /*----------------------------------------------------------------------------------------
+                         Date: From, Date: To --> searchNights()
+    ----------------------------------------------------------------------------------------*/
+    public void searchNights(String userId, String fromDate, String toDate,final OnSuccessListener<List<Night>> successListener,
+                                                                                                                       final OnFailureListener failureListener) {
+
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        // Define the query to get the relevant nights
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            List<Night>filteredNights = filterNights(nightsList, fromDate, toDate);
+                            successListener.onSuccess(filteredNights);
+                        }
+                        else{
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+    /*----------------------------------------------------------------------------------------
+                         Date: From, Date: To, List --> filterNights()
+    ----------------------------------------------------------------------------------------*/
+    private List<Night> filterNights(List<Night> nightList, String fromDate, String toDate) {
+
+        List<Night> filteredList = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date fromDateTransformed;
+        Date toDateTransformed;
+
+        try {
+            fromDateTransformed = sdf.parse(fromDate);
+            toDateTransformed = sdf.parse(toDate);
+
+            // Establecer la hora, minutos, segundos y milisegundos a cero para fromDateTransformed
+            Calendar calFrom = Calendar.getInstance();
+            calFrom.setTime(fromDateTransformed);
+            calFrom.set(Calendar.HOUR_OF_DAY, 0);
+            calFrom.set(Calendar.MINUTE, 0);
+            calFrom.set(Calendar.SECOND, 0);
+            calFrom.set(Calendar.MILLISECOND, 0);
+            fromDateTransformed = calFrom.getTime();
+
+            // Establecer la hora, minutos, segundos y milisegundos a cero para toDateTransformed
+            Calendar calTo = Calendar.getInstance();
+            calTo.setTime(toDateTransformed);
+            calTo.set(Calendar.HOUR_OF_DAY, 23);
+            calTo.set(Calendar.MINUTE, 59);
+            calTo.set(Calendar.SECOND, 59);
+            calTo.set(Calendar.MILLISECOND, 999);
+            toDateTransformed = calTo.getTime();
+
+            for (Night night : nightList) {
+                Date nightsDate = night.getDate();
+
+                // Establecer la hora, minutos, segundos y milisegundos a cero para nightsDate
+                Calendar calNights = Calendar.getInstance();
+                calNights.setTime(nightsDate);
+                calNights.set(Calendar.HOUR_OF_DAY, 0);
+                calNights.set(Calendar.MINUTE, 0);
+                calNights.set(Calendar.SECOND, 0);
+                calNights.set(Calendar.MILLISECOND, 0);
+                nightsDate = calNights.getTime();
+
+                if ((nightsDate.equals(fromDateTransformed) || nightsDate.after(fromDateTransformed))
+                        && (nightsDate.equals(toDateTransformed) || nightsDate.before(toDateTransformed))) {
+                    filteredList.add(night);
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.e(TAG, "Error in converting String dates to Date dates");
+        }
+
+        return filteredList;
+    }
+
+    /*----------------------------------------------------------------------------------------------
+                                    getLastNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    public void getLastNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            Date currentDate = new Date();
+                            Night lastNight = searchLastNight(nightsList, currentDate);
+                            successListener.onSuccess(lastNight);
+                        }
+                        else{
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+    /*----------------------------------------------------------------------------------------------
+                           Date, List --> searchLastNight --> Night
+    ----------------------------------------------------------------------------------------------*/
+    private static Night searchLastNight(List<Night> nights, Date currentDate) {
+    Night lastNight = null;
+
+    for (Night night : nights) {
+
+        if (isSameDay(night.getDate(), currentDate)) {
+            lastNight = night;
+            break;
+        }
+    }
+
+    if (lastNight == null) {
+        Log.d(TAG,"No hay registros de la noche de hoy.");
+    }
+
+    return lastNight;
+}
+    private static boolean isSameDay(Date date1, Date date2) {
+        java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyyMMdd");
+        return fmt.format(date1).equals(fmt.format(date2));
+    }
+
+    /*----------------------------------------------------------------------------------------------
+                                    getYesterdayNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        // Define the query to get the relevant nights
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            Date currentDate = new Date();
+                            Night yesterdayNight = searchYesterdayNight(nightsList, currentDate);
+                            successListener.onSuccess(yesterdayNight);
+                        }
+                        else{
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+    /*----------------------------------------------------------------------------------------------
+                     List, Date --> searchYesterdayNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    private static Night searchYesterdayNight(List<Night> nights, Date currentDate) {
+        Night yesterdayNight = null;
+        long aDayInMillis = 24 * 60 * 60 * 1000; // Un día en milisegundos
+
+        Date yesterdayDate = new Date(currentDate.getTime() - aDayInMillis);
+
+        for (Night night : nights) {
+
+            if (isSameDay(night.getDate(), yesterdayDate) && (yesterdayNight == null || night.getDate().after(yesterdayNight.getDate()))) {
+                yesterdayNight = night;
+            }
+        }
+
+        if (yesterdayNight == null) {
+            Log.d(TAG, "No hay registros de la noche del día antes.");
+        }
+
+        return yesterdayNight;
+    }
+
+    /*----------------------------------------------------------------------------------------------
+                                    getBeforeYesterdayNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    public void getBeforeYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            Date currentDate = new Date();
+                            Night beforeYesterdayNight = searchBeforeYesterdayNight(nightsList, currentDate);
+                            successListener.onSuccess(beforeYesterdayNight);
+                        }
+                        else{
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+    /*----------------------------------------------------------------------------------------------
+                     List, Date --> searchBeforeYesterdayNight() --> Night
+    ----------------------------------------------------------------------------------------------*/
+    private static Night searchBeforeYesterdayNight(List<Night> nights, Date currentDate) {
+        Night beforeYesterdayNight = null;
+        long aDayInMillis = 24 * 60 * 60 * 1000;
+
+        Date beforeYesterdayDate = new Date(currentDate.getTime() - (2 * aDayInMillis));
+
+        for (Night night : nights) {
+
+            if (isSameDay(night.getDate(), beforeYesterdayDate) && (beforeYesterdayNight == null || night.getDate().after(beforeYesterdayNight.getDate()))) {
+                beforeYesterdayNight = night;
+            }
+        }
+
+        if (beforeYesterdayNight == null) {
+            Log.d(TAG, "No hay registros de la noche de antes de ayer.");
+        }
+
+        return beforeYesterdayNight;
+    }
+
+    /*----------------------------------------------------------------------------------------------
+                                  Night --> getSleepStages() --> List
+    ----------------------------------------------------------------------------------------------*/
+
+
+
+
+
+
 
 }//class
 
 
 
-    /*
-    public void getLastNight(String userID, final OnNightLoadedListener listener) {
 
-        CollectionReference nightsRef = db.collection("users").document(userID).collection("nightsData");
-
-        // Consulta para obtener la noche más reciente basada en la fecha
-        Query query = nightsRef.orderBy("date", Query.Direction.DESCENDING).limit(1);
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NotNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (Night night : task.getResult().toObjects(Night.class)) {
-                        //Date date = night.getDate();
-                        Log.d(TAG, "SE CONTACTA CON FIREBASE");
-
-                        listener.onNightLoaded(night);
-                    }
-                } else {
-                    Log.e(TAG, "Error getting documents: ", task.getException());
-                    listener.onNightLoadError(task.getException());
-                }
-            }
-        });
-
-
-
-    }
-
-     */
 
 
 
