@@ -94,45 +94,6 @@ public class Pantalla_Principal extends AppCompatActivity {
             public void onClick(View v) { funcionMenu.abrirHistorial(Pantalla_Principal.this);}
         });
 
-
-        String userID = "lr3SPEtJqt493dpfWoDd";
-
-/*
-
-        firebaseHelper.getYesterdayNight(userID, new OnSuccessListener<Night>() {
-            @Override
-            public void onSuccess(Night night) {
-                if (night != null) {
-                    Log.d("FirebaseHelper", "Fecha YESTERDAY NIGHT: "+ night.getDate().toString() + " Puntuación: " + night.getScore());
-                } else {
-                    Log.d("FirebaseHelper", "No se encontró información para YESTERDAY NIGHT.");
-                }
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("FirebaseHelper", "Ha habido un error con getYesterdayNight ----" + e);
-
-            }
-        });
-
-        firebaseHelper.getBeforeYesterdayNight(userID, new OnSuccessListener<Night>() {
-            @Override
-            public void onSuccess(Night night) {
-                if (night != null) {
-                    Log.d("FirebaseHelper", "Fecha BEFORE YESTERDAY NIGHT: "+ night.getDate().toString() + " Puntuación: " + night.getScore());
-                } else {
-                    Log.d("FirebaseHelper", "No se encontró información para BEFORE YESTERDAY NIGHT.");
-                }
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("FirebaseHelper", "Ha habido un error con getBeforeYesterdayNight ----" + e);
-
-            }
-        });
-*/
     }
 }
 
