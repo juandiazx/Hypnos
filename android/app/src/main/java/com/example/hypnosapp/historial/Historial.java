@@ -159,6 +159,8 @@ public class Historial extends AppCompatActivity {
                 String initialDate = inputDateFrom.getText().toString();
                 String finalDate = inputDateTo.getText().toString();
 
+
+
                 firebaseHelper.searchNights(userID, initialDate, finalDate,
                         new OnSuccessListener<List<Night>>() {
                             @Override

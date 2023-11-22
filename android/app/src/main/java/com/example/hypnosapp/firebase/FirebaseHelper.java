@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -481,7 +482,7 @@ public class FirebaseHelper {
     /*----------------------------------------------------------------------------------------
                          Date: From, Date: To, List --> filterNights()
     ----------------------------------------------------------------------------------------*/
-    private List<Night> filterNights(List<Night> nightList, String fromDate, String toDate){
+    private List<Night> filterNights(List<Night> nightList, String fromDate, String toDate) {
 
         List<Night> filteredList = new ArrayList<>();
 
@@ -492,21 +493,50 @@ public class FirebaseHelper {
         try {
             fromDateTransformed = sdf.parse(fromDate);
             toDateTransformed = sdf.parse(toDate);
+
+            // Establecer la hora, minutos, segundos y milisegundos a cero para fromDateTransformed
+            Calendar calFrom = Calendar.getInstance();
+            calFrom.setTime(fromDateTransformed);
+            calFrom.set(Calendar.HOUR_OF_DAY, 0);
+            calFrom.set(Calendar.MINUTE, 0);
+            calFrom.set(Calendar.SECOND, 0);
+            calFrom.set(Calendar.MILLISECOND, 0);
+            fromDateTransformed = calFrom.getTime();
+
+            // Establecer la hora, minutos, segundos y milisegundos a cero para toDateTransformed
+            Calendar calTo = Calendar.getInstance();
+            calTo.setTime(toDateTransformed);
+            calTo.set(Calendar.HOUR_OF_DAY, 23);
+            calTo.set(Calendar.MINUTE, 59);
+            calTo.set(Calendar.SECOND, 59);
+            calTo.set(Calendar.MILLISECOND, 999);
+            toDateTransformed = calTo.getTime();
+
+            for (Night night : nightList) {
+                Date nightsDate = night.getDate();
+
+                // Establecer la hora, minutos, segundos y milisegundos a cero para nightsDate
+                Calendar calNights = Calendar.getInstance();
+                calNights.setTime(nightsDate);
+                calNights.set(Calendar.HOUR_OF_DAY, 0);
+                calNights.set(Calendar.MINUTE, 0);
+                calNights.set(Calendar.SECOND, 0);
+                calNights.set(Calendar.MILLISECOND, 0);
+                nightsDate = calNights.getTime();
+
+                if ((nightsDate.equals(fromDateTransformed) || nightsDate.after(fromDateTransformed))
+                        && (nightsDate.equals(toDateTransformed) || nightsDate.before(toDateTransformed))) {
+                    filteredList.add(night);
+                }
+            }
         } catch (ParseException e) {
             e.printStackTrace();
-            Log.e(TAG,"Error in converting String dates to Date dates");
-            return filteredList;
-        }
-
-        for(Night night : nightList){
-            Date nightsDate = night.getDate();
-            if(!nightsDate.before(fromDateTransformed) && !nightsDate.after(toDateTransformed)){
-                filteredList.add(night);
-            }
+            Log.e(TAG, "Error in converting String dates to Date dates");
         }
 
         return filteredList;
     }
+
 
 }//class
 
