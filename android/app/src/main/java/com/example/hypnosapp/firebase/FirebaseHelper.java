@@ -4,14 +4,11 @@ import com.example.hypnosapp.model.Night;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -512,6 +509,7 @@ public class FirebaseHelper {
     /*----------------------------------------------------------------------------------------------
                                     getLastNight() --> Night
     ----------------------------------------------------------------------------------------------*/
+
     public void getLastNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
 
         CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
@@ -533,8 +531,8 @@ public class FirebaseHelper {
                                 nightsList.add(night);
                             }
                             Date fechaActual = new Date();
-                            Night nightMasReciente = getNightMasReciente(nightsList, fechaActual);
-                            successListener.onSuccess(nightMasReciente);
+                            Night lastNight = searchLastNight(nightsList, fechaActual);
+                            successListener.onSuccess(lastNight);
                         }
                         else{
                             failureListener.onFailure(task.getException());
@@ -544,9 +542,10 @@ public class FirebaseHelper {
     }
 
     /*----------------------------------------------------------------------------------------------
-                           Date, List --> getNightMasReciente --> Night
+                           Date, List --> searchLastNight --> Night
     ----------------------------------------------------------------------------------------------*/
-    private static Night getNightMasReciente(List<Night> nights, Date fechaActual) {
+    /*
+    private static Night searchLastNight(List<Night> nights, Date fechaActual) {
         Night nightMasCercana = null;
         long minDiferencia = Long.MAX_VALUE;
 
@@ -561,7 +560,108 @@ public class FirebaseHelper {
         return nightMasCercana;
     }
 
+     */
 
+    private static Night searchLastNight(List<Night> nights, Date fechaActual) {
+    Night lastNight = null;
+
+    for (Night night : nights) {
+        // Verifica si la fecha de la Night coincide exactamente con la fecha actual
+        if (isSameDay(night.getDate(), fechaActual)) {
+            lastNight = night;
+            break; // Puedes salir del bucle tan pronto como encuentres la Night del día actual
+        }
+    }
+
+    if (lastNight == null) {
+        System.out.println("No hay registros de la noche de hoy.");
+    }
+
+    return lastNight;
+}
+
+// Método auxiliar para verificar si dos fechas son del mismo día
+private static boolean isSameDay(Date date1, Date date2) {
+    java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyyMMdd");
+    return fmt.format(date1).equals(fmt.format(date2));
+}
+
+
+
+    public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        // Define the query to get the relevant nights
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            Date fechaActual = new Date();
+                            Night yesterdayNight = searchYesterdayNight(nightsList, fechaActual);
+                            successListener.onSuccess(yesterdayNight);
+                        }
+                        else{
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    private static Night searchYesterdayNight(List<Night> nights, Date todaysDate) {
+        Night yesterdayNight = null;
+        long aDayInMillis = 24 * 60 * 60 * 1000; // Un día en milisegundos
+
+        for (Night night : nights) {
+            long diference = todaysDate.getTime() - night.getDate().getTime();
+
+            // Verifica si la Night es del día antes
+            if (diference >= aDayInMillis && (yesterdayNight == null || night.getDate().after(yesterdayNight.getDate()))) {
+                yesterdayNight = night;
+            }
+        }
+
+        if (yesterdayNight == null) {
+            Log.d(TAG,"No hay registros de la noche del día antes.");
+        }
+
+        return yesterdayNight;
+    }
+
+
+/*
+private static Night getNightDelDiaAntes(List<Night> nights, Date fechaActual) {
+    Night nightDelDiaAntes = null;
+    long unDiaEnMillis = 24 * 60 * 60 * 1000; // Un día en milisegundos
+
+    for (Night night : nights) {
+        long diferencia = fechaActual.getTime() - night.getDate().getTime();
+
+        // Verifica si la Night es del día antes
+        if (diferencia >= unDiaEnMillis && (nightDelDiaAntes == null || night.getDate().after(nightDelDiaAntes.getDate()))) {
+            nightDelDiaAntes = night;
+        }
+    }
+
+    if (nightDelDiaAntes == null) {
+        System.out.println("No hay registros de la noche del día antes.");
+    }
+
+    return nightDelDiaAntes;
+}
+
+ */
 
 
 
