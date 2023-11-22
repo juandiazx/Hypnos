@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -151,7 +152,31 @@ public class Historial extends AppCompatActivity {
                         Log.e(TAG, "Error getting nights", e);
                     }
                 });
-    }
+
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String initialDate = inputDateFrom.getText().toString();
+                String finalDate = inputDateTo.getText().toString();
+
+                firebaseHelper.searchNights(userID, initialDate, finalDate,
+                        new OnSuccessListener<List<Night>>() {
+                            @Override
+                            public void onSuccess(List<Night> nightList) {
+                                for (Night night : nightList) {
+                                    Log.d(TAG, "Night: " + night.getDate() + ", Score: " + night.getScore());
+                                }
+                            }
+                        },
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "Error getting nights", e);
+                            }
+                        });
+            }
+        });
+    }//onCreate
     public List<DiaModel> getListaDias() {
         return listaDias;
     }

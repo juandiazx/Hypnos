@@ -20,12 +20,15 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class FirebaseHelper {
     private static final String TAG = "FirebaseHelper";
@@ -42,7 +45,7 @@ public class FirebaseHelper {
 
         void onNightLoadError(Exception e);
     }
-    
+
     /*----------------------------------------------------------------------------------------
                 getClock() --> HASHMAP[String hour, songLocation
                               bool isSongGradual, isClockAutomatic]
@@ -441,6 +444,69 @@ public class FirebaseHelper {
                 });
     }
 
+    /*----------------------------------------------------------------------------------------
+                         Date: From, Date: To --> searchNights()
+    ----------------------------------------------------------------------------------------*/
+    public void searchNights(String userId, String fromDate, String toDate,final OnSuccessListener<List<Night>> successListener,
+                                                                                                                       final OnFailureListener failureListener) {
+
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        // Define the query to get the relevant nights
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            List<Night>filteredNights = filterNights(nightsList, fromDate, toDate);
+                            successListener.onSuccess(filteredNights);
+                        }
+                        else{
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+    /*----------------------------------------------------------------------------------------
+                         Date: From, Date: To, List --> filterNights()
+    ----------------------------------------------------------------------------------------*/
+    private List<Night> filterNights(List<Night> nightList, String fromDate, String toDate){
+
+        List<Night> filteredList = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date fromDateTransformed;
+        Date toDateTransformed;
+
+        try {
+            fromDateTransformed = sdf.parse(fromDate);
+            toDateTransformed = sdf.parse(toDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.e(TAG,"Error in converting String dates to Date dates");
+            return filteredList;
+        }
+
+        for(Night night : nightList){
+            Date nightsDate = night.getDate();
+            if(!nightsDate.before(fromDateTransformed) && !nightsDate.after(toDateTransformed)){
+                filteredList.add(night);
+            }
+        }
+
+        return filteredList;
+    }
 
 }//class
 
