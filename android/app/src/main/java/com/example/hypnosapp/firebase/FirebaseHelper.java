@@ -513,10 +513,8 @@ public class FirebaseHelper {
 
         CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
 
-        // Define the query to get the relevant nights
         Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
 
-        // Execute the query
         query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -525,12 +523,11 @@ public class FirebaseHelper {
                             List<Night> nightsList = new ArrayList<>();
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Convert each document to a Night object
                                 Night night = document.toObject(Night.class);
                                 nightsList.add(night);
                             }
-                            Date fechaActual = new Date();
-                            Night lastNight = searchLastNight(nightsList, fechaActual);
+                            Date currentDate = new Date();
+                            Night lastNight = searchLastNight(nightsList, currentDate);
                             successListener.onSuccess(lastNight);
                         }
                         else{
@@ -543,19 +540,19 @@ public class FirebaseHelper {
     /*----------------------------------------------------------------------------------------------
                            Date, List --> searchLastNight --> Night
     ----------------------------------------------------------------------------------------------*/
-    private static Night searchLastNight(List<Night> nights, Date fechaActual) {
+    private static Night searchLastNight(List<Night> nights, Date currentDate) {
     Night lastNight = null;
 
     for (Night night : nights) {
-        // Verifica si la fecha de la Night coincide exactamente con la fecha actual
-        if (isSameDay(night.getDate(), fechaActual)) {
+
+        if (isSameDay(night.getDate(), currentDate)) {
             lastNight = night;
-            break; // Puedes salir del bucle tan pronto como encuentres la Night del día actual
+            break;
         }
     }
 
     if (lastNight == null) {
-        System.out.println("No hay registros de la noche de hoy.");
+        Log.d(TAG,"No hay registros de la noche de hoy.");
     }
 
     return lastNight;
@@ -587,8 +584,8 @@ public class FirebaseHelper {
                                 Night night = document.toObject(Night.class);
                                 nightsList.add(night);
                             }
-                            Date fechaActual = new Date();
-                            Night yesterdayNight = searchYesterdayNight(nightsList, fechaActual);
+                            Date currentDate = new Date();
+                            Night yesterdayNight = searchYesterdayNight(nightsList, currentDate);
                             successListener.onSuccess(yesterdayNight);
                         }
                         else{
@@ -604,11 +601,10 @@ public class FirebaseHelper {
         Night yesterdayNight = null;
         long aDayInMillis = 24 * 60 * 60 * 1000; // Un día en milisegundos
 
-        // Obtén la fecha del día antes de currentDate
         Date yesterdayDate = new Date(currentDate.getTime() - aDayInMillis);
 
         for (Night night : nights) {
-            // Verifica si la Night es del día antes
+
             if (isSameDay(night.getDate(), yesterdayDate) && (yesterdayNight == null || night.getDate().after(yesterdayNight.getDate()))) {
                 yesterdayNight = night;
             }
@@ -627,10 +623,8 @@ public class FirebaseHelper {
     public void getBeforeYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
         CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
 
-        // Define the query to get the relevant nights
         Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
 
-        // Execute the query
         query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -643,8 +637,8 @@ public class FirebaseHelper {
                                 Night night = document.toObject(Night.class);
                                 nightsList.add(night);
                             }
-                            Date fechaActual = new Date();
-                            Night beforeYesterdayNight = searchBeforeYesterdayNight(nightsList, fechaActual);
+                            Date currentDate = new Date();
+                            Night beforeYesterdayNight = searchBeforeYesterdayNight(nightsList, currentDate);
                             successListener.onSuccess(beforeYesterdayNight);
                         }
                         else{
@@ -659,13 +653,12 @@ public class FirebaseHelper {
     ----------------------------------------------------------------------------------------------*/
     private static Night searchBeforeYesterdayNight(List<Night> nights, Date currentDate) {
         Night beforeYesterdayNight = null;
-        long aDayInMillis = 24 * 60 * 60 * 1000; // Un día en milisegundos
+        long aDayInMillis = 24 * 60 * 60 * 1000;
 
-        // Obtén la fecha de dos días antes de currentDate
         Date beforeYesterdayDate = new Date(currentDate.getTime() - (2 * aDayInMillis));
 
         for (Night night : nights) {
-            // Verifica si la Night es de dos días antes
+
             if (isSameDay(night.getDate(), beforeYesterdayDate) && (beforeYesterdayNight == null || night.getDate().after(beforeYesterdayNight.getDate()))) {
                 beforeYesterdayNight = night;
             }
