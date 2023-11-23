@@ -59,15 +59,87 @@
         app:tabGravity="fill"
         app:tabMode="fixed" />
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayoutHistorial">
+
+        <Button
+            android:id="@+id/inputDateFrom"
+            style="@style/Inputs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:text="@string/Desde"
+            android:textColor="@color/colorNegro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/inputDateTo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/inputDateTo"
+            style="@style/Inputs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:ems="10"
+            android:text="@string/Hasta"
+            android:textColor="@color/colorNegro"
+            app:layout_constraintBottom_toBottomOf="@+id/inputDateFrom"
+            app:layout_constraintEnd_toStartOf="@+id/btnSearch"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/inputDateFrom"
+            app:layout_constraintTop_toTopOf="@+id/inputDateFrom"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/Buscar"
+            app:layout_constraintBottom_toBottomOf="@+id/inputDateTo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/inputDateTo"
+            app:layout_constraintTop_toTopOf="@+id/inputDateTo" />
+
+        <TextView
+            android:id="@+id/lblErrorDates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/ErrorFechas"
+            android:textColor="#972F2F"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputDateFrom" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="611dp"
         android:background="#00000000"
         android:visibility="visible"
-        tools:context=".appactivity.MainActivity"
-        tools:layout_editor_absoluteY="118dp"
-        app:layout_constraintTop_toBottomOf="@id/tabLayoutHistorial"
-        app:layout_constraintStart_toEndOf="parent" >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
+        tools:context=".appactivity.MainActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,126 +159,9 @@
             <!--Filtro de fechas:-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/inputDateFrom"
-                    style="@style/Inputs"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:ems="10"
-                    android:text="@string/Desde"
-                    android:textColor="@color/colorNegro"
-                    app:layout_constraintEnd_toStartOf="@+id/inputDateTo"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/inputDateTo"
-                    style="@style/Inputs"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:ems="10"
-                    android:text="@string/Hasta"
-                    android:textColor="@color/colorNegro"
-                    app:layout_constraintBottom_toBottomOf="@+id/inputDateFrom"
-                    app:layout_constraintEnd_toStartOf="@+id/btnSearch"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/inputDateFrom"
-                    app:layout_constraintTop_toTopOf="@+id/inputDateFrom"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <Button
-                    android:id="@+id/btnSearch"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:text="@string/Buscar"
-                    app:layout_constraintBottom_toBottomOf="@+id/inputDateTo"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/inputDateTo"
-                    app:layout_constraintTop_toTopOf="@+id/inputDateTo" />
-
-                <TextView
-                    android:id="@+id/lblErrorDates"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/ErrorFechas"
-                    android:textColor="#972F2F"
-                    android:textSize="14sp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/inputDateFrom" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/frameLayout2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/border_background"
-                app:layout_constraintBottom_toTopOf="@+id/frameLayoutMenu"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-                app:layout_constraintVertical_bias="0.0">
-
-                <!--este textview debe cambiar su contenido dependiendo de la tab seleccionada
-                grafica semanal, mensual o anual-->
-                <TextView
-                    android:id="@+id/txtTituloFraficaDescansoDiario"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="#00000000"
-                    android:text="Gráfica de sueño semanal"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imagenGraficaSueñoDiario"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/round_border"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="H,16:9"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtTituloFraficaDescansoDiario"
-                    app:srcCompat="@drawable/hypnogram" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
-                android:layout_height="370dp"
+                android:layout_height="700dp"
                 android:background="@drawable/border_background"
                 tools:layout_editor_absoluteX="20dp"
                 tools:layout_editor_absoluteY="796dp">
@@ -252,7 +207,7 @@
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPagerHistorial"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -260,7 +215,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0">
+                    app:layout_constraintVertical_bias="1.0">
 
                 </androidx.viewpager.widget.ViewPager>
 
