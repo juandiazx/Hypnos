@@ -119,7 +119,7 @@ def escribir_en_firestore():
             'date':datetime.now(),
             'temperature':datos_udp["temperature"],
             'time': datos_uart,
-            'score': datos_mqtt
+            'score': int(datos_mqtt)
         }
 
         documento_referencia.update(datos_combinados)
