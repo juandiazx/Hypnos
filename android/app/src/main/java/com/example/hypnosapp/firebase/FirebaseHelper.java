@@ -1,8 +1,11 @@
 package com.example.hypnosapp.firebase;
 
+import com.example.hypnosapp.mainpage.DiaFragment3;
 import com.example.hypnosapp.model.Night;
 
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -12,7 +15,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -509,32 +515,40 @@ public class FirebaseHelper {
     /*----------------------------------------------------------------------------------------------
                                     getLastNight() --> Night
     ----------------------------------------------------------------------------------------------*/
-    public void getLastNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+    public void getLastNightWithListener(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener, final DiaFragment3.NightDataChangeListener dataChangeListener) {
 
         CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
 
         Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
 
-        query.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Night> nightsList = new ArrayList<>();
+        ListenerRegistration listenerRegistration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    failureListener.onFailure(e);
+                    return;
+                }
 
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Night night = document.toObject(Night.class);
-                                nightsList.add(night);
-                            }
-                            Date currentDate = new Date();
-                            Night lastNight = searchLastNight(nightsList, currentDate);
-                            successListener.onSuccess(lastNight);
-                        }
-                        else{
-                            failureListener.onFailure(task.getException());
-                        }
+                if (snapshot != null && !snapshot.isEmpty()) {
+                    List<Night> nightsList = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot document : snapshot) {
+                        Night night = document.toObject(Night.class);
+                        nightsList.add(night);
                     }
-                });
+
+                    Date currentDate = new Date();
+                    Night lastNight = searchLastNight(nightsList, currentDate);
+                    successListener.onSuccess(lastNight);
+
+                    if (dataChangeListener != null) {
+                        dataChangeListener.onDataChange(lastNight);
+                    }
+                } else {
+                    successListener.onSuccess(null);
+                }
+            }
+        });
     }
 
     /*----------------------------------------------------------------------------------------------

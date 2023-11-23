@@ -15,6 +15,7 @@ import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.model.Night;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,6 +30,7 @@ public class DiaFragment3 extends Fragment {
     TextView txtRestScoreLastNight, txtTituloDescansoAnoche, txtTiempoSueñoHorasAnoche, txtTemperaturaMediaNocheGradosAnoche, txtRespiracionAnoche;
     FirebaseHelper firebaseHelper = new FirebaseHelper();
     String userID = "lr3SPEtJqt493dpfWoDd";
+    private ListenerRegistration nightDataListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,28 +45,11 @@ public class DiaFragment3 extends Fragment {
         txtRespiracionAnoche = view.findViewById(R.id.txtRespiracionAnoche);
         halfDonutChartAnoche = view.findViewById(R.id.halfDonutChartAnoche);
 
-        firebaseHelper.getLastNight(userID, new OnSuccessListener<Night>() {
+        firebaseHelper.getLastNightWithListener(userID, new OnSuccessListener<Night>() {
             @Override
             public void onSuccess(Night night) {
                 if (night != null) {
-                    Log.d("FirebaseHelper", "Fecha LAST NIGHT: "+ night.getDate().toString() + " Puntuación: " + night.getScore());
-                    //show score points:
-                    txtRestScoreLastNight.setText(String.valueOf(night.getScore()));
-
-                    //show date in title:
-                    Date nightsDate = night.getDate();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                    String dateString = dateFormat.format(nightsDate);
-                    txtTituloDescansoAnoche.setText(txtTituloDescansoAnoche.getText() + " " + dateString);
-
-                    //show rest time:
-                    txtTiempoSueñoHorasAnoche.setText(String.valueOf(night.getTime()) + " h");
-
-                    //show temperature:
-                    txtTemperaturaMediaNocheGradosAnoche.setText(String.valueOf(night.getTemperature()) + " ºC");
-
-                    //show breathing:
-                    txtRespiracionAnoche.setText(night.getBreathing());
+                    updateNightsUI(night);
                 } else {
                     Log.d("FirebaseHelper", "No se encontró información para LAST NIGHT.");
                     txtTituloDescansoAnoche.setText("No hay datos de sueño");
@@ -73,20 +58,60 @@ public class DiaFragment3 extends Fragment {
                     txtTiempoSueñoHorasAnoche.setText("-");
                     txtTemperaturaMediaNocheGradosAnoche.setText("-");
                     txtRespiracionAnoche.setText("-");
-
-
-
                 }
             }
         }, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e("FirebaseHelper", "Ha habido un error con getLastNight! -----" + e);
-
+            }
+        }, new NightDataChangeListener() {
+            @Override
+            public void onDataChange(Night night) {
+                // Handle real-time data changes here
+                if (night != null) {
+                    updateNightsUI(night);
+                }
             }
         });
 
         // Aquí puedes inicializar las vistas y realizar otras operaciones necesarias
         return view;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        // Remove the real-time listener to prevent memory leaks
+        if (nightDataListener != null) {
+            nightDataListener.remove();
+        }
+    }
+
+    private void updateNightsUI(Night night) {
+        Log.d("FirebaseHelper", "Fecha LAST NIGHT: "+ night.getDate().toString() + " Puntuación: " + night.getScore());
+        //show score points:
+        txtRestScoreLastNight.setText(String.valueOf(night.getScore()));
+
+        //show date in title:
+        Date nightsDate = night.getDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String dateString = dateFormat.format(nightsDate);
+        txtTituloDescansoAnoche.setText(txtTituloDescansoAnoche.getText() + " " + dateString);
+
+        //show rest time:
+        txtTiempoSueñoHorasAnoche.setText(String.valueOf(night.getTime()) + " h");
+
+        //show temperature:
+        txtTemperaturaMediaNocheGradosAnoche.setText(String.valueOf(night.getTemperature()) + " ºC");
+
+        //show breathing:
+        txtRespiracionAnoche.setText(night.getBreathing());
+    }
+
+    public interface NightDataChangeListener {
+        void onDataChange(Night night);
+    }
+
 }
