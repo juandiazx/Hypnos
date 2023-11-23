@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/TextoInterBold"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:gravity="center"
+        android:text="¿Has olvidado tu contraseña?"
+        android:textColor="@color/colorAzulPrincipal"
+        android:textSize="18sp" />
+
+    <TextView
+        style="@style/TextoInterRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Ingresa tu correo para recibir un email que te permitirá cambiarla"
+        android:textColor="@color/colorAzulPrincipal"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/correoOlvidaContra"
+        style="@style/TextoInterRegular"
+        android:layout_width="307dp"
+        android:layout_height="78dp"
+        android:layout_gravity="center"
+        android:hint="Correo electrónico"
+        android:inputType="textEmailAddress"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingBottom="16dp"
+        android:paddingTop="4dp">
+
+        <Button
+            android:id="@+id/btnCancelarReautenticacion"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Cancelar" />
+
+        <Button
+            android:id="@+id/btnEnviar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Enviar"
+            android:layout_marginStart="16dp"
+            />
+    </LinearLayout>
+</LinearLayout>

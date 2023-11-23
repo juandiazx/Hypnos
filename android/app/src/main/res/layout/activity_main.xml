@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlanco"
-    tools:context=".MainActivity">
+    tools:context=".appactivity.MainActivity">
 
     <!--FOOTER-->
 
@@ -27,46 +27,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--FIN DE FOOTER-->
 
-<!--
-    <ImageView
-        android:id="@+id/imageMenu"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons8_menu_100" />
-
-    <ImageView
-        android:id="@+id/imageViewLogo2"
-        android:layout_width="112dp"
-        android:layout_height="72dp"
-        android:layout_marginEnd="10dp"
-        android:background="#00000000"
-        android:backgroundTint="#00000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logotipo_hypnos" />
-
-    <ImageView
-        android:id="@+id/imageViewProfile"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:background="#00000000"
-        android:clickable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons8_male_user_96" />
--->
     <!--HEADER-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -113,7 +73,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:context=".MainActivity"
+        tools:context=".appactivity.MainActivity"
         tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
@@ -135,7 +95,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-                <com.example.hypnosapp.HalfDonutChart
+                <com.example.hypnosapp.mainpage.HalfDonutChart
                     android:id="@+id/halfDonutChart"
                     android:layout_width="0dp"
                     android:layout_height="200dp"
@@ -501,56 +461,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="#ffffff" />
 
-    <!--
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/frameLayoutMenu"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="-10dp"
-            android:background="@drawable/border_background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/imageHome"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="60dp"
-                android:layout_marginBottom="10dp"
-                android:background="#00000000"
-                android:clickable="true"
-                android:src="@drawable/icons8_home_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageGear"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="60dp"
-                android:background="#00000000"
-                android:clickable="true"
-                android:src="@drawable/icons8_gear_48"
-                app:layout_constraintBottom_toBottomOf="@+id/imageHome"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageHome"
-                app:layout_constraintVertical_bias="0.49" />
-
-            <ImageView
-                android:id="@+id/imageMoon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="#00000000"
-                android:clickable="true"
-                android:src="@drawable/icons8_moon_60"
-                app:layout_constraintBottom_toBottomOf="@+id/imageHome"
-                app:layout_constraintEnd_toStartOf="@+id/imageGear"
-                app:layout_constraintStart_toEndOf="@+id/imageHome"
-                app:layout_constraintTop_toTopOf="@+id/imageHome" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

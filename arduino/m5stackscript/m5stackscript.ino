@@ -4,61 +4,72 @@
 #include <AsyncUDP.h>
 #include <ArduinoJson.h>
 #include <WiFi.h>
+#include <PubSubClient.h>
 //--------------------------------------------------------
 
+const char* mqtt_server = "192.168.0.65";
+WiFiClient espClient;
+PubSubClient client(espClient);
 
 //Incluimos cabeceras de nuestras clases
 //--------------------------------------------------------
-
 #include "M5StackAbstract.h"
 //--------------------------------------------------------
+M5StackAbstract* m5stackAbstract;
 
 //Realizamos nuestras definiciones que no ocupan espacio, acciones de compilador
 //--------------------------------------------------------------------------------------
 #define udpPort 6230
-//#define ssid "TP-LINK_6CAE"
-//#define password "54346615"
+//#define ssid "TP-LINK_6B36"
+//#define password "89776513"
 #define ssid "darkasa"
 #define password "0Spoilerspls"
 //--------------------------------------------------------------------------------------
 
-
-M5StackAbstract* m5stackAbstract;
-
 void setup() {
     Serial.begin(115200);
     m5stackAbstract = M5StackAbstract::getInstance(ssid,password,udpPort);
+    M5.Speaker.begin(); //inicializamos sistema de sonido
+    client.setServer(mqtt_server, 1883);
 }
-
 
 void loop() {
     m5stackAbstract->printLogoWhiteBackground();
-    Serial.println("se ha mostrado el logo");
-    while (1){
-        Serial.println(M5.BtnA.read());
-        if(M5.BtnA.read()){
-          Serial.println("se ha entrado al if del boton A");
-            delay(3000);
+    bool previousButtonState = false;
+    bool currentButtonState;
+    while (1) {
+        currentButtonState = M5.BtnA.read();
+        if (currentButtonState != previousButtonState) {
+            delay(150);
+            currentButtonState = M5.BtnA.read();
 
-            m5stackAbstract->switchLightM5StackAbstract();
-            m5stackAbstract->startRestingTrackRoutine();
-            while(1){
-                if(M5.BtnB.read()){
-                    Serial.println("se ha entrado al if del boton B");
-                    m5stackAbstract->stopRestingTrackRoutine();
-                    m5stackAbstract->switchLightM5StackAbstract();
-                    delay(2000);
-                    m5stackAbstract->showDataInScreen();
-                    while(1){
-                        if(M5.BtnC.read()){
-                          Serial.println("se ha entrado al if del boton C");
-                            break;
+            if (currentButtonState == previousButtonState) {
+                Serial.println("se ha entrado al if del boton A");
+                delay(3000);
+
+                m5stackAbstract->switchLightM5StackAbstract();
+                m5stackAbstract->startRestingTrackRoutine();
+                m5stackAbstract->receiveSensorsData();
+
+                while (1) {
+                    //Cuando ya se ha recibido info de los dos endpoints
+                    if (m5stackAbstract->receivedSensorsData == 2) {
+                        m5stackAbstract->switchLightM5StackAbstract();
+                        delay(2000);
+                        if (!client.connected()) {
+                          m5stackAbstract->reconnectMQTT();
                         }
+                        m5stackAbstract->enviarDatosMQTT();
+                        m5stackAbstract->showDataInScreen();
+                        delay(6000);
+                        break;
                     }
-                    break;
+                    delay(50);
                 }
+                break;
             }
-            break;
         }
+        previousButtonState = currentButtonState;
+        delay(10);
     }
 }

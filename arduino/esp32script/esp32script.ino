@@ -4,6 +4,7 @@
 #include <AsyncUDP.h>
 #include <ArduinoJson.h>
 #include <WiFi.h>
+#include <vector>
 //--------------------------------------------------------
 
 
@@ -21,8 +22,8 @@
 #define SOUNDPIN 34
 #define LEDPIN 2
 #define udpPort 6230
-//#define ssid "TP-LINK_6CAE"
-//#define password "54346615"
+//#define ssid "TP-LINK_6B36"
+//#define password "89776513"
 #define ssid "darkasa"
 #define password "0Spoilerspls"
 //--------------------------------------------------------------------------------------
@@ -43,7 +44,12 @@ void setup(){
 
 void loop() {
   esp32Abstract->listenForMessages();
+  /*
+  Serial.println("Comienza toma de medidas");
+  int snoreCount = esp32Abstract->snoreCountComputation(2,5);//esp32Abstract->listenForMessages();
+  Serial.println(snoreCount);
+  */
   delay(4000);
-
+  
 }
 

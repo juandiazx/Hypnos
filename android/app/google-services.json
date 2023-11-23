@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "804983460743",
+    "firebase_url": "https://hypnos-gti-default-rtdb.firebaseio.com",
     "project_id": "hypnos-gti",
     "storage_bucket": "hypnos-gti.appspot.com"
   },
@@ -13,6 +14,38 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "804983460743-8grkscv3b1vv3gs2l46k3vue4ludjsa6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hypnosapp",
+            "certificate_hash": "cb90c0a5865477e06b697258ff3108170b958105"
+          }
+        },
+        {
+          "client_id": "804983460743-ckfn60vht1mt8achtfefj52mpdvjvjj3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hypnosapp",
+            "certificate_hash": "b936b89e0064740ed3c4db97c61029ccffbb8206"
+          }
+        },
+        {
+          "client_id": "804983460743-d54rtp89vht2co66pmkui9okc1itptco.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hypnosapp",
+            "certificate_hash": "8c57f4b5160aaa7b660fddf94a70846a3229eaf2"
+          }
+        },
+        {
+          "client_id": "804983460743-hkkdd2gut1chaorkjc2h305rlqggacu4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hypnosapp",
+            "certificate_hash": "d03d4e4e72a22c3e9000f6fe97cdb709c7ef3474"
+          }
+        },
         {
           "client_id": "804983460743-r12vs40oipuctg01emau8s3cj7776ksq.apps.googleusercontent.com",
           "client_type": 1,

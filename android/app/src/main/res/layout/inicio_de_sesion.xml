@@ -85,7 +85,7 @@
         style="@style/TextoInterBold"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/olvidadoContrasenya"
@@ -162,5 +162,17 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/edtEmail"
         app:layout_constraintTop_toBottomOf="@+id/txt" />
+
+    <ImageView
+        android:id="@+id/imageViewPasswordToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="14dp"
+        android:contentDescription="Mostrar/Ocultar contraseña"
+        android:src="@drawable/ic_visibility_eye_off"
+        app:layout_constraintStart_toStartOf="@+id/edtContraseña"
+        app:layout_constraintTop_toBottomOf="@+id/edtContraseña" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

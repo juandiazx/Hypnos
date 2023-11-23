@@ -144,7 +144,6 @@
             android:layout_height="wrap_content"
             android:textColor="#972F2F"
             android:textSize="14sp"
-            android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="@+id/edtEmailRegistro"
             app:layout_constraintStart_toStartOf="@+id/edtEmailRegistro"
             app:layout_constraintTop_toBottomOf="@+id/edtContraseñaRegistro" />
@@ -182,7 +181,7 @@
             style="@style/EstiloBoton"
             android:layout_width="296dp"
             android:layout_height="51dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="24dp"
             android:onClick="registroCorreo"
             android:text="@string/TituloRegistro"
             app:layout_constraintEnd_toEndOf="parent"
@@ -207,7 +206,7 @@
             style="@style/TextoInterRegular"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="24dp"
             android:text="@string/YaTienesUnaCuenta"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/tvIniciaSesion"
@@ -232,6 +231,29 @@
             app:layout_constraintStart_toEndOf="@+id/txt"
             app:layout_constraintTop_toTopOf="@+id/txt"
             app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/imageViewPasswordToggleRegistro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="Mostrar/Ocultar contraseña"
+            android:src="@drawable/ic_visibility_eye_off"
+            app:layout_constraintEnd_toEndOf="@+id/edtRepetirContraseña"
+            app:layout_constraintTop_toBottomOf="@+id/edtRepetirContraseña" />
+
+        <TextView
+            android:id="@+id/textView7"
+            style="@style/TextoInterRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Mostrar contraseña"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewPasswordToggleRegistro"
+            app:layout_constraintEnd_toStartOf="@+id/imageViewPasswordToggleRegistro"
+            app:layout_constraintTop_toTopOf="@+id/imageViewPasswordToggleRegistro" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
