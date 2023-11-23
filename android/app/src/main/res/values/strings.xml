@@ -114,6 +114,13 @@
     <string name="reproduciendo_musica">Reproduciendo Música</string>
     <string name="descripcion_musica">La Guerra de las Galaxias</string>
 
+    <!--Historial-->
+    <string name="Desde">Desde</string>
+    <string name="Hasta">Hasta</string>
+    <string name="Buscar">Buscar</string>
+    <string name="ErrorFechas">La fecha inicial no puede ser posterior a la fecha final</string>
+
+
 
 
 

@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -14,6 +15,8 @@ import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.model.Night;
 import com.example.hypnosapp.other.MenuManager;
 import com.example.hypnosapp.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,8 +28,8 @@ public class Pantalla_Principal extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
     FirebaseHelper firebaseHelper = new FirebaseHelper();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,8 +95,5 @@ public class Pantalla_Principal extends AppCompatActivity {
         });
 
     }
-
-
-
 }
 
