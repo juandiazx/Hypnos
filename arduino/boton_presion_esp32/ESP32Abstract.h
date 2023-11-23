@@ -106,7 +106,7 @@ private:
         //En el caso si se quedó pulsado y no se soltó
         if(pressureSensor->tiempoInicio !=0){
           pressureSensor->tiempoEncendido += millis() - pressureSensor->tiempoInicio; // Calcula el tiempo que estuvo encendido el LED
-          Serial.println(pressureSensor->tiempoEncendido);
+          //Serial.println(pressureSensor->tiempoEncendido);
         }
 
         delay(3000);

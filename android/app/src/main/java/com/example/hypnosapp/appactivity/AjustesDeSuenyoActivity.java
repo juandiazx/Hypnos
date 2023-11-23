@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
@@ -81,7 +82,12 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         btnGuardarGoals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Elena
+                String selectedWakeUpHour = wakeUpHourGoal.getText().toString();
+                String selectedIdelRestTime = sleepTimeGoal.getText().toString();
+
+                firebaseHelper.setIdealWakeUpHour(userID, selectedWakeUpHour);
+                firebaseHelper.setIdealRestTime(userID, selectedIdelRestTime);
+
             }
         });
         btnPerfilUsuario.setOnClickListener(new View.OnClickListener() {
@@ -108,11 +114,15 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                 funcionMenu.abrirAcercaDe(AjustesDeSuenyoActivity.this);
             }
         });
-    }
 
+        //FIN DE FUNCIONALIDAD BOTONES MENUS
+
+    }//onCreate
     private void loadSleepSettings() {
 
         String userId = userID;
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
 
         firebaseHelper.getClock(userId,
                 new OnSuccessListener<Map<String, Object>>() {
@@ -130,6 +140,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                     }
                 });
 
+
         firebaseHelper.getLightSettings(userId,
                 new OnSuccessListener<String>() {
                     @Override
@@ -145,8 +156,56 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                                 "We couldn't obtain your light settings", Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
 
+        firebaseHelper.getIdealWakeUpHour(userId,
+                new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String idealWakeUpHour) {
+                        wakeUpHourGoal.setText(idealWakeUpHour);
+                    }
+                },
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText( AjustesDeSuenyoActivity.this,
+                                "We couldn't obtain your ideal wake up hour", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        firebaseHelper.getIdealRestTime(userId,
+                new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String idealRestTime) {
+                        sleepTimeGoal.setText(idealRestTime);
+                    }
+                },
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText( AjustesDeSuenyoActivity.this,
+                                "We couldn't obtain your ideal rest time", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        firebaseHelper.getNotifications(userId,
+                new OnSuccessListener<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean notificationSetting) {
+                        if(notificationSetting){
+                            goalNotifications.setChecked(true);
+                        } else{
+                            goalNotifications.setChecked(false);
+                        }
+                    }
+                },
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText( AjustesDeSuenyoActivity.this,
+                                "We couldn't obtain your sleep notifications settings", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
     private void updateClockSettingsUI(Map<String, Object> clockSettings) {
         if (clockSettings != null) {
             Boolean isGradual = (Boolean) clockSettings.get("isGradual");
@@ -181,8 +240,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             Log.e(TAG, "clockSettings is null");
         }
     }
-
-
     private void updateLightSettingsUI(String lightSettings) {
         if ("COL".equals(lightSettings)) {
             coldLight.setChecked(true);
@@ -198,7 +255,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             coldLight.setChecked(false);
         }
     }
-
     private void setSwitchListeners() {
         warmLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -238,6 +294,17 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
                     // Update setting in the database
                     firebaseHelper.setLightAuto(userID);
+                }
+            }
+        });
+
+        goalNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if(isChecked){
+                    firebaseHelper.setNotifications(userID, true);
+                } else{
+                    firebaseHelper.setNotifications(userID, false);
                 }
             }
         });

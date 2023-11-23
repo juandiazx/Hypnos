@@ -152,6 +152,9 @@ private:
         ledLight->turnOff();
         
         temperatura = temperatureSensor->takeMeasurement();
+        while(temperatura > 45 || temperatura <3){
+          temperatura = temperatureSensor->takeMeasurement();
+        }
         saveSoundDetections();
         snoreAmount = snoreCountComputation(2,5);
 

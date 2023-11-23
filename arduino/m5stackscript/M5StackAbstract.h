@@ -44,8 +44,9 @@ public:
         M5.Lcd.setCursor(0,0); // Establece la posición del cursor en la pantalla
         M5.Lcd.setTextColor(0x164499); // Establece el color del texto
         M5.Lcd.println("Temperatura: " + String(this->averageTemperature) + " C"); // Muestra la temperatura en la pantalla
-        M5.Lcd.println("Ronquidos: " + String(this->snoreAmount));
+        M5.Lcd.println("Respiracion: " + String(this->snoreAmount));
         M5.Lcd.println("Tiempo Descanso: " + String((this->tiempoEncendido)/1000) + " s");
+        M5.Lcd.println("Puntuacion: " + String(this->sleepScore));
         this->receivedSensorsData = 0;
         playAlarmSound();
     }
@@ -90,6 +91,12 @@ public:
             else{
               this->tiempoEncendido = jsonDoc["sleepTime"];
             }
+            if(averageTemperature > 40 || averageTemperature < 4){
+              averageTemperature = 19;
+            }
+            if(snoreAmount > 40 || snoreAmount < 0){
+              snoreAmount = 0;
+            }
             Serial.println(averageTemperature);
             Serial.println(snoreAmount);
             Serial.println(tiempoEncendido);
@@ -101,6 +108,36 @@ public:
     });
     }
 
+        //Funcion reconexion MQTT
+    void reconnectMQTT() {
+      // Intentar conectarse al servidor MQTT
+      while (!client.connected()) {
+        Serial.println("Conectando al servidor MQTT...");
+        if (client.connect("M5StackClient")) {
+          Serial.println("Conectado al servidor MQTT");
+        } else {
+          Serial.print("Error de conexión, rc=");
+          Serial.print(client.state());
+          Serial.println(" Intentando de nuevo en 5 segundos");
+          delay(5000);
+        }
+      }
+    }
+
+    void enviarDatosMQTT(){
+      if (client.connect("M5StackClient")) {
+        sleepScore = calculateSleepScore();
+
+        char message[10];  // Ajusta el tamaño según tus necesidades
+        sprintf(message, "%d", sleepScore);
+
+        client.publish(mqtt_topic, message);
+        client.disconnect();
+      }
+      else {
+        Serial.println("Error al conectar al broker MQTT");
+      }
+    }
 
 private:
     bool isNight = false;
@@ -112,9 +149,12 @@ private:
     int averageTemperature;
     unsigned int snoreAmount;
     unsigned int tiempoEncendido;
+    unsigned int sleepScore;
 
     uint16_t mainColor = 0x164499;
     AsyncUDP udp;
+
+    const char* mqtt_topic = "m5stack_topic";
 
 
    M5StackAbstract(const char *ssid, const char *pass, int udp) {
@@ -168,6 +208,25 @@ private:
 
       // Detener el sonido
       M5.Speaker.mute();
+    }
+
+    int calculateSleepScore(){
+        // Normalizar valores dentro del rango óptimo
+        double normalizedTime = min(1.0, static_cast<double>(tiempoEncendido) / 14.0);
+        double normalizedSnore = min(1.0, static_cast<double>(snoreAmount) / 5.0);
+
+        // Ajustar ponderaciones iguales
+        const double timeWeight = 0.5;
+        const double snoreWeight = 0.5;
+
+        // Calcular la puntuación de descanso (valores entre 0 y 100)
+        int sleepScore = static_cast<int>((normalizedTime) * timeWeight * 100 +
+                                          (1.0 - normalizedSnore) * snoreWeight * 100);
+
+        // Asegurarse de que la puntuación esté dentro del rango [0, 100]
+        sleepScore = max(0, min(100, sleepScore));
+
+        return sleepScore;
     }
     
     static M5StackAbstract* instance;
