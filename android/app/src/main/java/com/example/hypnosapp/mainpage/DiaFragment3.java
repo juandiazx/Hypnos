@@ -22,6 +22,8 @@ import java.util.Date;
 
 public class DiaFragment3 extends Fragment {
 
+    String baseTitleForNight;
+
     public DiaFragment3() {
         // Constructor público vacío requerido
     }
@@ -68,14 +70,12 @@ public class DiaFragment3 extends Fragment {
         }, new NightDataChangeListener() {
             @Override
             public void onDataChange(Night night) {
-                // Handle real-time data changes here
                 if (night != null) {
                     updateNightsUI(night);
                 }
             }
         });
 
-        // Aquí puedes inicializar las vistas y realizar otras operaciones necesarias
         return view;
     }
 
@@ -83,7 +83,6 @@ public class DiaFragment3 extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-        // Remove the real-time listener to prevent memory leaks
         if (nightDataListener != null) {
             nightDataListener.remove();
         }
@@ -94,11 +93,13 @@ public class DiaFragment3 extends Fragment {
         //show score points:
         txtRestScoreLastNight.setText(String.valueOf(night.getScore()));
 
+        baseTitleForNight = "Puntuación descanso";
+
         //show date in title:
         Date nightsDate = night.getDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateString = dateFormat.format(nightsDate);
-        txtTituloDescansoAnoche.setText(txtTituloDescansoAnoche.getText() + " " + dateString);
+        txtTituloDescansoAnoche.setText(baseTitleForNight + " " + dateString);
 
         //show rest time:
         txtTiempoSueñoHorasAnoche.setText(String.valueOf(night.getTime()) + " h");
