@@ -17,7 +17,7 @@ from io import BytesIO
 # Inicializa Firebase con el archivo de configuración
 cred = credentials.Certificate('firebase-adminsdk.json')
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'your-firebase-storage-bucket-url'  # Reemplaza con la URL de tu Firebase Storage
+    'storageBucket': 'gs://hypnos-gti.appspot.com'
 })
 
 
