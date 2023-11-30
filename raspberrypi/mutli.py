@@ -6,10 +6,20 @@ import json
 from firebase_admin import credentials, firestore
 import paho.mqtt.client as mqtt
 from datetime import datetime
+from picamera import PiCamera
+import time
+from io import BytesIO
+
+#CAMERA DOCUMENTATION
+#Hacer sudo pip install picamera en el virtual environment
+#https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/0
 
 # Inicializa Firebase con el archivo de configuración
 cred = credentials.Certificate('firebase-adminsdk.json')
-firebase_admin.initialize_app(cred)
+firebase_admin.initialize_app(cred, {
+    'storageBucket': 'your-firebase-storage-bucket-url'  # Reemplaza con la URL de tu Firebase Storage
+})
+
 
 # Referencia a la colección en la que deseas agregar datos
 db = firestore.client()
@@ -34,10 +44,22 @@ mqtt_broker_address = "192.168.0.65"  # Cambia esto con la IP de tu Raspberry Pi
 mqtt_topic = "m5stack_topic"
 mqtt_client = mqtt.Client()
 
+# Configuración de la cámara
+camera = PiCamera()
+
 # Variables para almacenar los datos de UDP y UART
 datos_udp = None
 datos_uart = None
 datos_mqtt = None
+
+# Array para almacenar los archivos de imagen
+imagenes = []
+
+def tomar_foto():
+    stream = BytesIO()
+    camera.capture(stream, 'jpeg')
+    imagenes.append(stream.getvalue())
+    time.sleep(6)  # Espera 6 segundos antes de tomar la siguiente foto
 
 def recibir_datos_udp():
     global datos_udp
@@ -124,23 +146,30 @@ def escribir_en_firestore():
 
         documento_referencia.update(datos_combinados)
         print('Datos combinados agregados correctamente a Firestore en Firebase.')
+        
+        # Subir imágenes a Firestore
+        for i, imagen in enumerate(imagenes):
+            storage_ref = firebase_admin.storage.bucket().blob(f'imagen_{i}.jpg')
+            storage_ref.upload_from_string(imagen, content_type='image/jpeg')
+            print(f'Imagen {i} subida correctamente a Firestore.')
 
 # Iniciar subprocesos
 thread_udp = threading.Thread(target=recibir_datos_udp)
 thread_uart = threading.Thread(target=recibir_datos_uart)
-
 thread_mqtt = threading.Thread(target=iniciar_hilo_mqtt)
+thread_foto = threading.Thread(target=tomar_foto)
 
 # Iniciar subprocesos
 thread_udp.start()
 thread_uart.start()
-print("Antes")
 thread_mqtt.start()
-print("Despues")
+thread_foto.start()
+
 # Esperar a que los subprocesos terminen (puedes eliminar esta línea si deseas que los subprocesos se ejecuten indefinidamente)
 thread_udp.join()
 thread_uart.join()
 thread_mqtt.join()
+thread_foto.join()
 
 # Escribir en Firestore después de que ambos subprocesos hayan terminado
 escribir_en_firestore()

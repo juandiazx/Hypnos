@@ -7,7 +7,7 @@
 #include <PubSubClient.h>
 //--------------------------------------------------------
 
-const char* mqtt_server = "192.168.0.65";
+const char* mqtt_server = "192.168.0.103";
 WiFiClient espClient;
 PubSubClient client(espClient);
 
@@ -20,10 +20,10 @@ M5StackAbstract* m5stackAbstract;
 //Realizamos nuestras definiciones que no ocupan espacio, acciones de compilador
 //--------------------------------------------------------------------------------------
 #define udpPort 6230
-//#define ssid "TP-LINK_6B36"
-//#define password "89776513"
-#define ssid "darkasa"
-#define password "0Spoilerspls"
+#define ssid "TP-LINK_6B36"
+#define password "89776513"
+//#define ssid "darkasa"
+//#define password "0Spoilerspls"
 //--------------------------------------------------------------------------------------
 
 void setup() {
