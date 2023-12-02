@@ -35,6 +35,14 @@
         </activity>
 
         <activity
+            android:name=".appactivity.FamilyLoginActivity">
+        </activity>
+
+        <activity
+            android:name=".appactivity.PlataformaFamiliarActivity">
+        </activity>
+
+        <activity
             android:name=".auth.InicioDeSesion">
 
         </activity>

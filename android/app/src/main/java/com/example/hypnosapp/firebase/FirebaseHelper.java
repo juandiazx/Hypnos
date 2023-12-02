@@ -692,6 +692,31 @@ public class FirebaseHelper {
 
 
 
+    public void checkFamilyAccessCode(String codigoAcceso, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
+        CollectionReference usersCollection = db.collection("users");
+
+        Query query = usersCollection.whereEqualTo("familyAccessCode", codigoAcceso);
+
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Encontrar el documento que coincide con el familyAccessCode
+                                String userId = document.getId();
+                                Log.d("Holaaaa",userId);
+                                successListener.onSuccess(userId);
+                                return;  // No es necesario continuar después de encontrar una coincidencia
+                            }
+                            // Si no se encontró ninguna coincidencia
+                            successListener.onSuccess(null);
+                        } else {
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
 
 
 

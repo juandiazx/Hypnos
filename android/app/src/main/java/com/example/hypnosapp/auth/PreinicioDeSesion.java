@@ -1,5 +1,6 @@
 package com.example.hypnosapp.auth;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.example.hypnosapp.ManejoPermisosUbicacion;
 import com.example.hypnosapp.NotificacionService;
 import com.example.hypnosapp.R;
 import com.example.hypnosapp.appactivity.AcercaDeActivity;
+import com.example.hypnosapp.appactivity.FamilyLoginActivity;
 import com.example.hypnosapp.mainpage.Pantalla_Principal;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -41,8 +43,9 @@ public class PreinicioDeSesion extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static final String TAG = "FacebookLogin";
     Button btnGoogle, btnFacebook, btnEmail;
-    TextView tvRegistrate;
+    TextView tvRegistrate, accederFamiliar;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +70,7 @@ public class PreinicioDeSesion extends AppCompatActivity {
         btnFacebook = findViewById(R.id.btnFacebook);
         btnEmail = findViewById(R.id.btnEmail);
         tvRegistrate = findViewById(R.id.tvRegistratePreinicio);
-
+        accederFamiliar = findViewById(R.id.botonAccederFamiliar);
         //binding = PreinicioDeSesionBinding.inflate(getLayoutInflater());
         //setContentView(binding.getRoot());
         // Inicializa la instancia de GoogleHelper
@@ -103,6 +106,13 @@ public class PreinicioDeSesion extends AppCompatActivity {
                 pulsaRegistrar();
             }
         });
+
+        accederFamiliar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iniciarActividadAccesoFamiliar();
+            }
+        });
     }
 
     // PARA SOLICITAR EL PERMISO DE UBICACIÓN
@@ -116,13 +126,18 @@ public class PreinicioDeSesion extends AppCompatActivity {
     // --------------------------------------
 
 
-    public void pulsaEmail() {
+    private void pulsaEmail() {
         Intent intent = new Intent(PreinicioDeSesion.this, InicioDeSesion.class);
         startActivity(intent);
     }
 
-    public void pulsaRegistrar() {
+    private void pulsaRegistrar() {
         Intent intent = new Intent(PreinicioDeSesion.this, Registro.class);
+        startActivity(intent);
+    }
+
+    private void iniciarActividadAccesoFamiliar(){
+        Intent intent = new Intent(PreinicioDeSesion.this, FamilyLoginActivity.class);
         startActivity(intent);
     }
 
