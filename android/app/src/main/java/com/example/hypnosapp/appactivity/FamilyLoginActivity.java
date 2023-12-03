@@ -43,9 +43,8 @@ public class FamilyLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String accessCode = codigoAccesoEditText.getText().toString();
                 boolean flagContinuar = validarFormatoCodigoAcceso(accessCode);
-
                 if (flagContinuar) {
-                    firebaseHelper.checkFamilyAccessCode(accessCode,
+                    firebaseHelper.checkFamilyAccessCode(Integer.parseInt(accessCode),
                             new OnSuccessListener<String>() {
                                 @Override
                                 public void onSuccess(String userId) {
@@ -64,8 +63,6 @@ public class FamilyLoginActivity extends AppCompatActivity {
                                 }
                             }
                     );
-                } else {
-                    Log.d("Adios", accessCode);
                 }
             }
         });

@@ -1,9 +1,13 @@
 package com.example.hypnosapp.firebase;
 
+import com.bumptech.glide.Glide;
 import com.example.hypnosapp.mainpage.DiaFragment3;
 import com.example.hypnosapp.model.Night;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -22,6 +26,9 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,7 +38,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Comparator;
 
 
 public class FirebaseHelper {
@@ -691,8 +701,10 @@ public class FirebaseHelper {
 
 
 
-
-    public void checkFamilyAccessCode(String codigoAcceso, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
+    /*----------------------------------------------------------------------------------------------
+                                  codigoAcceso --> checkFamilyAccessCode() --> userID || null
+    ----------------------------------------------------------------------------------------------*/
+    public void checkFamilyAccessCode(int codigoAcceso, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
         CollectionReference usersCollection = db.collection("users");
 
         Query query = usersCollection.whereEqualTo("familyAccessCode", codigoAcceso);
@@ -702,6 +714,8 @@ public class FirebaseHelper {
                     @Override
                     public void onComplete(Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            Log.d("Task",task.toString());
+                            Log.d("TaskGetResult",Integer.toString(task.getResult().size()));
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 // Encontrar el documento que coincide con el familyAccessCode
                                 String userId = document.getId();
@@ -718,7 +732,58 @@ public class FirebaseHelper {
                 });
     }
 
+    public static void cargarUltimaImagen(Context context, ImageView imageView, String userId, TextView fechaTextView) {
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://hypnos-gti.appspot.com");
+        StorageReference storageRef = storage.getReference().child("users/" + userId);
 
+        storageRef.listAll()
+                .addOnSuccessListener(listResult -> {
+                    List<StorageReference> items = listResult.getItems();
+                    items.sort((first, second) -> {
+                        // Comparar por fecha de creación (puedes ajustar esto según tus necesidades)
+                        long firstTime = getCreationTimeMillis(first);
+                        long secondTime = getCreationTimeMillis(second);
+                        return Long.compare(secondTime, firstTime);
+                    });
+
+                    if (!items.isEmpty()) {
+                        StorageReference lastImageRef = items.get(0);
+                        lastImageRef.getDownloadUrl()
+                                .addOnSuccessListener(uri -> {
+                                    // Cargar la imagen usando la URL
+                                    Glide.with(context).load(uri).into(imageView);
+                                    /*
+                                    // Obtener la fecha y hora de creación como cadena
+                                    String creationDateTime = getFormattedCreationDateTime(lastImageRef);
+                                    // Asignar la cadena al TextView
+                                    fechaTextView.setText("Foto tomada a " + creationDateTime);*/
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Manejar errores al obtener la URL
+                                    e.printStackTrace();
+                                });
+                    } else {
+                        // No hay imágenes para este usuario
+                        // Puedes manejar esto según tus necesidades, por ejemplo, mostrar una imagen predeterminada
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Manejar errores al listar los archivos
+                    e.printStackTrace();
+                });
+    }
+
+    private static long getCreationTimeMillis(StorageReference reference) {
+        return reference.getMetadata().getResult().getCreationTimeMillis();
+    }
+
+    private static String getFormattedCreationDateTime(StorageReference reference) {
+        long creationTimeMillis = getCreationTimeMillis(reference);
+        // Puedes utilizar una clase como SimpleDateFormat para formatear la fecha según tus necesidades
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date creationDate = new Date(creationTimeMillis);
+        return sdf.format(creationDate);
+    }
 
 }//class
 
