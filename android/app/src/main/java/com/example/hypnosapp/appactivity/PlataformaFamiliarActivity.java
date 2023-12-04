@@ -23,13 +23,11 @@ public class PlataformaFamiliarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.plataforma_familiar);
-        texto = findViewById(R.id.textView23);
         textoFecha = findViewById(R.id.textoFecha);
         imgFamily = findViewById(R.id.imgFamily);
 
         String userID = getIntent().getStringExtra("userID");
 
-        texto.setText(userID);
         firebaseHelper.cargarUltimaImagen(this, imgFamily,userID,textoFecha);
     }
 }

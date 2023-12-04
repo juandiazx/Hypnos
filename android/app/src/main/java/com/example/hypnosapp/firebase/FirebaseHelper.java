@@ -28,7 +28,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -740,50 +743,68 @@ public class FirebaseHelper {
                 .addOnSuccessListener(listResult -> {
                     List<StorageReference> items = listResult.getItems();
                     items.sort((first, second) -> {
-                        // Comparar por fecha de creación (puedes ajustar esto según tus necesidades)
-                        long firstTime = getCreationTimeMillis(first);
-                        long secondTime = getCreationTimeMillis(second);
-                        return Long.compare(secondTime, firstTime);
+                        getCreationTimeMillis(first,
+                                creationTimeFirst -> {
+                                    getCreationTimeMillis(second,
+                                            creationTimeSecond -> {
+                                                long result = Long.compare(creationTimeSecond, creationTimeFirst);
+                                            },
+                                            exception -> exception.printStackTrace());
+                                },
+                                exception -> exception.printStackTrace());
+                        return 0;
                     });
 
                     if (!items.isEmpty()) {
                         StorageReference lastImageRef = items.get(0);
                         lastImageRef.getDownloadUrl()
                                 .addOnSuccessListener(uri -> {
-                                    // Cargar la imagen usando la URL
                                     Glide.with(context).load(uri).into(imageView);
-                                    /*
-                                    // Obtener la fecha y hora de creación como cadena
-                                    String creationDateTime = getFormattedCreationDateTime(lastImageRef);
-                                    // Asignar la cadena al TextView
-                                    fechaTextView.setText("Foto tomada a " + creationDateTime);*/
+
+                                    getFormattedCreationDateTime(lastImageRef, fechaTextView);
                                 })
                                 .addOnFailureListener(e -> {
-                                    // Manejar errores al obtener la URL
                                     e.printStackTrace();
                                 });
                     } else {
-                        // No hay imágenes para este usuario
-                        // Puedes manejar esto según tus necesidades, por ejemplo, mostrar una imagen predeterminada
+                        fechaTextView.setText("No existe ninguna imagen de su familiar");
                     }
                 })
                 .addOnFailureListener(e -> {
-                    // Manejar errores al listar los archivos
                     e.printStackTrace();
                 });
     }
 
-    private static long getCreationTimeMillis(StorageReference reference) {
-        return reference.getMetadata().getResult().getCreationTimeMillis();
+
+    private static void getCreationTimeMillis(StorageReference reference, OnSuccessListener<Long> successListener, OnFailureListener failureListener) {
+        reference.getMetadata()
+                .addOnSuccessListener(storageMetadata -> {
+                    long creationTimeMillis = storageMetadata.getCreationTimeMillis();
+                    successListener.onSuccess(creationTimeMillis);
+                })
+                .addOnFailureListener(exception -> {
+                    exception.printStackTrace();
+                    failureListener.onFailure(exception);
+                });
     }
 
-    private static String getFormattedCreationDateTime(StorageReference reference) {
-        long creationTimeMillis = getCreationTimeMillis(reference);
-        // Puedes utilizar una clase como SimpleDateFormat para formatear la fecha según tus necesidades
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Date creationDate = new Date(creationTimeMillis);
-        return sdf.format(creationDate);
+
+    private static void getFormattedCreationDateTime(StorageReference reference, TextView fechaTextView) {
+        getCreationTimeMillis(reference,
+                creationTimeMillis -> {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                    String formattedDateTime = sdf.format(new Date(creationTimeMillis));
+
+                    // Asignar la cadena al TextView
+                    fechaTextView.setText("" + formattedDateTime);
+                },
+                exception -> {
+                    exception.printStackTrace();
+                });
     }
+
+
+
 
 }//class
 
