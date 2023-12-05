@@ -1,4 +1,4 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.services;
 
 import android.Manifest;
 import android.content.Context;

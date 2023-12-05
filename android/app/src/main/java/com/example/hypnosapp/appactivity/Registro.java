@@ -1,4 +1,4 @@
-package com.example.hypnosapp.auth;
+package com.example.hypnosapp.appactivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hypnosapp.R;
+import com.example.hypnosapp.auth.AuthHelper;
 import com.example.hypnosapp.databinding.RegistroBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -118,7 +119,7 @@ public class Registro extends AppCompatActivity {
     private void pulsaIniciaSesion() {
         Class<?> destinationClass = null;
         try {
-            destinationClass = Class.forName("com.example.hypnosapp.auth.InicioDeSesion");
+            destinationClass = Class.forName("com.example.hypnosapp.appactivity.InicioDeSesion");
             Intent intent = new Intent(Registro.this, destinationClass);
             Registro.this.startActivity(intent);
             Registro.this.finish();

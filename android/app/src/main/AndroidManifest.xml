@@ -14,11 +14,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+
     <application
-        android:name=".other.HypnosInicializacion"
+        android:name=".utils.HypnosInicializacion"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -29,6 +31,8 @@
         android:theme="@style/Theme.HypnosApp"
         tools:targetApi="31"
         android:enableOnBackInvokedCallback="true">
+
+
 
 
         <activity
@@ -44,7 +48,7 @@
         </activity>
 
         <activity
-            android:name=".auth.InicioDeSesion">
+            android:name=".appactivity.InicioDeSesion">
 
         </activity>
 
@@ -54,7 +58,7 @@
         </activity>
 
         <activity
-            android:name=".auth.PerfilUsuarioActivity">
+            android:name=".appactivity.PerfilUsuarioActivity">
 
         </activity>
 
@@ -73,7 +77,7 @@
         </activity>
 
         <activity
-            android:name=".auth.Registro">
+            android:name=".appactivity.Registro">
         </activity>
 
         <activity
@@ -106,7 +110,12 @@
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
 
-        <service android:name=".NotificacionService" />
+        <service android:name=".services.NotificacionService" />
+        <service
+            android:name=".services.AlarmService" />
+
+        <receiver
+            android:name=".services.AlarmStopReceiver" />
 
     </application>
 

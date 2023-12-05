@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hypnosapp.R;
-import com.example.hypnosapp.ManejoPermisosUbicacion;
 import com.example.hypnosapp.firebase.FirebaseHelper;
 
 public class PlataformaFamiliarActivity extends AppCompatActivity {

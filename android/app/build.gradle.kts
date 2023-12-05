@@ -47,7 +47,7 @@ android {
 
 dependencies {
     implementation ("com.google.firebase:firebase-storage")
-
+    implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")

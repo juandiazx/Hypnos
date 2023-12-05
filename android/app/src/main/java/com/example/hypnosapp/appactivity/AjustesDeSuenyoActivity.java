@@ -1,5 +1,6 @@
 package com.example.hypnosapp.appactivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,20 +13,27 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.hypnosapp.firebase.FirebaseHelper;
-import com.example.hypnosapp.other.MenuManager;
+import com.example.hypnosapp.services.AlarmService;
+import com.example.hypnosapp.services.MQTTHelper;
+import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
+
 import java.util.Map;
 
 public class AjustesDeSuenyoActivity extends AppCompatActivity {
     private static final String TAG = "AjustesDeSuenyo";
+
+    private static final int PICK_RINGTONE_REQUEST = 1;
     ImageView btnPerfilUsuario, btnPantallaPrincipal, btnAjustesDescanso, btnPreferencias;
     EditText toneLocationClock, wakeUpHourClock, wakeUpHourGoal, sleepTimeGoal;
     Switch isGradualClock, isAutoClock, goalNotifications, warmLight, coldLight, autoLight;
@@ -115,9 +123,45 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             }
         });
 
+        //------------------------------------------------------
+        //BOTON SELECCIONAR TONO DESPERTADOR
+        //------------------------------------------------------
+
+        Button selectAlarmButton = findViewById(R.id.selectAlarmButton);
+        selectAlarmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Abre el selector de tonos
+                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
+                startActivityForResult(intent, PICK_RINGTONE_REQUEST);
+            }
+        });
         //FIN DE FUNCIONALIDAD BOTONES MENUS
 
     }//onCreate
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Entra",Integer.toString(requestCode));
+        if (requestCode == PICK_RINGTONE_REQUEST && resultCode == RESULT_OK) {
+            // Obtiene la URI del tono seleccionado por el usuario
+            Uri selectedRingtoneUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            Log.d("Dentro",selectedRingtoneUri.toString());
+            Intent serviceIntent = new Intent(AjustesDeSuenyoActivity.this, AlarmService.class);
+            serviceIntent.setData(selectedRingtoneUri);
+            startService(serviceIntent);
+
+            // Guarda la URL del tono en la base de datos (Firebase)
+            //saveAlarmUrlToFirebase(selectedRingtoneUri.toString());
+        }
+    }
+
+    private void saveAlarmUrlToFirebase(String alarmUrl) {
+        // Implementar la lógica para guardar la URL en Firebase
+        // Puedes usar Firebase Realtime Database o Firestore según tu configuración
+    }
     private void loadSleepSettings() {
 
         String userId = userID;
@@ -309,4 +353,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 }

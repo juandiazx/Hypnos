@@ -224,10 +224,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginBottom="8dp"
-                        android:text="guardar"
+                        android:text="Guardar"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/imageView6"
                         app:layout_constraintStart_toStartOf="@+id/imageView6" />
+
+                    <Button
+                        android:id="@+id/selectAlarmButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Guardar"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:layout_editor_absoluteX="147dp" />
 
                     <ImageView
                         android:id="@+id/imageView9"
@@ -360,9 +369,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginBottom="8dp"
-                        android:text="guardar"
+                        android:text="Guardar"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/switchNotifications"
+                        app:layout_constraintEnd_toEndOf="@+id/textView13"
                         app:layout_constraintStart_toStartOf="@+id/textView13" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

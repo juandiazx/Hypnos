@@ -18,7 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.model.Night;
-import com.example.hypnosapp.other.MenuManager;
+import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

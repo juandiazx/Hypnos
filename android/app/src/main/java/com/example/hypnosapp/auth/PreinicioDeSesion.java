@@ -13,11 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import com.example.hypnosapp.ManejoPermisosUbicacion;
-import com.example.hypnosapp.NotificacionService;
+import com.example.hypnosapp.services.ManejoPermisosUbicacion;
+import com.example.hypnosapp.services.NotificacionService;
 import com.example.hypnosapp.R;
-import com.example.hypnosapp.appactivity.AcercaDeActivity;
 import com.example.hypnosapp.appactivity.FamilyLoginActivity;
+import com.example.hypnosapp.appactivity.InicioDeSesion;
+import com.example.hypnosapp.appactivity.Registro;
 import com.example.hypnosapp.mainpage.Pantalla_Principal;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
