@@ -108,12 +108,11 @@ public class FirebaseHelper {
                    String hour, songLocation     ----> setClock()
                bool isSongGradual, isClockAutomatic
     ----------------------------------------------------------------------------------------*/
-    public void setClock(String userId, String hour, String songLocation, boolean isSongGradual, boolean isClockAutomatic) {
+    public void setClock(String userId, String songLocation, boolean isSongGradual, boolean isClockAutomatic) {
         // Update clock settings in Firestore
         DocumentReference userDocRef = db.collection("users").document(userId);
 
         Map<String, Object> clockSettings = new HashMap<>();
-        clockSettings.put("alarmHour", hour);
         clockSettings.put("isAutomatic", isClockAutomatic);
         clockSettings.put("isGradual", isSongGradual);
         clockSettings.put("toneLocation", songLocation);
@@ -735,6 +734,9 @@ public class FirebaseHelper {
                 });
     }
 
+    /*----------------------------------------------------------------------------------------------
+                              cargarUltimaImagen() --> Renders Family Image and Date of Creation
+----------------------------------------------------------------------------------------------*/
     public static void cargarUltimaImagen(Context context, ImageView imageView, String userId, TextView fechaTextView) {
         FirebaseStorage storage = FirebaseStorage.getInstance("gs://hypnos-gti.appspot.com");
         StorageReference storageRef = storage.getReference().child("users/" + userId);
@@ -801,6 +803,12 @@ public class FirebaseHelper {
                 exception -> {
                     exception.printStackTrace();
                 });
+    }
+
+    //------------------------------------------------------------------------------------------------------------
+
+    public static void saveAlarmClock(){
+
     }
 
 

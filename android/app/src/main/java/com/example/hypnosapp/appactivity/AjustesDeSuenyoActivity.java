@@ -19,6 +19,7 @@ import com.example.hypnosapp.services.AlarmService;
 import com.example.hypnosapp.services.MQTTHelper;
 import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
+import com.example.hypnosapp.utils.StringFormatting;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,14 +29,18 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AjustesDeSuenyoActivity extends AppCompatActivity {
     private static final String TAG = "AjustesDeSuenyo";
 
     private static final int PICK_RINGTONE_REQUEST = 1;
     ImageView btnPerfilUsuario, btnPantallaPrincipal, btnAjustesDescanso, btnPreferencias;
-    EditText toneLocationClock, wakeUpHourClock, wakeUpHourGoal, sleepTimeGoal;
+    EditText toneLocationClock, wakeUpHourGoal, sleepTimeGoal, toneLocationClockText;
     Switch isGradualClock, isAutoClock, goalNotifications, warmLight, coldLight, autoLight;
     Button btnGuardarClock, btnGuardarGoals;
     private FirebaseHelper firebaseHelper;
@@ -64,7 +69,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         coldLight = findViewById(R.id.switchColdLight);
         autoLight = findViewById(R.id.switchAutoLight);
         toneLocationClock = findViewById(R.id.toneLocationClock);
-        wakeUpHourClock = findViewById(R.id.wakeUpHourClock);
+        toneLocationClockText = findViewById(R.id.toneLocationClockText);
         wakeUpHourGoal = findViewById(R.id.wakeUpHourGoal);
         sleepTimeGoal = findViewById(R.id.sleepTimeGoal);
         btnGuardarGoals = findViewById(R.id.guardarGoals);
@@ -80,11 +85,10 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String userId = userID;
-                String hour = wakeUpHourClock.getText().toString();
                 String songLocation = toneLocationClock.getText().toString();
                 boolean isSongGradual = isGradualClock.isChecked();
                 boolean isClockAutomatic = isAutoClock.isChecked();
-                firebaseHelper.setClock(userId, hour, songLocation, isSongGradual, isClockAutomatic);
+                firebaseHelper.setClock(userId, songLocation, isSongGradual, isClockAutomatic);
             }
         });
         btnGuardarGoals.setOnClickListener(new View.OnClickListener() {
@@ -131,37 +135,38 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         selectAlarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Abre el selector de tonos
-                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
-                startActivityForResult(intent, PICK_RINGTONE_REQUEST);
+                iniciarSelectorTonos();
             }
         });
-        //FIN DE FUNCIONALIDAD BOTONES MENUS
 
     }//onCreate
+
+    private void iniciarSelectorTonos(){
+        // Abre el selector de tonos
+        Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
+        startActivityForResult(intent, PICK_RINGTONE_REQUEST);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("Entra",Integer.toString(requestCode));
         if (requestCode == PICK_RINGTONE_REQUEST && resultCode == RESULT_OK) {
-            // Obtiene la URI del tono seleccionado por el usuario
+            //Esto es solo por ahora, tendra que pasar a guardarse solamente en la base de datos
             Uri selectedRingtoneUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-            Log.d("Dentro",selectedRingtoneUri.toString());
+
+            String urlString = selectedRingtoneUri.toString();
+            String titleString = StringFormatting.extractTitle(urlString);
+            toneLocationClock.setText(urlString);
+            toneLocationClockText.setText(titleString);
+
             Intent serviceIntent = new Intent(AjustesDeSuenyoActivity.this, AlarmService.class);
             serviceIntent.setData(selectedRingtoneUri);
             startService(serviceIntent);
-
-            // Guarda la URL del tono en la base de datos (Firebase)
-            //saveAlarmUrlToFirebase(selectedRingtoneUri.toString());
         }
     }
 
-    private void saveAlarmUrlToFirebase(String alarmUrl) {
-        // Implementar la lógica para guardar la URL en Firebase
-        // Puedes usar Firebase Realtime Database o Firestore según tu configuración
-    }
     private void loadSleepSettings() {
 
         String userId = userID;
@@ -270,15 +275,9 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             String toneLocation = (String) clockSettings.get("toneLocation");
             if (toneLocation != null) {
                 toneLocationClock.setText(toneLocation);
+                toneLocationClockText.setText(StringFormatting.extractTitle(toneLocation));
             } else {
                 Log.e(TAG, "toneLocation is null");
-            }
-
-            String alarmHour = (String) clockSettings.get("alarmHour");
-            if (alarmHour != null) {
-                wakeUpHourClock.setText(alarmHour);
-            } else {
-                Log.e(TAG, "alarmHour is null");
             }
         } else {
             Log.e(TAG, "clockSettings is null");

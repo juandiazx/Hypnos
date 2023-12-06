@@ -18,13 +18,6 @@ public class AlarmService extends Service {
     private MediaPlayer mediaPlayer;
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d("Service", "onCreate called");
-    }
-
-
-    @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
@@ -44,7 +37,6 @@ public class AlarmService extends Service {
 
     @Override
     public void onDestroy() {
-        // Detiene la alarma cuando el servicio se detiene
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
@@ -53,20 +45,23 @@ public class AlarmService extends Service {
     }
 
     private void showNotification() {
-        Log.d("Full dentrisimo mas", "Notis");
-
-        // Crear un canal de notificación para dispositivos con Android Oreo y versiones posteriores
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("alarm_channel", "Alarm Channel", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
 
-        // Crear un intent para la transmisión de clic en la notificación
+        PendingIntent stopServicePendingIntent = iniciarIntencionPararDespertador();
+        Notification notification = buildNotification(stopServicePendingIntent);
+        startForeground(1, notification);
+    }
+
+    private PendingIntent iniciarIntencionPararDespertador(){
         Intent stopServiceIntent = new Intent(this, AlarmStopReceiver.class);
-        PendingIntent stopServicePendingIntent = PendingIntent.getBroadcast(this, 0, stopServiceIntent, PendingIntent.FLAG_IMMUTABLE);
+        return PendingIntent.getBroadcast(this, 0, stopServiceIntent, PendingIntent.FLAG_IMMUTABLE);
+    }
 
-
+    private Notification buildNotification(PendingIntent intencionPendiente){
         // Construir la notificación con PendingIntent
         Notification notification = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -76,12 +71,10 @@ public class AlarmService extends Service {
                     .setContentText("Haz clic para detener la alarma")
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setOngoing(true)
-                    .setContentIntent(stopServicePendingIntent)  // Agregar el PendingIntent al hacer clic en la notificación
+                    .setContentIntent(intencionPendiente)  // Agregar el PendingIntent al hacer clic en la notificación
                     .build();
         }
-
-        // Mostrar la notificación
-        startForeground(1, notification);
+        return notification;
     }
 
 }
