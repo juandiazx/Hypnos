@@ -70,6 +70,9 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         autoLight = findViewById(R.id.switchAutoLight);
         toneLocationClock = findViewById(R.id.toneLocationClock);
         toneLocationClockText = findViewById(R.id.toneLocationClockText);
+        toneLocationClockText.setEnabled(false);
+        toneLocationClockText.setFocusable(false);
+        toneLocationClockText.setClickable(false);
         wakeUpHourGoal = findViewById(R.id.wakeUpHourGoal);
         sleepTimeGoal = findViewById(R.id.sleepTimeGoal);
         btnGuardarGoals = findViewById(R.id.guardarGoals);
@@ -153,18 +156,30 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_RINGTONE_REQUEST && resultCode == RESULT_OK) {
-            //Esto es solo por ahora, tendra que pasar a guardarse solamente en la base de datos
+
             Uri selectedRingtoneUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 
-            String urlString = selectedRingtoneUri.toString();
-            String titleString = StringFormatting.extractTitle(urlString);
-            toneLocationClock.setText(urlString);
-            toneLocationClockText.setText(titleString);
+            setUrlsText(selectedRingtoneUri);
 
-            Intent serviceIntent = new Intent(AjustesDeSuenyoActivity.this, AlarmService.class);
-            serviceIntent.setData(selectedRingtoneUri);
-            startService(serviceIntent);
+            //Esto es solo por ahora, tendra que pasar a llamarse desde MQTT Helper
+            startAlarmService(selectedRingtoneUri);
         }
+    }
+
+
+    private void setUrlsText(Uri selectedRingtoneUri){
+        String urlString = selectedRingtoneUri.toString();
+        String titleString = StringFormatting.extractTitle(urlString);
+        toneLocationClock.setText(urlString);
+        toneLocationClockText.setText(titleString);
+    }
+
+    private void startAlarmService(Uri selectedRingtoneUri){
+        Intent serviceIntent = new Intent(AjustesDeSuenyoActivity.this, AlarmService.class);
+        serviceIntent.setData(selectedRingtoneUri);
+        //Como argumento debeN de entrar DOS BOOLEANOS, por si tiene que vibrar
+        //y ser gradual para pasarselo en esta intencion
+        startService(serviceIntent);
     }
 
     private void loadSleepSettings() {
@@ -258,7 +273,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
     private void updateClockSettingsUI(Map<String, Object> clockSettings) {
         if (clockSettings != null) {
             Boolean isGradual = (Boolean) clockSettings.get("isGradual");
-            Boolean isAutomatic = (Boolean) clockSettings.get("isAutomatic");
+            Boolean isWithVibrations = (Boolean) clockSettings.get("isWithVibrations");
 
             if (isGradual != null) {
                 isGradualClock.setChecked(isGradual);
@@ -266,10 +281,10 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                 Log.e(TAG, "isGradual is null");
             }
 
-            if (isAutomatic != null) {
-                isAutoClock.setChecked(isAutomatic);
+            if (isWithVibrations != null) {
+                isAutoClock.setChecked(isWithVibrations);
             } else {
-                Log.e(TAG, "isAutomatic is null");
+                Log.e(TAG, "isWithVibrations is null");
             }
 
             String toneLocation = (String) clockSettings.get("toneLocation");

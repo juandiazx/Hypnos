@@ -64,23 +64,25 @@
 
             <TextView
                 android:id="@+id/acerca_de"
+                style="@style/TextoInterBold.Titulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="32dp"
                 android:text="@string/AcercaDe"
                 android:textColor="@color/colorAzulPrincipal"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/quienes_somos"
+                style="@style/TextoInterBold.Subtitulo3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/QuienesSomos"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -95,12 +97,13 @@
 
             <TextView
                 android:id="@+id/nuestra_vision"
+                style="@style/TextoInterBold.Subtitulo3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/NuestraVision"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <!-- Agrega aquí más elementos según tus necesidades -->
@@ -119,13 +122,14 @@
 
             <TextView
                 android:id="@+id/politica_de_privacidad"
+                style="@style/TextoInterBold.Subtitulo3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="36dp"
                 android:text="@string/PoliticaDePrivacidad"
                 android:textColor="@color/colorAzulPrincipal"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -138,7 +142,6 @@
                 android:layout_marginBottom="32dp"
                 android:text="@string/PoliticaDePrivTexto"
                 android:textSize="14sp" />
-
 
 
             <!-- FIN DE FOOTER -->

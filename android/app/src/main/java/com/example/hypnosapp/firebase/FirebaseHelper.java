@@ -106,14 +106,14 @@ public class FirebaseHelper {
 
     /*----------------------------------------------------------------------------------------
                    String hour, songLocation     ----> setClock()
-               bool isSongGradual, isClockAutomatic
+               bool isSongGradual, isWithVibrations
     ----------------------------------------------------------------------------------------*/
-    public void setClock(String userId, String songLocation, boolean isSongGradual, boolean isClockAutomatic) {
+    public void setClock(String userId, String songLocation, boolean isSongGradual, boolean isWithVibrations) {
         // Update clock settings in Firestore
         DocumentReference userDocRef = db.collection("users").document(userId);
 
         Map<String, Object> clockSettings = new HashMap<>();
-        clockSettings.put("isAutomatic", isClockAutomatic);
+        clockSettings.put("isWithVibrations", isWithVibrations);
         clockSettings.put("isGradual", isSongGradual);
         clockSettings.put("toneLocation", songLocation);
 

@@ -14,6 +14,12 @@ import android.util.Log;
 
 import com.example.hypnosapp.R;
 
+
+/*
+* HAY QUE HACER UNA FUNCION PARA ACTIVAR LA VIBRACION Y OTRA PARA DESACTIVARLA
+* Y RECIBIR EL BOOLEANO DE SI VIBRACION EN LA INTENCION LINEA 32
+* TAMBIEN DE SI ES GRADUAL O NO
+*/
 public class AlarmService extends Service {
     private MediaPlayer mediaPlayer;
 
