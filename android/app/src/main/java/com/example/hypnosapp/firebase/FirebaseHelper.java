@@ -27,11 +27,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageException;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
-
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,8 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Comparator;
 
 
 public class FirebaseHelper {
@@ -61,6 +55,54 @@ public class FirebaseHelper {
         void onNightLoaded(Night night);
 
         void onNightLoadError(Exception e);
+    }
+
+
+    public void addUserToUsers(String userId, String nombre, String email, String fechaNacimiento) {
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("name", nombre);
+        userData.put("birth", fechaNacimiento);
+        userData.put("email", email);
+
+        db.collection("users")
+                .document(userId)
+                .set(userData)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "User added to collection successfully"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error adding user to collection", e));
+    }
+    /*----------------------------------------------------------------------------------------
+                String userID ---> setDefaultSettings() --> stores a default preset on
+                the new user's settings
+    ----------------------------------------------------------------------------------------*/
+    public void setDefaultPreferences(String userId) {
+
+        Map<String, Object> defaultClockSettings = new HashMap<>();
+        defaultClockSettings.put("isWithVibrations", true);
+        defaultClockSettings.put("isGradual", true);
+        defaultClockSettings.put("toneLocation", "default song");
+
+        Map<String, Object> defaultGoals = new HashMap<>();
+        defaultGoals.put("goBedTime", "22:00");
+        defaultGoals.put("restTime", "8:00");
+        defaultGoals.put("sleepNotifications", true);
+        defaultGoals.put("wakeUpTimeGoal", "6:00");
+
+        String defaultLightSetting = "AUT";
+
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        Map<String, Object> defaultSettings = new HashMap<>();
+        defaultSettings.put("clockSettings", defaultClockSettings);
+        defaultSettings.put("lightSettings", defaultLightSetting);
+        defaultSettings.put("goals", defaultGoals);
+
+        // here is where you gotta modify
+        userDocRef
+                .update("preferences", defaultSettings)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Default preferences set successfully"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error setting default preferences", e));
+
     }
 
     /*----------------------------------------------------------------------------------------
@@ -394,8 +436,8 @@ public class FirebaseHelper {
                              getNotifications() --> bool
     ----------------------------------------------------------------------------------------*/
     public void getNotifications(String userId, final OnSuccessListener<Boolean> successListener, final OnFailureListener failureListener){
-        DocumentReference userDocRef = db.collection("users").document(userId);
 
+        DocumentReference userDocRef = db.collection("users").document(userId);
         userDocRef.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -736,7 +778,7 @@ public class FirebaseHelper {
 
     /*----------------------------------------------------------------------------------------------
                               cargarUltimaImagen() --> Renders Family Image and Date of Creation
-----------------------------------------------------------------------------------------------*/
+    ----------------------------------------------------------------------------------------------*/
     public static void cargarUltimaImagen(Context context, ImageView imageView, String userId, TextView fechaTextView) {
         FirebaseStorage storage = FirebaseStorage.getInstance("gs://hypnos-gti.appspot.com");
         StorageReference storageRef = storage.getReference().child("users/" + userId);

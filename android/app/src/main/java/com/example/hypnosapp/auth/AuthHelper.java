@@ -2,7 +2,6 @@ package com.example.hypnosapp.auth;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -15,6 +14,7 @@ import android.content.DialogInterface;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -26,7 +26,6 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -149,9 +148,13 @@ public class AuthHelper {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = auth.getCurrentUser();
+                            String UID = user.getUid();
+                            FirebaseHelper firebaseHelper = new FirebaseHelper();
+                            firebaseHelper.addUserToUsers(UID, nombre, correo, fechaNacimiento);
+                            firebaseHelper.setDefaultPreferences(UID);
+                            Log.d("default preferences", "se ha llamado desde auth helper");
                             enviarCorreoDeVerificacion(user, appContext);
                             mostrarPopUpRegistro((AppCompatActivity) appContext);
-                            //almacenarInformacionUsuario(user, nombre, fechaNacimiento);
                             asignarDisplayName(user,nombre);
                         }
                         onComplete.onComplete(task);
@@ -211,18 +214,6 @@ public class AuthHelper {
                         }
                     });
         }
-    }
-
-    private static void almacenarInformacionUsuario(FirebaseUser user, String nombre, String fechaNacimiento) {
-
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-        String userID = user.getUid();
-
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("nombre", nombre);
-        userData.put("fechaNacimiento", fechaNacimiento);
-        usersRef.child(userID).setValue(userData);
-
     }
 }
 

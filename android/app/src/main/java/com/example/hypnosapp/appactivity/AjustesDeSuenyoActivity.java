@@ -58,8 +58,9 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         firebaseHelper = new FirebaseHelper();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        //userID = firebaseUser.getUid();
-        userID = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
+        userID = firebaseUser.getUid();
+
+        //userID = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
 
         btnPerfilUsuario= findViewById(R.id.logoUsuarioHeader);
         isGradualClock = findViewById(R.id.switchGradualClock);
@@ -186,7 +187,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
         String userId = userID;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
 
         firebaseHelper.getClock(userId,
                 new OnSuccessListener<Map<String, Object>>() {
