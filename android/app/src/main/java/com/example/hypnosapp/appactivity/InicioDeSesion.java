@@ -87,7 +87,7 @@ public class InicioDeSesion extends AppCompatActivity {
             AuthHelper.iniciarSesion(auth, correo, contraseña, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    AuthHelper.manejoRespuestaFirebase(task, respuesta,InicioDeSesion.this,"com.example.hypnosapp.Pantalla_Principal");
+                    AuthHelper.manejoRespuestaFirebase(task, respuesta,InicioDeSesion.this,"com.example.hypnosapp.mainpage.Pantalla_Principal");
                 }
             });
         }
