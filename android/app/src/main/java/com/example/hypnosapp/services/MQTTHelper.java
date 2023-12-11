@@ -31,7 +31,6 @@ public class MQTTHelper {
         //userID = firebaseUser.getUid();
         userId = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
         firebaseHelper = new FirebaseHelper();
-        // Configura y conecta el cliente MQTT
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         // Configuraciones adicionales si es necesario
 
@@ -45,7 +44,6 @@ public class MQTTHelper {
 
             @Override
             public void connectionLost(Throwable cause) {
-                // Manejar la pérdida de conexión
             }
 
             @Override
@@ -62,8 +60,6 @@ public class MQTTHelper {
                 // Lógica después de que se completa la entrega
             }
         });
-
-        // Conectar al servidor MQTT
         connect();
     }
 
