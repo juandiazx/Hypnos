@@ -1,6 +1,7 @@
 package com.example.hypnosapp.auth;
 
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,8 +71,24 @@ public class GoogleHelper {
                         if (user != null) {
                             try {
                                 FirebaseHelper firebaseHelper = new FirebaseHelper();
-                                firebaseHelper.addUserToUsers(user.getUid(), account.getDisplayName(), account.getEmail(), "01/01/0001");
-                                firebaseHelper.setDefaultPreferences(user.getUid());
+                                firebaseHelper.checkIfUserExists(user.getUid(), new FirebaseHelper.OnUserExistsListener() {
+                                    @Override
+                                    public void onUserExists(boolean exists) {
+                                        if (exists) {
+                                            // User document already exists, just log in
+                                            Log.d("auth", "User document already exists, logging in");
+                                            // TODO: Perform login logic here if needed
+                                        } else {
+                                            // User document doesn't exist, add user, set default preferences, and set empty nights
+                                            Log.d("auth", "User document doesn't exist, creating user and preferences");
+                                            firebaseHelper.addUserToUsers(user.getUid(), account.getDisplayName(), account.getEmail(), "01/01/0001");
+                                            firebaseHelper.setDefaultPreferences(user.getUid());
+                                            Log.d("auth", "Default preferences created");
+                                            firebaseHelper.setEmptyNights(user.getUid());
+                                            Log.d("auth", "Empty nights created");
+                                        }
+                                    }
+                                });
                                 Class<?> destinationClass = Class.forName("com.example.hypnosapp.mainpage.Pantalla_Principal");
                                 Intent intent = new Intent(activity, destinationClass);
                                 activity.startActivity(intent);

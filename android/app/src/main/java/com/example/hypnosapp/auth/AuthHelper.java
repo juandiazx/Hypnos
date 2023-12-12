@@ -164,7 +164,9 @@ public class AuthHelper {
                                 FirebaseHelper firebaseHelper = new FirebaseHelper();
                                 firebaseHelper.addUserToUsers(UID, nombre, correo, fechaNacimiento);
                                 firebaseHelper.setDefaultPreferences(UID);
-                                Log.d("default preferences", "se ha llamado desde auth helper");
+                                Log.d("auth", "default preferences created");
+                                firebaseHelper.setEmptyNights(UID);
+                                Log.d("auth", "empty nights created");
                                 enviarCorreoDeVerificacion(user, appContext);
                                 mostrarPopUpRegistro((AppCompatActivity) appContext);
                                 asignarDisplayName(user,nombre);
