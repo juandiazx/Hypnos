@@ -15,6 +15,8 @@ import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.model.Night;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import java.text.SimpleDateFormat;
@@ -31,7 +33,9 @@ public class DiaFragment3 extends Fragment {
     HalfDonutChart halfDonutChartAnoche;
     TextView txtRestScoreLastNight, txtTituloDescansoAnoche, txtTiempoSueñoHorasAnoche, txtTemperaturaMediaNocheGradosAnoche, txtRespiracionAnoche;
     FirebaseHelper firebaseHelper = new FirebaseHelper();
-    String userID = "lr3SPEtJqt493dpfWoDd";
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
+    String userID;
     private ListenerRegistration nightDataListener;
 
     @Override
@@ -39,7 +43,9 @@ public class DiaFragment3 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflar el diseño del fragmento que deseas mostrar
         View view = inflater.inflate(R.layout.fragment_dia_3, container, false);
-
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        userID = firebaseUser.getUid();
         txtRestScoreLastNight = view.findViewById(R.id.txtNumeroPuntuacionDescansoAnoche);
         txtTituloDescansoAnoche = view.findViewById(R.id.txtTituloDescansoAnoche);
         txtTiempoSueñoHorasAnoche = view.findViewById(R.id.txtTiempoSueñoHorasAnoche);

@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import org.apache.commons.lang3.time.DateUtils;
+
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,7 +60,29 @@ public class FirebaseHelper {
         void onNightLoadError(Exception e);
     }
 
-
+    public interface OnUserExistsListener {
+        void onUserExists(boolean exists);
+    }
+    /*----------------------------------------------------------------------------------------
+                String userId ---> checkIfUserExists() --> true if user exists on the user
+                collection.
+    ----------------------------------------------------------------------------------------*/
+    public void checkIfUserExists(String userId, OnUserExistsListener listener) {
+        DocumentReference userDocRef = db.collection("users").document(userId);
+        userDocRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    boolean exists = documentSnapshot.exists();
+                    listener.onUserExists(exists);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error checking if user exists", e);
+                    listener.onUserExists(false); // Assume user doesn't exist in case of error
+                });
+    }
+    /*----------------------------------------------------------------------------------------
+                String userId, nombre, ---> addUserToUsers() --> adds the user to the user
+                collection.
+    ----------------------------------------------------------------------------------------*/
     public void addUserToUsers(String userId, String nombre, String email, String fechaNacimiento) {
 
         Map<String, Object> userData = new HashMap<>();
@@ -108,6 +132,32 @@ public class FirebaseHelper {
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Default preferences set successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error setting default preferences", e));
 
+    }
+
+    /*----------------------------------------------------------------------------------------
+            String userID ---> setEmptyNights() --> stores a default preset of
+            nights which will tell the user that no night has been monitorized before
+    ----------------------------------------------------------------------------------------*/
+    public void setEmptyNights(String userId) {
+        // Create three empty nights for today, yesterday, and the day before yesterday
+        for (int i = 0; i < 3; i++) {
+            // Calculate the date for each night
+            Date nightDate = DateUtils.addDays(new Date(), -i);
+
+            // Create an empty night with the required fields
+            Night emptyNight = new Night(nightDate, "No night has been monitorized yet", 0, 0, 0);
+
+            // Set the date for the empty night
+            emptyNight.setDate(nightDate);
+
+            // Create a subcollection called "nightsData" and add the empty night
+            db.collection("users")
+                    .document(userId)
+                    .collection("nightsData")
+                    .add(emptyNight)
+                    .addOnSuccessListener(documentReference -> Log.d("Firestore", "Empty night added successfully"))
+                    .addOnFailureListener(e -> Log.e("Firestore", "Error adding empty night", e));
+        }
     }
 
     /*----------------------------------------------------------------------------------------

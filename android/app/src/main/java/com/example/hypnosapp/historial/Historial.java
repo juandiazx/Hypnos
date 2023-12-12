@@ -60,8 +60,8 @@ public class Historial extends AppCompatActivity {
         firebaseHelper = new FirebaseHelper();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        //userID = firebaseUser.getUid();
-        userID = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
+        userID = firebaseUser.getUid();
+        //userID = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
 
         btnPerfilUsuario = findViewById(R.id.logoUsuarioHeader);
         btnPantallaPrincipal = findViewById(R.id.btnPantallaPrincipal);
