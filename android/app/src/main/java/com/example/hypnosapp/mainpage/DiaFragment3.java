@@ -115,10 +115,13 @@ public class DiaFragment3 extends Fragment {
 
         //show breathing:
         txtRespiracionAnoche.setText(night.getBreathing());
+
+        // Set the score percentage to the HalfDonutChart
+        float scorePercentage = (float) night.getScore() / 100; // Assuming the score is on a scale of 0 to 100
+        halfDonutChartAnoche.setScorePercentage(scorePercentage);
     }
 
     public interface NightDataChangeListener {
         void onDataChange(Night night);
     }
-
 }
