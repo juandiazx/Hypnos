@@ -17,12 +17,6 @@ import android.util.Log;
 
 import com.example.hypnosapp.R;
 
-
-/*
-* HAY QUE HACER UNA FUNCION PARA ACTIVAR LA VIBRACION Y OTRA PARA DESACTIVARLA
-* Y RECIBIR EL BOOLEANO DE SI VIBRACION EN LA INTENCION LINEA 32
-* TAMBIEN DE SI ES GRADUAL O NO
-*/
 public class AlarmService extends Service {
     private MediaPlayer mediaPlayer;
 
@@ -34,8 +28,7 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Uri alarmUri = intent.getData();
-        boolean activarVibracion = true;  // Reemplaza esto con tu lógica
-        boolean activarVolumenGradual = true;  // Reemplaza esto con tu lógica
+        boolean activarVibracion = intent.getBooleanExtra("isWithVibration",false);
 
         if (alarmUri != null) {
             mediaPlayer = MediaPlayer.create(this, alarmUri);
@@ -44,10 +37,6 @@ public class AlarmService extends Service {
 
             if (activarVibracion) {
                 iniciarVibracion();
-            }
-
-            if (activarVolumenGradual) {
-                controlarVolumenGradual();
             }
 
             showNotification();
@@ -100,7 +89,6 @@ public class AlarmService extends Service {
         return notification;
     }
 
-    // Dentro de la clase AlarmService
     private void iniciarVibracion() {
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -117,25 +105,4 @@ public class AlarmService extends Service {
             vibrator.cancel();
         }
     }
-
-    private void controlarVolumenGradual() {
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-        if (audioManager != null) {
-            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
-            int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_ALARM);
-
-            // Configura un incremento gradual del volumen (puedes personalizar según tus necesidades)
-            for (int i = currentVolume; i <= maxVolume; i++) {
-                audioManager.setStreamVolume(AudioManager.STREAM_ALARM, i, 0);
-                try {
-                    // Pausa para el incremento gradual
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
 }

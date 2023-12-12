@@ -10,6 +10,8 @@ import com.example.hypnosapp.appactivity.AjustesDeSuenyoActivity;
 import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -26,13 +28,23 @@ public class MQTTHelper {
     private String userId;
     private FirebaseHelper firebaseHelper;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+
+    private String userID;
+
     public MQTTHelper(String serverUri, String clientId, String subscriptionTopic) throws MqttException {
         mqttAndroidClient = new MqttClient(serverUri, clientId, (MqttClientPersistence) MQTTHelper.getAppContext());
-        //userID = firebaseUser.getUid();
-        userId = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
+
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        userID = firebaseUser.getUid();
+
         firebaseHelper = new FirebaseHelper();
+
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
-        // Configuraciones adicionales si es necesario
+
 
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
@@ -74,7 +86,7 @@ public class MQTTHelper {
     /*
     * NECESITAMOS LLAMAR A GETCLOCK()
     * PARA LLAMAR A LA INTENCION DE INICIAR EL DESPERTADOR
-    * CON LOS BOOLEANOS DE GRADUAL,VIBRACION Y EL STRING DE TONO
+    * CON LOS BOOLEANOS DE VIBRACION Y EL STRING DE TONO
     * */
     private void obtainClockSettings(){
         firebaseHelper.getClock(userId,
@@ -95,12 +107,14 @@ public class MQTTHelper {
                 });
     }
 
-    private void startAlarmService(String alarmUrl) {
+    private void startAlarmService(String alarmUrl,Boolean isWithVibration) {
         // Iniciar el servicio de alarma con la URL
         Intent serviceIntent = new Intent(MQTTHelper.getAppContext(), AlarmService.class);
         serviceIntent.setData(Uri.parse(alarmUrl));
+        serviceIntent.putExtra("isWithVibration", isWithVibration);
         MQTTHelper.getAppContext().startService(serviceIntent);
     }
+
 
     private static Context getAppContext() {
         return null;

@@ -5,6 +5,7 @@ import com.example.hypnosapp.mainpage.DiaFragment3;
 import com.example.hypnosapp.model.Night;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -79,8 +80,12 @@ public class FirebaseHelper {
 
         Map<String, Object> defaultClockSettings = new HashMap<>();
         defaultClockSettings.put("isWithVibrations", true);
-        defaultClockSettings.put("isGradual", true);
-        defaultClockSettings.put("toneLocation", "default song");
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            defaultClockSettings.put("toneLocation", "content://media/internal/audio/media/36");
+        } else {
+            defaultClockSettings.put("toneLocation", "content://media/external_primary/audio/media/1000000036?title=Fresh%20Start&canonical=1");
+        }
 
         Map<String, Object> defaultGoals = new HashMap<>();
         defaultGoals.put("goBedTime", "22:00");
@@ -107,7 +112,7 @@ public class FirebaseHelper {
 
     /*----------------------------------------------------------------------------------------
                 getClock() --> HASHMAP[String hour, songLocation
-                              bool isSongGradual, isClockAutomatic]
+                              , isClockAutomatic]
     ----------------------------------------------------------------------------------------*/
     public void getClock(String userId, final OnSuccessListener<Map<String, Object>> successListener, final OnFailureListener failureListener) {
         // Retrieve clock settings from Firestore and return as a HashMap
@@ -148,15 +153,14 @@ public class FirebaseHelper {
 
     /*----------------------------------------------------------------------------------------
                    String hour, songLocation     ----> setClock()
-               bool isSongGradual, isWithVibrations
+               String toneLocation, isWithVibrations
     ----------------------------------------------------------------------------------------*/
-    public void setClock(String userId, String songLocation, boolean isSongGradual, boolean isWithVibrations) {
+    public void setClock(String userId, String songLocation, boolean isWithVibrations) {
         // Update clock settings in Firestore
         DocumentReference userDocRef = db.collection("users").document(userId);
 
         Map<String, Object> clockSettings = new HashMap<>();
         clockSettings.put("isWithVibrations", isWithVibrations);
-        clockSettings.put("isGradual", isSongGradual);
         clockSettings.put("toneLocation", songLocation);
 
         userDocRef

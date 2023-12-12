@@ -9,7 +9,11 @@ from datetime import datetime
 from picamera import PiCamera
 import time
 from io import BytesIO
-
+'''
+Falta obtener el UID por MQTT desde el movil, asi publicamos nights data en usuario personalizado
+Falta que no sea un update sino que cree un nuevo night
+Falta una funcion para enviar por MQTT al movil, que ya acabo la noche
+'''
 #CAMERA DOCUMENTATION
 #Hacer sudo pip install picamera en el virtual environment
 #https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/0
@@ -43,6 +47,7 @@ ser = serial.Serial(
 mqtt_broker_address = "192.168.0.65"  # Cambia esto con la IP de tu Raspberry Pi
 mqtt_topic = "m5stack_topic"
 mqtt_client = mqtt.Client()
+uid_usuario = None
 
 # Configuración de la cámara
 camera = PiCamera()
@@ -55,11 +60,34 @@ datos_mqtt = None
 # Array para almacenar los archivos de imagen
 imagenes = []
 
-def tomar_foto():
-    stream = BytesIO()
-    camera.capture(stream, 'jpeg')
-    imagenes.append(stream.getvalue())
-    time.sleep(6)  # Espera 6 segundos antes de tomar la siguiente foto
+def tomar_fotos():
+    for _ in range(3):  # Tomar 3 fotos
+        stream = BytesIO()
+        camera.capture(stream, 'jpeg')
+        imagenes.append(stream.getvalue())
+        time.sleep(4)
+        
+    #Ver si esto afecta en algo malo al codigo, si debemos cerrarla despues de llamar a la funcion
+    camera.close()
+    
+def subir_imagenes_storage():
+    try:
+        for i, imagen in enumerate(imagenes):
+            nombre_imagen = f'imagen_{i}_{int(time.time())}.jpg'
+
+            # Construir la ruta completa en el bucket de almacenamiento
+            ruta_storage = f'users/{uid_usuario}/{nombre_imagen}'
+
+            # Obtener una referencia al objeto de almacenamiento
+            storage_ref = storage_client.bucket().blob(ruta_storage)
+
+            # Subir la imagen al almacenamiento
+            storage_ref.upload_from_string(imagen, content_type='image/jpeg')
+
+            print(f'Imagen {i} subida correctamente a Firestore con la ruta: {ruta_storage}')
+
+    except Exception as e:
+        print(f"Error al subir imágenes a Firestore: {e}")
 
 def recibir_datos_udp():
     global datos_udp
@@ -110,6 +138,8 @@ def recibir_datos_uart():
 
 mqtt_loop_activo = True
 
+
+#AQUI HAY QUE TENER DOS OPCIONES UNA PARA RECIBIR EL UID Y OTRA PARA RECIBIR LOS DATOS DEL M5
 def on_message(client, userdata, message):
     global datos_mqtt
     payload = message.payload.decode('utf-8')
@@ -147,17 +177,20 @@ def escribir_en_firestore():
         documento_referencia.update(datos_combinados)
         print('Datos combinados agregados correctamente a Firestore en Firebase.')
         
+        subir_imagenes_storage()
+
+        '''
         # Subir imágenes a Firestore
         for i, imagen in enumerate(imagenes):
             storage_ref = firebase_admin.storage.bucket().blob(f'imagen_{i}.jpg')
             storage_ref.upload_from_string(imagen, content_type='image/jpeg')
-            print(f'Imagen {i} subida correctamente a Firestore.')
+            print(f'Imagen {i} subida correctamente a Firestore.')'''
 
 # Iniciar subprocesos
 thread_udp = threading.Thread(target=recibir_datos_udp)
 thread_uart = threading.Thread(target=recibir_datos_uart)
 thread_mqtt = threading.Thread(target=iniciar_hilo_mqtt)
-thread_foto = threading.Thread(target=tomar_foto)
+thread_foto = threading.Thread(target=tomar_fotos)
 
 # Iniciar subprocesos
 thread_udp.start()
