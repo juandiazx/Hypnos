@@ -6,12 +6,13 @@ import com.example.hypnosapp.model.Night;
 
 import android.content.Context;
 import android.os.Build;
+import org.apache.commons.lang3.time.DateUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import org.apache.commons.lang3.time.DateUtils;
+
 
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 
 public class FirebaseHelper {
@@ -840,39 +842,63 @@ public class FirebaseHelper {
         storageRef.listAll()
                 .addOnSuccessListener(listResult -> {
                     List<StorageReference> items = listResult.getItems();
-                    items.sort((first, second) -> {
-                        getCreationTimeMillis(first,
-                                creationTimeFirst -> {
-                                    getCreationTimeMillis(second,
-                                            creationTimeSecond -> {
-                                                long result = Long.compare(creationTimeSecond, creationTimeFirst);
-                                            },
-                                            exception -> exception.printStackTrace());
+
+                    // Create CompletableFuture to track completion of all creation time requests
+                    List<CompletableFuture<Long>> creationTimeFutures = new ArrayList<>();
+
+                    // Log the creation times before sorting
+                    for (StorageReference item : items) {
+                        CompletableFuture<Long> creationTimeFuture = new CompletableFuture<>();
+                        creationTimeFutures.add(creationTimeFuture);
+
+                        getCreationTimeMillis(item,
+                                creationTimeMillis -> {
+                                    creationTimeFuture.complete(creationTimeMillis);
                                 },
-                                exception -> exception.printStackTrace());
-                        return 0;
+                                exception -> {
+                                    exception.printStackTrace();
+                                    creationTimeFuture.completeExceptionally(exception);
+                                });
+                    }
+
+                    // Wait for all creation times to be obtained
+                    CompletableFuture<Void> allCreationTimes = CompletableFuture.allOf(
+                            creationTimeFutures.toArray(new CompletableFuture[0]));
+
+                    allCreationTimes.thenRun(() -> {
+                        // Sort items based on creation times
+                        items.sort((first, second) -> {
+                            try {
+                                long result = Long.compare(creationTimeFutures.get(items.indexOf(second)).get(),
+                                        creationTimeFutures.get(items.indexOf(first)).get());
+                                System.out.println("Comparison result: " + result);
+                                return Math.toIntExact(result);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return 0;
+                            }
+                        });
+
+                        if (!items.isEmpty()) {
+                            StorageReference lastImageRef = items.get(0);
+                            lastImageRef.getDownloadUrl()
+                                    .addOnSuccessListener(uri -> {
+                                        Glide.with(context).load(uri).into(imageView);
+                                        getFormattedCreationDateTime(lastImageRef, fechaTextView);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        e.printStackTrace();
+                                    });
+                        } else {
+                            fechaTextView.setText("No existe ninguna imagen de su familiar");
+                        }
                     });
 
-                    if (!items.isEmpty()) {
-                        StorageReference lastImageRef = items.get(0);
-                        lastImageRef.getDownloadUrl()
-                                .addOnSuccessListener(uri -> {
-                                    Glide.with(context).load(uri).into(imageView);
-
-                                    getFormattedCreationDateTime(lastImageRef, fechaTextView);
-                                })
-                                .addOnFailureListener(e -> {
-                                    e.printStackTrace();
-                                });
-                    } else {
-                        fechaTextView.setText("No existe ninguna imagen de su familiar");
-                    }
                 })
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
                 });
     }
-
 
     private static void getCreationTimeMillis(StorageReference reference, OnSuccessListener<Long> successListener, OnFailureListener failureListener) {
         reference.getMetadata()
@@ -899,12 +925,6 @@ public class FirebaseHelper {
                 exception -> {
                     exception.printStackTrace();
                 });
-    }
-
-    //------------------------------------------------------------------------------------------------------------
-
-    public static void saveAlarmClock(){
-
     }
 
 

@@ -97,7 +97,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Fotos tomadas con una frecuencia de cuatro segundos. Permitiéndote que puedas controlar y cuidar de tus seres queridos por la noche de la mejor forma."
+            android:text="Fotos tomadas con una frecuencia de 2 minutos. Permitiéndote que puedas controlar y cuidar de tus seres queridos por la noche de la mejor forma."
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
