@@ -1,6 +1,9 @@
 #ifndef ESP32Abstract_H
 #define ESP32Abstract_H
 
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+
 class ESP32Abstract {
 public:
     static ESP32Abstract* getInstance(const char *ssid, const char *pass, int udp, int pinBoton, int pinLed) {
@@ -10,7 +13,7 @@ public:
             pinMode(pinLed,OUTPUT);
 
             xTaskCreate(&listenForMessagesTask, "listenForMessagesTask", 4096, instance, 2, NULL);
-            xTaskCreate(&obtainSensorsDataTask, "obtainSensorsDataTask", 4096, instance, 1, NULL);
+          
         }
         return instance;
     }
@@ -26,6 +29,8 @@ private:
     PressureSensor* pressureSensor;
     const unsigned int maxMeasurements = 256;  
     int pinLedField;
+    TaskHandle_t obtainSensorsDataTaskHandle;
+    TaskHandle_t detectPressureTaskHandle;
 
     ESP32Abstract(const char *ssidConstructor, const char *passConstructor, int udp, int pinBoton, int pinLed) {
         udpPort = udp;
@@ -62,22 +67,29 @@ private:
         while (1) {
             espInstance->listenForMessages();
             vTaskDelay(4000 / portTICK_PERIOD_MS); 
+            Serial.println("listen for messsages task");
+        }
+    }
+
+    static void obtainSensorsDataTask(void *pvParameters) {
+        ESP32Abstract *espInstance = static_cast<ESP32Abstract *>(pvParameters);
+        while (1) {
+            //if (xSemaphoreTake(espInstance->obtainSensorDataSemaphore, portMAX_DELAY) == pdTRUE) {
+              espInstance->obtainSensorsData();
+              vTaskDelay(4000 / portTICK_PERIOD_MS);
+              Serial.println("obtain sensor data task");
+          
         }
     }
 
     static void detectPressureTask(void *pvParameters) {
     ESP32Abstract *espInstance = static_cast<ESP32Abstract *>(pvParameters);
     while (1) {
-        espInstance->pressureSensor->detectPressure();
-        vTaskDelay(500 / portTICK_PERIOD_MS);  // Adjust the delay as needed
-    }
-}
-
-    static void obtainSensorsDataTask(void *pvParameters) {
-        ESP32Abstract *espInstance = static_cast<ESP32Abstract *>(pvParameters);
-        while (1) {
-            espInstance->obtainSensorsData();
-            vTaskDelay(4000 / portTICK_PERIOD_MS);
+        //if (xSemaphoreTake(espInstance->pressureTaskSemaphore, portMAX_DELAY) == pdTRUE) {
+            espInstance->pressureSensor->detectPressure();
+            Serial.println("detect pressure task");
+            vTaskDelay(500 / portTICK_PERIOD_MS);  // Adjust the delay as needed
+            
         }
     }
 
@@ -105,7 +117,10 @@ private:
             const char *message = jsonDoc["mensaje"];
             if (message) {
                 if (strcmp(message, "START_TRACKING") == 0) {
-                    obtainSensorsData();
+                    //obtainSensorsData();
+                    xTaskCreate(&obtainSensorsDataTask, "obtainSensorsDataTask", 4096, instance, 1, &obtainSensorsDataTaskHandle);
+                    //xSemaphoreGive(obtainSensorDataSemaphore);
+                    Serial.println("start tracking con task, semaforo activado");
                 } 
                  else {
                     Serial.println("No se reconoce la orden del mensaje JSON");
@@ -123,17 +138,19 @@ private:
         duration = 17000;     // Duración en milisegundos (en este caso, 15 segundos)
 
         digitalWrite(pinLedField, HIGH); // Enciende el LED
-        vTaskDelay(3000 / portTICK_PERIOD_MS);
+        //vTaskDelay(3000 / portTICK_PERIOD_MS);
+        delay(3000);
         digitalWrite(pinLedField, LOW);
 
+        Serial.println("se intenta crear el task detect pressure en obtain sensors data");
         // Start the detectPressure task
-        xTaskCreate(&detectPressureTask, "detectPressureTask", 4096, this, 2, NULL);
-
+        xTaskCreate(&detectPressureTask, "detectPressureTask", 4096, this, 1, &detectPressureTaskHandle);
+        //xSemaphoreGive(pressureTaskSemaphore);
+        // Wait seventeen seconds
         vTaskDelay(duration / portTICK_PERIOD_MS);
-
-        // Stop the detectPressure task
-        //vTaskDelete(NULL);
-
+        vTaskDelete(detectPressureTaskHandle);
+        //xSemaphoreTake(pressureTaskSemaphore, portMAX_DELAY);
+        vTaskDelay(100 / portTICK_PERIOD_MS);  // Adjust the delay as needed
         //En el caso si se quedó pulsado y no se soltó
         if(pressureSensor->tiempoInicio !=0){
           pressureSensor->tiempoEncendido += millis() - pressureSensor->tiempoInicio; // Calcula el tiempo que estuvo encendido el LED
@@ -150,6 +167,8 @@ private:
         pressureSensor->tiempoEncendido = 0;
         pressureSensor->tiempoInicio = 0;
         pressureSensor->estadoAnterior = LOW;
+
+        vTaskDelete(obtainSensorsDataTaskHandle);
     }
 
     void sendDataToM5Stack(int puerto) {
@@ -159,7 +178,7 @@ private:
         jsonBuffer["sleepTime"] = pressureSensor->tiempoEncendido;
         // Serializar el objeto JSON en una cadena
         serializeJson(jsonBuffer, medidas);
-  
+        Serial.println("data sent to m5stack");
         udp.broadcastTo(medidas, puerto); 
     }
     static ESP32Abstract* instance;

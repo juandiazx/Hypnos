@@ -14,13 +14,14 @@ class PressureSensor : public Sensor {
         static PressureSensor *getInstance(int BOTONPIN){
           if (instance == nullptr) {
             instance = new PressureSensor(BOTONPIN);
-            xTaskCreate(&PressureSensor::taskFunction, "PressureTask", 2048, instance, 1, NULL)
+            xTaskCreate(&PressureSensor::taskFunction, "PressureTask", 2048, instance, 1, NULL);
           }
           return instance;
         };
 
         static void taskFunction(void *pvParameters) {
           PressureSensor *sensorInstance = static_cast<PressureSensor *>(pvParameters);
+          Serial.println("pressure sensor header file task created, entering while");
           while (1) {
             sensorInstance->detectPressure();
             vTaskDelay(500 / portTICK_PERIOD_MS);  // Adjust the delay as needed
@@ -29,7 +30,7 @@ class PressureSensor : public Sensor {
 
         void detectPressure() {
           int estadoBoton = digitalRead(sensorPin);  // Leemos el estado del botón
-
+          //Serial.println("detecting pressure");
           if (estadoBoton == HIGH && estadoAnterior == LOW) {
             tiempoInicio = millis();    // Guarda el tiempo en que se encendió el LED
             vTaskDelay(50 / portTICK_PERIOD_MS);  // Espera breve para evitar rebotes
