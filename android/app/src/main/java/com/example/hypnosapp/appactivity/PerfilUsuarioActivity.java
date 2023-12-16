@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,11 +37,13 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.IOException;
 
 public class PerfilUsuarioActivity extends AppCompatActivity {
 
@@ -50,6 +53,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     TextView nombre, nombreApellidos, correo;
     EditText inputNombreApellidos;
     StorageReference storageRef;
+    ImageView imgProfile;
 
     public interface ReauthenticationListener {
         void onReauthenticationSuccess();
@@ -215,6 +219,9 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 }
             });
 
+            //Foto perfil
+            imgProfile = findViewById(R.id.fotoPerfil);
+            mostrarImagenPerfil();
 
         }
 
@@ -451,6 +458,32 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         Log.e("Almacenamiento", "ERROR: subiendo fichero");
+                    }
+                });
+    }
+    private void mostrarImagenPerfil(){
+        File localFile = null;
+        try {
+            localFile = File.createTempFile("image", "jpg"); //nombre y extensión
+        } catch (IOException e) {
+            e.printStackTrace(); //Si hay problemas mostramos la causa
+        }
+        final String path = localFile.getAbsolutePath();
+        Log.d("Almacenamiento", "creando fichero: " + path);
+
+        StorageReference ficheroRef = storageRef.child("users/ejemplo/profilePhoto");
+        ficheroRef.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>(){
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot){
+                        Log.d("Almacenamiento", "Fichero bajado" + path);
+                        //Aquí ya disponemos del fichero
+                        imgProfile.setImageBitmap(BitmapFactory.decodeFile(path));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.e("Almacenamiento", "ERROR: bajando fichero");
                     }
                 });
     }
