@@ -5,11 +5,14 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.util.Log;
 
 import com.example.hypnosapp.R;
@@ -25,15 +28,23 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Uri alarmUri = intent.getData();
+        boolean activarVibracion = intent.getBooleanExtra("isWithVibration",false);
+
         if (alarmUri != null) {
             mediaPlayer = MediaPlayer.create(this, alarmUri);
             mediaPlayer.setLooping(true);
             mediaPlayer.start();
+
+            if (activarVibracion) {
+                iniciarVibracion();
+            }
+
             showNotification();
         }
 
         return START_STICKY;
     }
+
 
     @Override
     public void onDestroy() {
@@ -41,6 +52,7 @@ public class AlarmService extends Service {
             mediaPlayer.stop();
             mediaPlayer.release();
         }
+        detenerVibracion();
         super.onDestroy();
     }
 
@@ -77,4 +89,20 @@ public class AlarmService extends Service {
         return notification;
     }
 
+    private void iniciarVibracion() {
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        if (vibrator != null && vibrator.hasVibrator()) {
+            // Configura un patrón de vibración (puedes personalizar según tus necesidades)
+            long[] pattern = {0, 1000, 1000};
+            vibrator.vibrate(pattern, 0);
+        }
+    }
+
+    private void detenerVibracion() {
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator != null) {
+            vibrator.cancel();
+        }
+    }
 }

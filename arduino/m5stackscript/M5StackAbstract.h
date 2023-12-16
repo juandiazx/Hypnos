@@ -154,7 +154,7 @@ private:
     uint16_t mainColor = 0x164499;
     AsyncUDP udp;
 
-    const char* mqtt_topic = "m5stack_topic";
+    const char* mqtt_topic = "hypnos_m5stack_topic";
 
 
    M5StackAbstract(const char *ssid, const char *pass, int udp) {

@@ -41,7 +41,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
     private static final int PICK_RINGTONE_REQUEST = 1;
     ImageView btnPerfilUsuario, btnPantallaPrincipal, btnAjustesDescanso, btnPreferencias;
     EditText toneLocationClock, wakeUpHourGoal, sleepTimeGoal, toneLocationClockText;
-    Switch isGradualClock, isAutoClock, goalNotifications, warmLight, coldLight, autoLight;
+    Switch isAutoClock, goalNotifications, warmLight, coldLight, autoLight;
     Button btnGuardarClock, btnGuardarGoals;
     private FirebaseHelper firebaseHelper;
     FirebaseAuth firebaseAuth;
@@ -58,11 +58,11 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         firebaseHelper = new FirebaseHelper();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        //userID = firebaseUser.getUid();
-        userID = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
+        userID = firebaseUser.getUid();
+
+        //userID = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
 
         btnPerfilUsuario= findViewById(R.id.logoUsuarioHeader);
-        isGradualClock = findViewById(R.id.switchGradualClock);
         isAutoClock = findViewById(R.id.switchAutoClock);
         goalNotifications = findViewById(R.id.switchNotifications);
         warmLight = findViewById(R.id.switchWarmLight);
@@ -70,6 +70,9 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         autoLight = findViewById(R.id.switchAutoLight);
         toneLocationClock = findViewById(R.id.toneLocationClock);
         toneLocationClockText = findViewById(R.id.toneLocationClockText);
+        toneLocationClockText.setEnabled(false);
+        toneLocationClockText.setFocusable(false);
+        toneLocationClockText.setClickable(false);
         wakeUpHourGoal = findViewById(R.id.wakeUpHourGoal);
         sleepTimeGoal = findViewById(R.id.sleepTimeGoal);
         btnGuardarGoals = findViewById(R.id.guardarGoals);
@@ -86,9 +89,8 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String userId = userID;
                 String songLocation = toneLocationClock.getText().toString();
-                boolean isSongGradual = isGradualClock.isChecked();
                 boolean isClockAutomatic = isAutoClock.isChecked();
-                firebaseHelper.setClock(userId, songLocation, isSongGradual, isClockAutomatic);
+                firebaseHelper.setClock(userId, songLocation, isClockAutomatic);
             }
         });
         btnGuardarGoals.setOnClickListener(new View.OnClickListener() {
@@ -148,30 +150,52 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         startActivityForResult(intent, PICK_RINGTONE_REQUEST);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_RINGTONE_REQUEST && resultCode == RESULT_OK) {
-            //Esto es solo por ahora, tendra que pasar a guardarse solamente en la base de datos
+
             Uri selectedRingtoneUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            boolean isVibrationEnabled = isAutoClock.isChecked();
 
-            String urlString = selectedRingtoneUri.toString();
-            String titleString = StringFormatting.extractTitle(urlString);
-            toneLocationClock.setText(urlString);
-            toneLocationClockText.setText(titleString);
+            if(selectedRingtoneUri != null){
+                setUrlsText(selectedRingtoneUri);
 
-            Intent serviceIntent = new Intent(AjustesDeSuenyoActivity.this, AlarmService.class);
-            serviceIntent.setData(selectedRingtoneUri);
-            startService(serviceIntent);
+                //Esto es solo por ahora, tendra que pasar a llamarse desde MQTT Helper
+                startAlarmService(selectedRingtoneUri,isVibrationEnabled);
+            }
         }
+    }
+
+
+    private void setUrlsText(Uri selectedRingtoneUri){
+        String urlString = selectedRingtoneUri.toString();
+        String titleString;
+        if (urlString.length() < 45){
+            titleString = StringFormatting.extractNumberTitle(urlString);
+        }
+        else{
+            titleString = StringFormatting.extractTitle(urlString);
+        }
+
+        toneLocationClock.setText(urlString);
+        toneLocationClockText.setText(titleString);
+    }
+
+    //Esto va a pasar a estar en MQTT y cogera los dos argumentos de la Base de datos
+    private void startAlarmService(Uri selectedRingtoneUri,Boolean isWithVibration){
+        Intent serviceIntent = new Intent(AjustesDeSuenyoActivity.this, AlarmService.class);
+
+        serviceIntent.setData(selectedRingtoneUri);
+        serviceIntent.putExtra("isWithVibration", isWithVibration);
+
+        startService(serviceIntent);
     }
 
     private void loadSleepSettings() {
 
         String userId = userID;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
 
         firebaseHelper.getClock(userId,
                 new OnSuccessListener<Map<String, Object>>() {
@@ -257,25 +281,24 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
     }
     private void updateClockSettingsUI(Map<String, Object> clockSettings) {
         if (clockSettings != null) {
-            Boolean isGradual = (Boolean) clockSettings.get("isGradual");
-            Boolean isAutomatic = (Boolean) clockSettings.get("isAutomatic");
+            Boolean isWithVibrations = (Boolean) clockSettings.get("isWithVibrations");
 
-            if (isGradual != null) {
-                isGradualClock.setChecked(isGradual);
+            if (isWithVibrations != null) {
+                isAutoClock.setChecked(isWithVibrations);
             } else {
-                Log.e(TAG, "isGradual is null");
-            }
-
-            if (isAutomatic != null) {
-                isAutoClock.setChecked(isAutomatic);
-            } else {
-                Log.e(TAG, "isAutomatic is null");
+                Log.e(TAG, "isWithVibrations is null");
             }
 
             String toneLocation = (String) clockSettings.get("toneLocation");
             if (toneLocation != null) {
                 toneLocationClock.setText(toneLocation);
-                toneLocationClockText.setText(StringFormatting.extractTitle(toneLocation));
+                if (toneLocation.length() < 45 && toneLocation.length() > 10){
+                    toneLocationClockText.setText(StringFormatting.extractNumberTitle(toneLocation));
+                }
+                else{
+                    toneLocationClockText.setText(StringFormatting.extractTitle(toneLocation));
+                }
+
             } else {
                 Log.e(TAG, "toneLocation is null");
             }

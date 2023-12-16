@@ -5,11 +5,15 @@ import com.example.hypnosapp.mainpage.DiaFragment3;
 import com.example.hypnosapp.model.Night;
 
 import android.content.Context;
+import android.os.Build;
+import org.apache.commons.lang3.time.DateUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+
+
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,11 +31,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageException;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
-
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,8 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Comparator;
+import java.util.concurrent.CompletableFuture;
 
 
 public class FirebaseHelper {
@@ -63,9 +62,109 @@ public class FirebaseHelper {
         void onNightLoadError(Exception e);
     }
 
+    public interface OnUserExistsListener {
+        void onUserExists(boolean exists);
+    }
+    /*----------------------------------------------------------------------------------------
+                String userId ---> checkIfUserExists() --> true if user exists on the user
+                collection.
+    ----------------------------------------------------------------------------------------*/
+    public void checkIfUserExists(String userId, OnUserExistsListener listener) {
+        DocumentReference userDocRef = db.collection("users").document(userId);
+        userDocRef.get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    boolean exists = documentSnapshot.exists();
+                    listener.onUserExists(exists);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error checking if user exists", e);
+                    listener.onUserExists(false); // Assume user doesn't exist in case of error
+                });
+    }
+    /*----------------------------------------------------------------------------------------
+                String userId, nombre, ---> addUserToUsers() --> adds the user to the user
+                collection.
+    ----------------------------------------------------------------------------------------*/
+    public void addUserToUsers(String userId, String nombre, String email, String fechaNacimiento) {
+
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("name", nombre);
+        userData.put("birth", fechaNacimiento);
+        userData.put("email", email);
+
+        db.collection("users")
+                .document(userId)
+                .set(userData)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "User added to collection successfully"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error adding user to collection", e));
+    }
+    /*----------------------------------------------------------------------------------------
+                String userID ---> setDefaultSettings() --> stores a default preset on
+                the new user's settings
+    ----------------------------------------------------------------------------------------*/
+    public void setDefaultPreferences(String userId) {
+
+        Map<String, Object> defaultClockSettings = new HashMap<>();
+        defaultClockSettings.put("isWithVibrations", true);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            defaultClockSettings.put("toneLocation", "content://media/internal/audio/media/36");
+        } else {
+            defaultClockSettings.put("toneLocation", "content://media/external_primary/audio/media/1000000036?title=Fresh%20Start&canonical=1");
+        }
+
+        Map<String, Object> defaultGoals = new HashMap<>();
+        defaultGoals.put("goBedTime", "22:00");
+        defaultGoals.put("restTime", "8:00");
+        defaultGoals.put("sleepNotifications", true);
+        defaultGoals.put("wakeUpTimeGoal", "6:00");
+
+        String defaultLightSetting = "AUT";
+
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        Map<String, Object> defaultSettings = new HashMap<>();
+        defaultSettings.put("clockSettings", defaultClockSettings);
+        defaultSettings.put("lightSettings", defaultLightSetting);
+        defaultSettings.put("goals", defaultGoals);
+
+        // here is where you gotta modify
+        userDocRef
+                .update("preferences", defaultSettings)
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Default preferences set successfully"))
+                .addOnFailureListener(e -> Log.e(TAG, "Error setting default preferences", e));
+
+    }
+
+    /*----------------------------------------------------------------------------------------
+            String userID ---> setEmptyNights() --> stores a default preset of
+            nights which will tell the user that no night has been monitorized before
+    ----------------------------------------------------------------------------------------*/
+    public void setEmptyNights(String userId) {
+        // Create three empty nights for today, yesterday, and the day before yesterday
+        for (int i = 0; i < 3; i++) {
+            // Calculate the date for each night
+            Date nightDate = DateUtils.addDays(new Date(), -i);
+
+            // Create an empty night with the required fields
+            Night emptyNight = new Night(nightDate, "No night has been monitorized yet", 0, 0, 0);
+
+            // Set the date for the empty night
+            emptyNight.setDate(nightDate);
+
+            // Create a subcollection called "nightsData" and add the empty night
+            db.collection("users")
+                    .document(userId)
+                    .collection("nightsData")
+                    .add(emptyNight)
+                    .addOnSuccessListener(documentReference -> Log.d("Firestore", "Empty night added successfully"))
+                    .addOnFailureListener(e -> Log.e("Firestore", "Error adding empty night", e));
+        }
+    }
+
     /*----------------------------------------------------------------------------------------
                 getClock() --> HASHMAP[String hour, songLocation
-                              bool isSongGradual, isClockAutomatic]
+                              , isClockAutomatic]
     ----------------------------------------------------------------------------------------*/
     public void getClock(String userId, final OnSuccessListener<Map<String, Object>> successListener, final OnFailureListener failureListener) {
         // Retrieve clock settings from Firestore and return as a HashMap
@@ -106,15 +205,14 @@ public class FirebaseHelper {
 
     /*----------------------------------------------------------------------------------------
                    String hour, songLocation     ----> setClock()
-               bool isSongGradual, isClockAutomatic
+               String toneLocation, isWithVibrations
     ----------------------------------------------------------------------------------------*/
-    public void setClock(String userId, String songLocation, boolean isSongGradual, boolean isClockAutomatic) {
+    public void setClock(String userId, String songLocation, boolean isWithVibrations) {
         // Update clock settings in Firestore
         DocumentReference userDocRef = db.collection("users").document(userId);
 
         Map<String, Object> clockSettings = new HashMap<>();
-        clockSettings.put("isAutomatic", isClockAutomatic);
-        clockSettings.put("isGradual", isSongGradual);
+        clockSettings.put("isWithVibrations", isWithVibrations);
         clockSettings.put("toneLocation", songLocation);
 
         userDocRef
@@ -394,8 +492,8 @@ public class FirebaseHelper {
                              getNotifications() --> bool
     ----------------------------------------------------------------------------------------*/
     public void getNotifications(String userId, final OnSuccessListener<Boolean> successListener, final OnFailureListener failureListener){
-        DocumentReference userDocRef = db.collection("users").document(userId);
 
+        DocumentReference userDocRef = db.collection("users").document(userId);
         userDocRef.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -736,7 +834,7 @@ public class FirebaseHelper {
 
     /*----------------------------------------------------------------------------------------------
                               cargarUltimaImagen() --> Renders Family Image and Date of Creation
-----------------------------------------------------------------------------------------------*/
+    ----------------------------------------------------------------------------------------------*/
     public static void cargarUltimaImagen(Context context, ImageView imageView, String userId, TextView fechaTextView) {
         FirebaseStorage storage = FirebaseStorage.getInstance("gs://hypnos-gti.appspot.com");
         StorageReference storageRef = storage.getReference().child("users/" + userId);
@@ -744,39 +842,63 @@ public class FirebaseHelper {
         storageRef.listAll()
                 .addOnSuccessListener(listResult -> {
                     List<StorageReference> items = listResult.getItems();
-                    items.sort((first, second) -> {
-                        getCreationTimeMillis(first,
-                                creationTimeFirst -> {
-                                    getCreationTimeMillis(second,
-                                            creationTimeSecond -> {
-                                                long result = Long.compare(creationTimeSecond, creationTimeFirst);
-                                            },
-                                            exception -> exception.printStackTrace());
+
+                    // Create CompletableFuture to track completion of all creation time requests
+                    List<CompletableFuture<Long>> creationTimeFutures = new ArrayList<>();
+
+                    // Log the creation times before sorting
+                    for (StorageReference item : items) {
+                        CompletableFuture<Long> creationTimeFuture = new CompletableFuture<>();
+                        creationTimeFutures.add(creationTimeFuture);
+
+                        getCreationTimeMillis(item,
+                                creationTimeMillis -> {
+                                    creationTimeFuture.complete(creationTimeMillis);
                                 },
-                                exception -> exception.printStackTrace());
-                        return 0;
+                                exception -> {
+                                    exception.printStackTrace();
+                                    creationTimeFuture.completeExceptionally(exception);
+                                });
+                    }
+
+                    // Wait for all creation times to be obtained
+                    CompletableFuture<Void> allCreationTimes = CompletableFuture.allOf(
+                            creationTimeFutures.toArray(new CompletableFuture[0]));
+
+                    allCreationTimes.thenRun(() -> {
+                        // Sort items based on creation times
+                        items.sort((first, second) -> {
+                            try {
+                                long result = Long.compare(creationTimeFutures.get(items.indexOf(second)).get(),
+                                        creationTimeFutures.get(items.indexOf(first)).get());
+                                System.out.println("Comparison result: " + result);
+                                return Math.toIntExact(result);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                return 0;
+                            }
+                        });
+
+                        if (!items.isEmpty()) {
+                            StorageReference lastImageRef = items.get(0);
+                            lastImageRef.getDownloadUrl()
+                                    .addOnSuccessListener(uri -> {
+                                        Glide.with(context).load(uri).into(imageView);
+                                        getFormattedCreationDateTime(lastImageRef, fechaTextView);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        e.printStackTrace();
+                                    });
+                        } else {
+                            fechaTextView.setText("No existe ninguna imagen de su familiar");
+                        }
                     });
 
-                    if (!items.isEmpty()) {
-                        StorageReference lastImageRef = items.get(0);
-                        lastImageRef.getDownloadUrl()
-                                .addOnSuccessListener(uri -> {
-                                    Glide.with(context).load(uri).into(imageView);
-
-                                    getFormattedCreationDateTime(lastImageRef, fechaTextView);
-                                })
-                                .addOnFailureListener(e -> {
-                                    e.printStackTrace();
-                                });
-                    } else {
-                        fechaTextView.setText("No existe ninguna imagen de su familiar");
-                    }
                 })
                 .addOnFailureListener(e -> {
                     e.printStackTrace();
                 });
     }
-
 
     private static void getCreationTimeMillis(StorageReference reference, OnSuccessListener<Long> successListener, OnFailureListener failureListener) {
         reference.getMetadata()
@@ -803,12 +925,6 @@ public class FirebaseHelper {
                 exception -> {
                     exception.printStackTrace();
                 });
-    }
-
-    //------------------------------------------------------------------------------------------------------------
-
-    public static void saveAlarmClock(){
-
     }
 
 

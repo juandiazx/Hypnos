@@ -28,4 +28,21 @@ public class StringFormatting {
 
         return null;
     }
+
+    public static String extractNumberTitle(String texto) {
+        // Patrón para encontrar un número en el texto
+        Pattern patronNumero = Pattern.compile("\\d+");
+
+        // Crear un objeto Matcher
+        Matcher matcher = patronNumero.matcher(texto);
+
+        // Verificar si se encontró un número
+        if (matcher.find()) {
+            // Devolver el número encontrado como entero
+            return matcher.group();
+        } else {
+            // Devolver null si no se encontró ningún número
+            return null;
+        }
+    }
 }

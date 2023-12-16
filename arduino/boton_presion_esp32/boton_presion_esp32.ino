@@ -14,10 +14,10 @@
 //Realizamos nuestras definiciones que no ocupan espacio, acciones de compilador
 //--------------------------------------------------------------------------------------
 #define udpPort 6230
-#define ssid "TP-LINK_6B36"
-#define password "89776513"
-//#define ssid "darkasa"
-//#define password "0Spoilerspls"
+//#define ssid "TP-LINK_6B36"
+//#define password "89776513"
+#define ssid "darkasa"
+#define password "0Spoilerspls"
 #define PinDelSensor 4
 #define PinDelLed 2
 

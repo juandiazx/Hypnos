@@ -13,8 +13,11 @@ import androidx.fragment.app.Fragment;
 import com.example.hypnosapp.R;
 import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.model.Night;
+import com.example.hypnosapp.mainpage.HalfDonutChart;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,18 +27,22 @@ public class DiaFragment1 extends Fragment {
     public DiaFragment1() {
         // Constructor público vacío requerido
     }
+
     HalfDonutChart halfDonutChartAnteAyer;
     TextView txtNumeroPuntuacionDescansoAnteAyer, txtTituloDescansoAnteAyer, txtTiempoSueñoHorasAnteAyer, txtTemperaturaMediaNocheGradosAnteAyer, txtRespiracionAnteAyer;
     FirebaseHelper firebaseHelper = new FirebaseHelper();
-    String userID = "lr3SPEtJqt493dpfWoDd";
-
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
+    String userID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflar el diseño del fragmento que deseas mostrar
         View view = inflater.inflate(R.layout.fragment_dia_1, container, false);
-
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        userID = firebaseUser.getUid();
         txtNumeroPuntuacionDescansoAnteAyer = view.findViewById(R.id.txtNumeroPuntuacionDescansoAnteAyer);
         txtTituloDescansoAnteAyer = view.findViewById(R.id.txtTituloDescansoAnteAyer);
         txtTiempoSueñoHorasAnteAyer = view.findViewById(R.id.txtTiempoSueñoHorasAnteAyer);
@@ -47,7 +54,7 @@ public class DiaFragment1 extends Fragment {
             @Override
             public void onSuccess(Night night) {
                 if (night != null) {
-                    Log.d("FirebaseHelper", "Fecha BEFORE YESTERDAY NIGHT: "+ night.getDate().toString() + " Puntuación: " + night.getScore());
+                    Log.d("FirebaseHelper", "Fecha BEFORE YESTERDAY NIGHT: " + night.getDate().toString() + " Puntuación: " + night.getScore());
                     //show score points:
                     txtNumeroPuntuacionDescansoAnteAyer.setText(String.valueOf(night.getScore()));
 
@@ -65,6 +72,10 @@ public class DiaFragment1 extends Fragment {
 
                     //show breathing:
                     txtRespiracionAnteAyer.setText(night.getBreathing());
+
+                    // Set the score percentage to the HalfDonutChart
+                    float scorePercentage = (float) night.getScore() / 100; // Assuming the score is on a scale of 0 to 100
+                    halfDonutChartAnteAyer.setScorePercentage(scorePercentage);
                 } else {
                     Log.d("FirebaseHelper", "No se encontró información para BEFORE YESTERDAY NIGHT.");
                     txtTituloDescansoAnteAyer.setText("No hay datos de sueño");
@@ -73,17 +84,14 @@ public class DiaFragment1 extends Fragment {
                     txtTiempoSueñoHorasAnteAyer.setText("-");
                     txtTemperaturaMediaNocheGradosAnteAyer.setText("-");
                     txtRespiracionAnteAyer.setText("-");
-
                 }
             }
         }, new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e("FirebaseHelper", "Ha habido un error con getBeforeYesterdayNight ----" + e);
-
             }
         });
-
 
         // Aquí puedes inicializar las vistas y realizar otras operaciones necesarias
         return view;

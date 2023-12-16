@@ -12,6 +12,7 @@ public class HalfDonutChart extends View {
 
     private Paint paint;
     private RectF rectF;
+    private float scorePercentage; // Nueva variable para almacenar el porcentaje de puntuación
 
     public HalfDonutChart(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -19,6 +20,12 @@ public class HalfDonutChart extends View {
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         rectF = new RectF();
+    }
+
+    // Nuevo método para establecer el porcentaje de puntuación
+    public void setScorePercentage(float scorePercentage) {
+        this.scorePercentage = scorePercentage;
+        invalidate(); // Solicitar un nuevo dibujo cuando cambie la puntuación
     }
 
     @Override
@@ -39,20 +46,18 @@ public class HalfDonutChart extends View {
         paint.setStrokeWidth(strokeWidth);
         paint.setStyle(Paint.Style.STROKE);
 
-        // Dibuja el contorno del medio donut de 0 a 180 grados verticalmente
+        // Dibuja el contorno del medio donut de 0 a 180 grados verticalmente, estos valores no cambian nunca
         canvas.drawArc(rectF, 180, 180, false, paint);
-        //De 180 a 180 seria una puntuacion de 100. 180 a 147 seria una puntuacion de 82. Regla de tres: 180 * X / 100
 
         // Draw the outline with a darker blue color
         paint.setColor(Color.parseColor("#164499"));// Azul oscuro
         paint.setStrokeWidth(strokeWidth);
         paint.setStyle(Paint.Style.STROKE);
 
-        // Dibuja el contorno del medio donut de 0 a 180 grados verticalmente
-        canvas.drawArc(rectF, 180, 147, false, paint);
-        //De 180 a 180 seria una puntuacion de 100. 180 a 147 seria una puntuacion de 82. Regla de tres: 180 * X / 100
+        // Calcular el ángulo de acuerdo con el porcentaje de puntuación
+        float angle = 180 * scorePercentage / 100;
+
+        // Dibuja el contorno del medio donut de 0 a angle grados verticalmente
+        canvas.drawArc(rectF, 180, angle, false, paint);
     }
 }
-
-
-

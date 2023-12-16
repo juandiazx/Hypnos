@@ -4,6 +4,14 @@ package com.example.hypnosapp.services;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Toast;
+
+import com.example.hypnosapp.appactivity.AjustesDeSuenyoActivity;
+import com.example.hypnosapp.firebase.FirebaseHelper;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -13,15 +21,30 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.util.Map;
+
 public class MQTTHelper {
     private MqttClient mqttAndroidClient;
+    private String userId;
+    private FirebaseHelper firebaseHelper;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+
+    private String userID;
 
     public MQTTHelper(String serverUri, String clientId, String subscriptionTopic) throws MqttException {
         mqttAndroidClient = new MqttClient(serverUri, clientId, (MqttClientPersistence) MQTTHelper.getAppContext());
 
-        // Configura y conecta el cliente MQTT
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        userID = firebaseUser.getUid();
+
+        firebaseHelper = new FirebaseHelper();
+
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
-        // Configuraciones adicionales si es necesario
+
 
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
@@ -33,18 +56,14 @@ public class MQTTHelper {
 
             @Override
             public void connectionLost(Throwable cause) {
-                // Manejar la pérdida de conexión
             }
 
             @Override
             public void messageArrived(String topic, MqttMessage message) throws Exception {
-                // Lógica para manejar el mensaje MQTT recibido
                 if (message.toString().equals("daytime")) {
-                    // Obtener la URL de la base de datos (Firebase) y luego iniciar la alarma
-                    String alarmUrl = getAlarmUrlFromFirebase();
-                    if (alarmUrl != null && !alarmUrl.isEmpty()) {
-                        startAlarmService(alarmUrl);
-                    }
+                    obtainClockSettings();
+                    //LLAMAR A LA INTENCION DE ALARMSERVICE CON LOS PARAMETROS
+                    //startAlarmService();
                 }
             }
 
@@ -53,8 +72,6 @@ public class MQTTHelper {
                 // Lógica después de que se completa la entrega
             }
         });
-
-        // Conectar al servidor MQTT
         connect();
     }
 
@@ -66,20 +83,38 @@ public class MQTTHelper {
         // Implementar la lógica de suscripción
     }
 
-    private String getAlarmUrlFromFirebase() {
-        // Implementar la lógica para obtener la URL de la base de datos (Firebase)
-        // Puedes usar Firebase Realtime Database o Firestore según tu configuración
-        // Retorna la URL de la alarma o null si no hay URL guardada
+    /*
+    * NECESITAMOS LLAMAR A GETCLOCK()
+    * PARA LLAMAR A LA INTENCION DE INICIAR EL DESPERTADOR
+    * CON LOS BOOLEANOS DE VIBRACION Y EL STRING DE TONO
+    * */
+    private void obtainClockSettings(){
+        firebaseHelper.getClock(userId,
+                new OnSuccessListener<Map<String, Object>>() {
+                    @Override
+                    public void onSuccess(Map<String, Object> clockSettings) {
+                        // Update UI with clock settings
+                        //updateClockSettingsUI(clockSettings);
+                    }
+                },
 
-        return "";
+                new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        /*Toast.makeText( AjustesDeSuenyoActivity.this,
+                                "We couldn't obtain your alarm settings", Toast.LENGTH_SHORT).show();
+                    */}
+                });
     }
 
-    private void startAlarmService(String alarmUrl) {
+    private void startAlarmService(String alarmUrl,Boolean isWithVibration) {
         // Iniciar el servicio de alarma con la URL
         Intent serviceIntent = new Intent(MQTTHelper.getAppContext(), AlarmService.class);
         serviceIntent.setData(Uri.parse(alarmUrl));
+        serviceIntent.putExtra("isWithVibration", isWithVibration);
         MQTTHelper.getAppContext().startService(serviceIntent);
     }
+
 
     private static Context getAppContext() {
         return null;
