@@ -1,5 +1,6 @@
 package com.example.hypnosapp.appactivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -208,12 +209,17 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             btnEditarFotoPerfil.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent i = new Intent(Intent.ACTION_PICK);
+                    i.setType("image/*");
+                    startActivityForResult(i, 1234);
                 }
             });
 
 
         }
+
+
+
 
         //-------------------------------------------------------------------------------------
         // FUNCIONALIDAD BOTONES MENUS
@@ -267,6 +273,16 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         });
 
     }//Fin onCreate()
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1234) {
+                subirNuevaFotoPerfil(data.getData(), "users/ejemplo/profilePhoto");
+            }
+        }
+    }
 
     public void cerrarSesion(View view){
 
@@ -422,10 +438,9 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         });
     }
     private void subirNuevaFotoPerfil(Uri imagen, String direccionFirebase){
-        File file = new File("/dir/fichero.txt");
-        Uri uri = Uri.fromFile(file);
-        StorageReference ficheroRef = storageRef.child("dir/fichero.txt");
-        ficheroRef.putFile(uri)
+
+        StorageReference ficheroRef = storageRef.child(direccionFirebase);
+        ficheroRef.putFile(imagen)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>(){
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
