@@ -27,12 +27,19 @@ import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
 
 public class PerfilUsuarioActivity extends AppCompatActivity {
 
@@ -41,6 +48,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     String nombreUsuario, correoUsuario;
     TextView nombre, nombreApellidos, correo;
     EditText inputNombreApellidos;
+    StorageReference storageRef;
 
     public interface ReauthenticationListener {
         void onReauthenticationSuccess();
@@ -131,6 +139,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         else{
             //si iniciamos sesión con correo electrónico:
             setContentView(R.layout.perfil_usuario);
+            storageRef = FirebaseStorage.getInstance().getReference();
 
             nombreApellidos = findViewById(R.id.nombreApellidosPerfil);
             nombreApellidos.setText(nombreUsuario);
@@ -191,6 +200,15 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     cambiarContrasenya();
+                }
+            });
+
+            //Botón editar foto de perfil
+            ImageView btnEditarFotoPerfil = findViewById(R.id.editarFoto);
+            btnEditarFotoPerfil.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
                 }
             });
 
@@ -402,6 +420,24 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+    }
+    private void subirNuevaFotoPerfil(Uri imagen, String direccionFirebase){
+        File file = new File("/dir/fichero.txt");
+        Uri uri = Uri.fromFile(file);
+        StorageReference ficheroRef = storageRef.child("dir/fichero.txt");
+        ficheroRef.putFile(uri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>(){
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Log.d("Almacenamiento", "Fichero subido");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.e("Almacenamiento", "ERROR: subiendo fichero");
+                    }
+                });
     }
 
 }//Class
