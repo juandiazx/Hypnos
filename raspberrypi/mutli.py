@@ -3,7 +3,7 @@ import socket
 import serial
 import threading
 import json
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore, storage
 import paho.mqtt.client as mqtt
 from datetime import datetime
 from picamera import PiCamera
@@ -14,20 +14,18 @@ Falta obtener el UID por MQTT desde el movil, asi publicamos nights data en usua
 Falta que no sea un update sino que cree un nuevo night
 Falta una funcion para enviar por MQTT al movil, que ya acabo la noche
 '''
-#CAMERA DOCUMENTATION
-#Hacer sudo pip install picamera en el virtual environment
-#https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/0
 
-# Inicializa Firebase con el archivo de configuración
 cred = credentials.Certificate('firebase-adminsdk.json')
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'gs://hypnos-gti.appspot.com'
 })
 
+storage_bucket = storage.bucket()
 
 # Referencia a la colección en la que deseas agregar datos
 db = firestore.client()
-documento_referencia = db.collection('users').document('lr3SPEtJqt493dpfWoDd').collection('nightsData').document('SQtNQ5lD9iceihHPvexs')
+documento_referencia = db.collection('users').document('R279SubMuPfIJf608GXGWbFOoTC2').collection('nightsData').document('y29w5QHPKWj4tYD7YHQG')
+uid_usuario = "lr3SPEtJqt493dpfWoDd"
 
 # Configura el socket UDP
 udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -42,10 +40,9 @@ ser = serial.Serial(
     timeout=1              # Tiempo de espera para la lectura serial
 )
 
-
 # Configuración de MQTT
-mqtt_broker_address = "192.168.0.65"  # Cambia esto con la IP de tu Raspberry Pi
-mqtt_topic = "m5stack_topic"
+mqtt_broker_address = "test.mosquitto.org"  # Cambia esto con la IP de tu Raspberry Pi
+mqtt_topic = "hypnos_m5stack_topic"
 mqtt_client = mqtt.Client()
 uid_usuario = None
 
@@ -79,7 +76,7 @@ def subir_imagenes_storage():
             ruta_storage = f'users/{uid_usuario}/{nombre_imagen}'
 
             # Obtener una referencia al objeto de almacenamiento
-            storage_ref = storage_client.bucket().blob(ruta_storage)
+            storage_ref = storage_bucket.blob(ruta_storage)
 
             # Subir la imagen al almacenamiento
             storage_ref.upload_from_string(imagen, content_type='image/jpeg')
@@ -179,30 +176,20 @@ def escribir_en_firestore():
         
         subir_imagenes_storage()
 
-        '''
-        # Subir imágenes a Firestore
-        for i, imagen in enumerate(imagenes):
-            storage_ref = firebase_admin.storage.bucket().blob(f'imagen_{i}.jpg')
-            storage_ref.upload_from_string(imagen, content_type='image/jpeg')
-            print(f'Imagen {i} subida correctamente a Firestore.')'''
 
-# Iniciar subprocesos
 thread_udp = threading.Thread(target=recibir_datos_udp)
 thread_uart = threading.Thread(target=recibir_datos_uart)
 thread_mqtt = threading.Thread(target=iniciar_hilo_mqtt)
 thread_foto = threading.Thread(target=tomar_fotos)
 
-# Iniciar subprocesos
 thread_udp.start()
 thread_uart.start()
 thread_mqtt.start()
 thread_foto.start()
 
-# Esperar a que los subprocesos terminen (puedes eliminar esta línea si deseas que los subprocesos se ejecuten indefinidamente)
 thread_udp.join()
 thread_uart.join()
 thread_mqtt.join()
 thread_foto.join()
 
-# Escribir en Firestore después de que ambos subprocesos hayan terminado
 escribir_en_firestore()
