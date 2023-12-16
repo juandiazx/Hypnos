@@ -49,11 +49,12 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-    String nombreUsuario, correoUsuario;
+    String nombreUsuario, correoUsuario, storagePath;
     TextView nombre, nombreApellidos, correo;
     EditText inputNombreApellidos;
     StorageReference storageRef;
     ImageView imgProfile;
+
 
     public interface ReauthenticationListener {
         void onReauthenticationSuccess();
@@ -153,6 +154,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
             correo = findViewById(R.id.emailPerfil);
             correo.setText(correoUsuario);
+
+            storagePath = "users/" + firebaseUser.getUid() + "/profilePhoto";
 
 
             //Boton editar nombre:
@@ -286,7 +289,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1234) {
-                subirNuevaFotoPerfil(data.getData(), "users/ejemplo/profilePhoto");
+                subirNuevaFotoPerfil(data.getData(), storagePath);
             }
         }
     }
@@ -403,7 +406,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         Button btnCancelar = dialogView.findViewById(R.id.btnCancelarCambioContrasenya);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirmar correo");
+        builder.setTitle("Cambiar contraseña");
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -452,12 +455,15 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Log.d("Almacenamiento", "Fichero subido");
+                        Toast.makeText(PerfilUsuarioActivity.this, "Foto actualizada con éxito", Toast.LENGTH_SHORT).show();
+                        mostrarImagenPerfil();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Log.e("Almacenamiento", "ERROR: subiendo fichero");
+                        Log.e("Almacenamiento", "ERROR: subiendo fichero" + exception);
+                        Toast.makeText(PerfilUsuarioActivity.this, "Error actualizando la foto", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -471,7 +477,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         final String path = localFile.getAbsolutePath();
         Log.d("Almacenamiento", "creando fichero: " + path);
 
-        StorageReference ficheroRef = storageRef.child("users/ejemplo/profilePhoto");
+        StorageReference ficheroRef = storageRef.child(storagePath);
         ficheroRef.getFile(localFile)
                 .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>(){
                     @Override
