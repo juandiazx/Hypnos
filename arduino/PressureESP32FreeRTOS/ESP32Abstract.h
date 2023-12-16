@@ -8,8 +8,77 @@ public:
             instance = new ESP32Abstract(ssid, pass, udp, pinBoton, pinLed);
             instance->openUDPConnection();
             pinMode(pinLed,OUTPUT);
+
+            xTaskCreate(&listenForMessagesTask, "listenForMessagesTask", 4096, instance, 2, NULL);
+            xTaskCreate(&obtainSensorsDataTask, "obtainSensorsDataTask", 4096, instance, 1, NULL);
         }
         return instance;
+    }
+
+private:
+    int udpPort;
+    char ssid[32];
+    char pass[64];
+    AsyncUDP udp;
+    static const int UDP_TX_PACKET_MAX_SIZE = 200;
+    unsigned long tiempoEmpieza; // Guardar el tiempo inicial
+    unsigned long duration; 
+    PressureSensor* pressureSensor;
+    const unsigned int maxMeasurements = 256;  
+    int pinLedField;
+
+    ESP32Abstract(const char *ssidConstructor, const char *passConstructor, int udp, int pinBoton, int pinLed) {
+        udpPort = udp;
+        pressureSensor = PressureSensor::getInstance(pinBoton);
+        pinLedField = pinLed;
+        strncpy(ssid, ssidConstructor, sizeof(ssid) - 1);
+        ssid[sizeof(ssid) - 1] = '\0';
+        strncpy(pass, passConstructor, sizeof(pass) - 1);
+        pass[sizeof(pass) - 1] = '\0';
+        /*Serial.println("Wifi: ");
+        Serial.print(ssid);
+        Serial.print(pass);*/
+    }
+
+    void openUDPConnection(){
+        //Serial.println("openUDPConnection");
+        WiFi.mode(WIFI_STA);
+        WiFi.begin(ssid, pass);
+        if(WiFi.waitForConnectResult()!=WL_CONNECTED) {
+            //Serial.println("Conectando a WiFi...");
+            while(1) {
+              vTaskDelay(1000 / portTICK_PERIOD_MS);
+            }
+        }
+        //Serial.println("Conexión WiFi establecida");
+        
+        if(udp.listen(udpPort)) {
+          
+        }
+    }
+
+    static void listenForMessagesTask(void *pvParameters) {
+        ESP32Abstract *espInstance = static_cast<ESP32Abstract *>(pvParameters);
+        while (1) {
+            espInstance->listenForMessages();
+            vTaskDelay(4000 / portTICK_PERIOD_MS); 
+        }
+    }
+
+    static void detectPressureTask(void *pvParameters) {
+    ESP32Abstract *espInstance = static_cast<ESP32Abstract *>(pvParameters);
+    while (1) {
+        espInstance->pressureSensor->detectPressure();
+        vTaskDelay(500 / portTICK_PERIOD_MS);  // Adjust the delay as needed
+    }
+}
+
+    static void obtainSensorsDataTask(void *pvParameters) {
+        ESP32Abstract *espInstance = static_cast<ESP32Abstract *>(pvParameters);
+        while (1) {
+            espInstance->obtainSensorsData();
+            vTaskDelay(4000 / portTICK_PERIOD_MS);
+        }
     }
 
     //ESTO SE REPITE CADA 4 SEGUNDOS Y PUEDE ESTAR CREANDO UN SOBREPROCESAMIENTO EN EL MICRO O PERDIDA DE DATOS U OCUPANDO MEMORIA
@@ -48,60 +117,22 @@ public:
     });
     }
 
-private:
-    int udpPort;
-    char ssid[32];
-    char pass[64];
-    AsyncUDP udp;
-    static const int UDP_TX_PACKET_MAX_SIZE = 200;
-    unsigned long tiempoEmpieza; // Guardar el tiempo inicial
-    unsigned long duration; 
-    PressureSensor* pressureSensor;
-    const unsigned int maxMeasurements = 256;  
-    int pinLedField;
-
-    ESP32Abstract(const char *ssidConstructor, const char *passConstructor, int udp, int pinBoton, int pinLed) {
-        udpPort = udp;
-        pressureSensor = PressureSensor::getInstance(pinBoton);
-        pinLedField = pinLed;
-        strncpy(ssid, ssidConstructor, sizeof(ssid) - 1);
-        ssid[sizeof(ssid) - 1] = '\0';
-        strncpy(pass, passConstructor, sizeof(pass) - 1);
-        pass[sizeof(pass) - 1] = '\0';
-        /*Serial.println("Wifi: ");
-        Serial.print(ssid);
-        Serial.print(pass);*/
-    }
-
-    void openUDPConnection(){
-        //Serial.println("openUDPConnection");
-        WiFi.mode(WIFI_STA);
-        WiFi.begin(ssid, pass);
-        if(WiFi.waitForConnectResult()!=WL_CONNECTED) {
-            //Serial.println("Conectando a WiFi...");
-            while(1) {
-              delay(1000);
-            }
-        }
-        //Serial.println("Conexión WiFi establecida");
-        
-        if(udp.listen(udpPort)) {
-          
-        }
-    }
-
 
     void obtainSensorsData() {
         tiempoEmpieza = millis(); // Guardar el tiempo inicial
         duration = 17000;     // Duración en milisegundos (en este caso, 15 segundos)
 
         digitalWrite(pinLedField, HIGH); // Enciende el LED
-        delay(3000);
+        vTaskDelay(3000 / portTICK_PERIOD_MS);
         digitalWrite(pinLedField, LOW);
- 
-        while (millis() - tiempoEmpieza <= duration) {
-          pressureSensor->detectPressure();
-        }
+
+        // Start the detectPressure task
+        xTaskCreate(&detectPressureTask, "detectPressureTask", 4096, this, 2, NULL);
+
+        vTaskDelay(duration / portTICK_PERIOD_MS);
+
+        // Stop the detectPressure task
+        //vTaskDelete(NULL);
 
         //En el caso si se quedó pulsado y no se soltó
         if(pressureSensor->tiempoInicio !=0){
@@ -109,7 +140,7 @@ private:
           //Serial.println(pressureSensor->tiempoEncendido);
         }
 
-        delay(3000);
+        //vTaskDelay(3000 / portTICK_PERIOD_MS)
         sendDataToM5Stack(udpPort);
 
         Serial.print(pressureSensor->tiempoEncendido);
