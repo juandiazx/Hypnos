@@ -64,6 +64,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-core:21.1.1")
     implementation ("com.facebook.android:facebook-login:latest.release")
     implementation ("com.google.firebase:firebase-firestore:24.10.0")
+    implementation ("org.eclipse.paho:org.eclipse.paho.android.service:1.1.1")
     implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
