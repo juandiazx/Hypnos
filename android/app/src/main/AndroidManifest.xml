@@ -32,7 +32,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HypnosApp"
         tools:targetApi="31"
-        android:enableOnBackInvokedCallback="true">
+        android:enableOnBackInvokedCallback="true"
+        android:usesCleartextTraffic="true"
+        >
 
 
         <meta-data android:name="com.google.android.geo.API_KEY"

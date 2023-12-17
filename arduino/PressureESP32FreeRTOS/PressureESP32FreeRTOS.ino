@@ -3,6 +3,8 @@
 #include <AsyncUDP.h>
 #include <ArduinoJson.h>
 #include <WiFi.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 //--------------------------------------------------------
 
 //Incluimos cabeceras de nuestras clases
@@ -30,7 +32,4 @@ void setup() {
   esp32Abstract = ESP32Abstract::getInstance(ssid, password, udpPort, PinDelSensor, PinDelLed);
 }
 
-void loop() {
-  //esp32Abstract->listenForMessages();
-  //sdelay(4000);
-}
+void loop() {}
