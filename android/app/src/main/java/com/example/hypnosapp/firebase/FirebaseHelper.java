@@ -932,19 +932,28 @@ public class FirebaseHelper {
     /*----------------------------------------------------------------------------------------------
                                 storeId --> getStoreData()
     ----------------------------------------------------------------------------------------------*/
-    /*
-    public void getStoreData(String storeId, final OnSuccessListener<Store> successListener, final OnFailureListener failureListener){
-        DocumentReference storesDocument = db.collection("stores").document(storeId);
+    public void getStoreData(final OnSuccessListener<List<Store>> successListener, final OnFailureListener failureListener) {
+        CollectionReference storesCollection = db.collection("stores");
 
-        storesDocument.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        storesCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    List<Store> storesList = new ArrayList<>();
 
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Store store = document.toObject(Store.class);
+                        storesList.add(store);
+                    }
+                    successListener.onSuccess(storesList);
+                } else{
+                    failureListener.onFailure(task.getException());
+                }
             }
-        })
+        });
     }
 
-     */
+
     /*
     public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
         CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");

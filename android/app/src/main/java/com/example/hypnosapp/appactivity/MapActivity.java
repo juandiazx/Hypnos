@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.hypnosapp.R;
+import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.model.Store;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,21 +32,16 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
     private GoogleMap mapa;
     private final LatLng Gandia = new LatLng(38.9666700, -0.1833300); //Coordenadas Gandía
     private final LatLng tiendaHome = new LatLng(38.954253, -0.1676615); //Coordenadas tienda home, ejemplo
-    List<Store> stores;
     StorageReference storageRef;
     String storagePath;
-
-
-
-
-
-
+    FirebaseHelper firebaseHelper = new FirebaseHelper();
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -55,8 +51,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         storageRef = FirebaseStorage.getInstance().getReference();
         storagePath = "stores/ejemplo/tienda_home_icon.jpg";
 
+        
+        firebaseHelper.getStoreData(new OnSuccessListener<List<Store>>() {
+            @Override
+            public void onSuccess(List<Store> stores) {
+                Log.d("PRUEBAAAAAAAAAAAA", stores.get(0).getName() + ",,,," + stores.get(1).getLocation());
+
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@androidx.annotation.NonNull Exception e) {
+                Log.e("Obtener Stores de bbdd", "Error obteniendo Stores de bbdd");
+            }
+        });
+
+
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapa);
         mapFragment.getMapAsync(this);
+
+
     }
 
     @Override
