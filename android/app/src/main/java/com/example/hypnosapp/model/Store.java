@@ -1,5 +1,7 @@
 package com.example.hypnosapp.model;
 
+import java.util.Date;
+
 public class Store {
     private String address;
     private double[] location; // Punto geográfico como un array de latitud y longitud
@@ -44,6 +46,17 @@ public class Store {
     }
 
     public void setWeb(String web) {
+        this.web = web;
+    }
+
+    //constructor vacío:
+    public Store() {}
+
+    //constructor:
+    public Store(double[] location, String name, String web) {
+
+        this.location = location;
+        this.name = name;
         this.web = web;
     }
 }
