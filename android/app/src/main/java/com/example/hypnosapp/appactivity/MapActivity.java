@@ -84,15 +84,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         mapa = googleMap;
         mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(Gandia, 12)); //cuando se abre el mapa se coloca en Gandía
-/*
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(tiendaHome) //get location
-                .title("La Tienda Home") //get name
-                .snippet("https://www.latiendahome.com/") //get web
-                .anchor(0.5f, 0.5f);
 
-        descargarIconoStore(markerOptions);
-*/
         if (ActivityCompat.checkSelfPermission(this,
                 ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mapa.setMyLocationEnabled(true);
@@ -120,7 +112,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                         // Reescala el icono descargado
                         Bitmap iGrande = BitmapFactory.decodeFile(path);
                         Bitmap icono = Bitmap.createScaledBitmap(iGrande,
-                                iGrande.getWidth() / 4, iGrande.getHeight() /4, false);
+                                iGrande.getWidth() / 3, iGrande.getHeight() /3, false);
 
                         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icono));
 
@@ -135,74 +127,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
                 });
 
     }
-
-    /*
-    public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
-    private GoogleMap mapa;
-    private final LatLng Gandia = new LatLng(38.9666700, -0.1833300); //Coordenadas Gandía
-    private final List<MarkerOptions> markerOptionsList = new ArrayList<>();
-    StorageReference storageRef;
-    String storagePath;
-    FirebaseHelper firebaseHelper = new FirebaseHelper();
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.map);
-
-        storageRef = FirebaseStorage.getInstance().getReference();
-        storagePath = "stores/ejemplo/tienda_home_icon.jpg";
-
-        firebaseHelper.getStoreData(new OnSuccessListener<List<Store>>() {
-            @Override
-            public void onSuccess(List<Store> stores) {
-                Log.d("PRUEBAAAAAAAAAAAA", stores.get(0).getName() + ",,," + stores.get(1).getLocation());
-
-                // Crear MarkerOptions para cada tienda y agregarlos a la lista
-                for (Store store : stores) {
-                    LatLng storeLocation = new LatLng(store.getLocation().getLatitude(), store.getLocation().getLongitude());
-                    MarkerOptions markerOptions = new MarkerOptions()
-                            .position(storeLocation)
-                            .title(store.getName())
-                            .snippet(store.getWebsite())
-                            .anchor(0.5f, 0.5f);
-
-                    markerOptionsList.add(markerOptions);
-                }
-
-                // Llamar a getMapAsync después de obtener los datos de la tienda
-                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapa);
-                mapFragment.getMapAsync(MapActivity.this);
-            }
-        }, new OnFailureListener() {
-            @Override
-            public void onFailure(@androidx.annotation.NonNull Exception e) {
-                Log.e("Obtener Stores de bbdd", "Error obteniendo Stores de bbdd");
-            }
-        });
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mapa = googleMap;
-        mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(Gandia, 12)); // cuando se abre el mapa se coloca en Gandía
-
-        // Agregar marcadores al mapa
-        for (MarkerOptions markerOptions : markerOptionsList) {
-            mapa.addMarker(markerOptions);
-        }
-
-        if (ActivityCompat.checkSelfPermission(this,
-                ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mapa.setMyLocationEnabled(true);
-            mapa.getUiSettings().setZoomControlsEnabled(true);
-            mapa.getUiSettings().setCompassEnabled(true);
-        }
-    }
-}
-
-     */
 
 }//class
 
