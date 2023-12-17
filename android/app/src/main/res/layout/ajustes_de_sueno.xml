@@ -8,6 +8,7 @@
     android:background="@color/colorBlanco">
 
     <!-- HEADER -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -65,7 +66,7 @@
                     style="@style/TextoInterBold.Subtitulo3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/Despertador"
                     app:layout_constraintEnd_toEndOf="@+id/frameLayout"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -79,7 +80,9 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="24dp"
                     android:background="@drawable/border_background"
+                    app:layout_constraintBottom_toTopOf="@+id/textView11"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -181,7 +184,7 @@
                     style="@style/TextoInterBold.Subtitulo3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginBottom="16dp"
                     android:text="@string/ObjetivosDeDescanso"
                     app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
@@ -198,12 +201,11 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/border_background"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/textView12"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-                    app:layout_constraintVertical_bias="0.251">
+                    app:layout_constraintTop_toBottomOf="@+id/textView11">
 
 
                     <TextView
@@ -307,15 +309,14 @@
                     android:layout_width="0dp"
                     android:layout_height="160dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="70dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="48dp"
                     android:background="@drawable/border_background"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/vincularMQTT"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
+                    app:layout_constraintTop_toBottomOf="@+id/textView12">
 
 
                     <TextView
@@ -433,12 +434,25 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <Button
+                    android:id="@+id/vincularMQTT"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginEnd="64dp"
+                    android:layout_marginBottom="48dp"
+                    android:text="Vincular entorno Hypnos"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/frameLayout3" />
+
                 <TextView
                     android:id="@+id/textView12"
                     style="@style/TextoInterBold.Subtitulo3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginBottom="16dp"
                     android:text="@string/Iluminacion"
                     app:layout_constraintBottom_toTopOf="@+id/frameLayout3"
@@ -448,6 +462,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

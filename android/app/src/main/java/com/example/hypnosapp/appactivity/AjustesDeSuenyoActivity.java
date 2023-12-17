@@ -29,6 +29,8 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Map;
@@ -38,11 +40,15 @@ import java.util.regex.Pattern;
 public class AjustesDeSuenyoActivity extends AppCompatActivity {
     private static final String TAG = "AjustesDeSuenyo";
 
+    MQTTHelper mqttHelper;
+
+    private Context thisAppContext = this;
+
     private static final int PICK_RINGTONE_REQUEST = 1;
     ImageView btnPerfilUsuario, btnPantallaPrincipal, btnAjustesDescanso, btnPreferencias;
     EditText toneLocationClock, wakeUpHourGoal, sleepTimeGoal, toneLocationClockText;
     Switch isAutoClock, goalNotifications, warmLight, coldLight, autoLight;
-    Button btnGuardarClock, btnGuardarGoals;
+    Button btnGuardarClock, btnGuardarGoals, botonVincularMQTT;
     private FirebaseHelper firebaseHelper;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
@@ -77,6 +83,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         sleepTimeGoal = findViewById(R.id.sleepTimeGoal);
         btnGuardarGoals = findViewById(R.id.guardarGoals);
         btnGuardarClock = findViewById(R.id.guardarClock);
+        botonVincularMQTT = findViewById(R.id.vincularMQTT);
         btnPantallaPrincipal = findViewById(R.id.btnPantallaPrincipal);
         btnAjustesDescanso = findViewById(R.id.btnAjustesDescanso);
         btnPreferencias = findViewById(R.id.btnPreferencias);
@@ -138,6 +145,24 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 iniciarSelectorTonos();
+            }
+        });
+
+        botonVincularMQTT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    mqttHelper = new MQTTHelper(thisAppContext, "tcp://test.mosquitto.org:1883","jdiagut","hypnos_rp_daytime");
+                    mqttHelper.connect();
+                    mqttHelper.publishToUidTopic();
+                    mqttHelper.subscribeToTopic("hypnos_rp_daytime");
+                } catch (MqttException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         });
 

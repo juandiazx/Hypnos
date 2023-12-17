@@ -1,6 +1,6 @@
 import firebase_admin
 import socket
-import serial
+#import serial
 import threading
 import json
 from firebase_admin import credentials, firestore, storage
@@ -9,49 +9,51 @@ from datetime import datetime
 from picamera import PiCamera
 import time
 from io import BytesIO
-'''
-Falta obtener el UID por MQTT desde el movil, asi publicamos nights data en usuario personalizado
-Falta que no sea un update sino que cree un nuevo night
-Falta una funcion para enviar por MQTT al movil, que ya acabo la noche
-'''
 
 cred = credentials.Certificate('firebase-adminsdk.json')
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'gs://hypnos-gti.appspot.com'
+    'storageBucket': 'hypnos-gti.appspot.com'
 })
 
 storage_bucket = storage.bucket()
 
 # Referencia a la colección en la que deseas agregar datos
 db = firestore.client()
-documento_referencia = db.collection('users').document('R279SubMuPfIJf608GXGWbFOoTC2').collection('nightsData').document('y29w5QHPKWj4tYD7YHQG')
-uid_usuario = "lr3SPEtJqt493dpfWoDd"
+coleccion_referencia = db.collection('users')
+uid_usuario = None
 
-# Configura el socket UDP
-udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# Configura los sockets UDP para cada función
+udp_socket_data = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+udp_socket_time = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
 udp_host = '0.0.0.0'  # Escucha en todas las interfaces de red
-udp_port = 6230       # Elige un número de puerto disponible
-udp_socket.bind((udp_host, udp_port))
+udp_port_data = 6230   # Elige un número de puerto disponible para datos
+udp_port_time = 6231   # Elige un número de puerto disponible para tiempo
 
+udp_socket_data.bind((udp_host, udp_port_data))
+udp_socket_time.bind((udp_host, udp_port_time))
+
+'''
 # Configura el objeto serial
 ser = serial.Serial(
     port='/dev/ttyUSB0',  # Puerto serial en Raspberry Pi (puede variar)
     baudrate=115200,       # Velocidad de baudios, asegúrate de que coincida con la configuración del ESP32
     timeout=1              # Tiempo de espera para la lectura serial
 )
-
+'''
 # Configuración de MQTT
 mqtt_broker_address = "test.mosquitto.org"  # Cambia esto con la IP de tu Raspberry Pi
+mqtt_topic_uid = "hypnos_rp_uid"
 mqtt_topic = "hypnos_m5stack_topic"
 mqtt_client = mqtt.Client()
-uid_usuario = None
+count = 0
 
 # Configuración de la cámara
 camera = PiCamera()
 
 # Variables para almacenar los datos de UDP y UART
 datos_udp = None
-datos_uart = None
+datos_udp_time = None
 datos_mqtt = None
 
 # Array para almacenar los archivos de imagen
@@ -62,9 +64,7 @@ def tomar_fotos():
         stream = BytesIO()
         camera.capture(stream, 'jpeg')
         imagenes.append(stream.getvalue())
-        time.sleep(4)
-        
-    #Ver si esto afecta en algo malo al codigo, si debemos cerrarla despues de llamar a la funcion
+        time.sleep(4)        
     camera.close()
     
 def subir_imagenes_storage():
@@ -90,7 +90,7 @@ def recibir_datos_udp():
     global datos_udp
     try:
         while True:
-            data, addr = udp_socket.recvfrom(6230)
+            data, addr = udp_socket_data.recvfrom(6230)
             data = data.decode('utf-8').strip()
             snoreScore = ""
             if data:
@@ -116,69 +116,86 @@ def recibir_datos_udp():
         udp_socket.close()
         print("\nSocket UDP cerrado.")
 
-def recibir_datos_uart():
-    global datos_uart
+def recibir_datos_udp_time():
+    global datos_udp_time
     try:
         while True:
-            data = ser.readline().decode('utf-8').strip()
-
-            # Verificar si se recibió algún dato antes de agregarlo a la colección
-            if data.isdigit():
-                print(data)
-                datos_uart = int(data)//1000
-                print('Datos UART recibidos correctamente:', datos_uart)
-                break
+            data, addr = udp_socket_time.recvfrom(6231)
+            data = data.decode('utf-8').strip()
+            if data:
+                try:
+                    mensaje_json = json.loads(data)
+                    if "sleepTime" in mensaje_json:
+                        
+                        datos_udp_time = int(mensaje_json["sleepTime"])//1000
+                        
+                        print('Datos UDP Time recibidos correctamente:', datos_udp_time)
+                        break
+                except json.JSONDecodeError:
+                    print('Mensaje UDP no es un JSON válido:', data)
 
     except KeyboardInterrupt:
-        ser.close()
-        print("\nComunicación serial cerrada.")
-
-mqtt_loop_activo = True
+        udp_socket.close()
+        print("\nSocket UDP cerrado.")
 
 
-#AQUI HAY QUE TENER DOS OPCIONES UNA PARA RECIBIR EL UID Y OTRA PARA RECIBIR LOS DATOS DEL M5
 def on_message(client, userdata, message):
-    global datos_mqtt
+    global uid_usuario, datos_mqtt,count
     payload = message.payload.decode('utf-8')
-    datos_mqtt = payload#json.loads(payload)
-    print('Datos MQTT recibidos correctamente:', datos_mqtt)
-    mqtt_client.disconnect()
 
-    # Desactivar el bucle loop_forever() al recibir un mensaje
-    #mqtt_loop_activo = False
+    if message.topic == mqtt_topic_uid:
+        uid_usuario = payload
+        print('UID recibido correctamente:', uid_usuario)
+        mqtt_client.unsubscribe(mqtt_topic_uid)
+    elif message.topic == mqtt_topic:
+        datos_mqtt = payload
+        print('Datos MQTT recibidos correctamente:', datos_mqtt)
+    count +=1
+    if count == 2:
+        mqtt_client.disconnect()
+
+
 
 def iniciar_hilo_mqtt():
     mqtt_client.connect(mqtt_broker_address)
-    mqtt_client.subscribe(mqtt_topic)
+    mqtt_client.subscribe([(mqtt_topic_uid,0),(mqtt_topic,0)])
     mqtt_client.on_message = on_message
     mqtt_client.loop_forever()
 
-    # Bucle loop_forever() con la condición de la variable de control
-    '''
-    while mqtt_loop_activo:
-        mqtt_client.loop(timeout=1.0)
 
-    '''
+def enviar_mensaje_mqtt_daytime():
+    try:
+        mqtt_topic_daytime = "hypnos_rp_daytime"
+        mensaje_daytime = "daytime"
+        mqtt_client.connect(mqtt_broker_address)
+        mqtt_client.publish(mqtt_topic_daytime, mensaje_daytime)
+        print('Mensaje MQTT enviado correctamente al topic hypnos_rp_daytime.')
+        mqtt_client.disconnect()
+    except Exception as e:
+        print(f"Error al enviar mensaje MQTT: {e}")
+        
 def escribir_en_firestore():
-    global datos_udp, datos_uart, datos_mqtt
-    if datos_udp is not None and datos_uart is not None and datos_mqtt is not None:
+    global datos_udp, datos_udp_time, datos_mqtt
+    if datos_udp is not None and datos_udp_time is not None and datos_mqtt is not None:
         # Combinar datos de UDP, UART y MQTT
         datos_combinados = {
             'breathing': datos_udp["snore"],
             'date':datetime.now(),
             'temperature':datos_udp["temperature"],
-            'time': datos_uart,
+            'time': datos_udp_time,
             'score': int(datos_mqtt)
         }
 
-        documento_referencia.update(datos_combinados)
+        coleccion_referencia.document(uid_usuario).collection('nightsData').document('sUK71eLZ11HYDLJTEYiP').update(datos_combinados)
         print('Datos combinados agregados correctamente a Firestore en Firebase.')
         
         subir_imagenes_storage()
+        
+        enviar_mensaje_mqtt_daytime()
 
 
 thread_udp = threading.Thread(target=recibir_datos_udp)
-thread_uart = threading.Thread(target=recibir_datos_uart)
+thread_uart = threading.Thread(target=recibir_datos_udp_time)
 thread_mqtt = threading.Thread(target=iniciar_hilo_mqtt)
 thread_foto = threading.Thread(target=tomar_fotos)
 

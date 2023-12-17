@@ -24,7 +24,7 @@ public class Pantalla_Principal extends AppCompatActivity {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
     FirebaseHelper firebaseHelper = new FirebaseHelper();
-    MQTTHelper mqttHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,14 +93,7 @@ public class Pantalla_Principal extends AppCompatActivity {
             }
         });
 
-        try {
-            Log.d("Holaaa","Viva");
 
-            mqttHelper = new MQTTHelper(this, "ssl://test.mosquitto.org","android1","hypnos_rp_daytime");
-            mqttHelper.connect();
-        } catch (MqttException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
 
