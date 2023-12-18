@@ -694,8 +694,7 @@ public class FirebaseHelper {
                         nightsList.add(night);
                     }
 
-                    Date currentDate = new Date();
-                    Night lastNight = searchLastNight(nightsList, currentDate);
+                    Night lastNight = searchLastNight(nightsList);
                     successListener.onSuccess(lastNight);
 
                     if (dataChangeListener != null) {
@@ -707,27 +706,6 @@ public class FirebaseHelper {
             }
         });
     }
-
-    /*----------------------------------------------------------------------------------------------
-                           Date, List --> searchLastNight --> Night
-    ----------------------------------------------------------------------------------------------*/
-    private static Night searchLastNight(List<Night> nights, Date currentDate) {
-    Night lastNight = null;
-
-    for (Night night : nights) {
-
-        if (isSameDay(night.getDate(), currentDate)) {
-            lastNight = night;
-            break;
-        }
-    }
-
-    if (lastNight == null) {
-        Log.d(TAG,"No hay registros de la noche de hoy.");
-    }
-
-    return lastNight;
-}
     private static boolean isSameDay(Date date1, Date date2) {
         java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyyMMdd");
         return fmt.format(date1).equals(fmt.format(date2));
