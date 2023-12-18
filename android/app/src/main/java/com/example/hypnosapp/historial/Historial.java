@@ -50,7 +50,7 @@ public class Historial extends AppCompatActivity {
     Button btnSearch,inputDateFrom, inputDateTo, btnExportar;
     List<Night> listaNoches;
     private RecyclerView recyclerView;
-    public AdaptadorDias adaptadorDias;
+    public AdaptadorNoches adaptadorNoches;
 
 
     @Override
@@ -116,11 +116,6 @@ public class Historial extends AppCompatActivity {
             }
         });
 
-        listaDias = new ArrayList<>();
-        listaDias.add(new DiaModel("05/11/2023", "88/100", "Muy buena", "24C", "8h 25min"));
-        listaDias.add(new DiaModel("04/11/2023", "75/100", "Buena", "23C", "7h 45min"));
-        listaDias.add(new DiaModel("03/11/2023", "90/100","Muy buena", "25C", "7h 55min"));
-
         listaNoches = new ArrayList<>();
         listaNoches.add(new Night(new Date(), "breathing", 90, 25, 8));
         listaNoches.add(new Night(new Date(), "breathing", 76, 15, 5));
@@ -131,8 +126,8 @@ public class Historial extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Inicializa y establece el adaptador con la lista de días
-        adaptadorDias = new AdaptadorDias(this, listaDias);
-        recyclerView.setAdapter(adaptadorDias);
+        adaptadorNoches = new AdaptadorNoches(this, listaNoches);
+        recyclerView.setAdapter(adaptadorNoches);
 
         firebaseHelper.getPagesFromAllNights(userID,
                 new OnSuccessListener<Integer>() {
