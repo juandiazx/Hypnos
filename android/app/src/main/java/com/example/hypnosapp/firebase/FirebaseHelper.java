@@ -11,10 +11,11 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-
+import com.example.hypnosapp.model.Store;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -952,6 +953,65 @@ public class FirebaseHelper {
                 });
     }
 
+
+    /*----------------------------------------------------------------------------------------------
+                                storeId --> getStoreData()
+    ----------------------------------------------------------------------------------------------*/
+    public void getStoreData(final OnSuccessListener<List<Store>> successListener, final OnFailureListener failureListener) {
+        CollectionReference storesCollection = db.collection("stores");
+
+        storesCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    List<Store> storesList = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Store store = document.toObject(Store.class);
+                        storesList.add(store);
+                    }
+                    successListener.onSuccess(storesList);
+                } else{
+                    failureListener.onFailure(task.getException());
+                }
+            }
+        });
+    }
+
+
+    /*
+    public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        // Define the query to get the relevant nights
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            Date currentDate = new Date();
+                            Night yesterdayNight = searchYesterdayNight(nightsList, currentDate);
+                            successListener.onSuccess(yesterdayNight);
+                        }
+                        else{
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+
+     */
 
 
 

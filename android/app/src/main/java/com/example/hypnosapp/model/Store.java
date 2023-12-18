@@ -1,8 +1,12 @@
 package com.example.hypnosapp.model;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class Store {
     private String address;
-    private double[] location; // Punto geográfico como un array de latitud y longitud
+    private List<Double> location; // Punto geográfico como un array de latitud y longitud
     private String name;
     private String picture;
     private String web;
@@ -15,12 +19,20 @@ public class Store {
         this.address = address;
     }
 
-    public double[] getLocation() {
+    public List<Double> getLocation() {
         return location;
     }
 
-    public void setLocation(double[] location) {
-        this.location = location;
+    public void setLocation(List<String> location) {
+
+        List<Double> locationDouble = new ArrayList<>();
+
+        for(String string : location){
+            double doubleValue = Double.parseDouble(string);
+            locationDouble.add(doubleValue);
+        }
+
+        this.location = locationDouble;
     }
 
     public String getName() {
@@ -44,6 +56,24 @@ public class Store {
     }
 
     public void setWeb(String web) {
+        this.web = web;
+    }
+
+    //constructor vacío:
+    public Store() {}
+
+    //constructor:
+    public Store(List<String> location, String name, String web) {
+
+        List<Double> locationDouble = new ArrayList<>();
+
+        for(String string : location){
+            double doubleValue = Double.parseDouble(string);
+            locationDouble.add(doubleValue);
+        }
+
+        this.location = locationDouble;
+        this.name = name;
         this.web = web;
     }
 }

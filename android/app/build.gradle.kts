@@ -75,6 +75,8 @@ dependencies {
     //pdfExporter
     implementation ("org.apache.pdfbox:pdfbox:2.0.27")
     implementation ("org.apache.commons:commons-lang3:3.12.0")
+    //google maps
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
 
 
 
