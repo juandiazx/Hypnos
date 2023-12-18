@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hypnosapp.R;
+import com.example.hypnosapp.model.DiaModel;
 
 import java.util.List;
 

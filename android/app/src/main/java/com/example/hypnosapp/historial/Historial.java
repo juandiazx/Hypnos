@@ -13,10 +13,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 
 import com.example.hypnosapp.firebase.FirebaseHelper;
+import com.example.hypnosapp.model.DiaModel;
 import com.example.hypnosapp.model.Night;
 import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
@@ -46,6 +49,8 @@ public class Historial extends AppCompatActivity {
     TextView lblErrorDates;
     Button btnSearch,inputDateFrom, inputDateTo, btnExportar;
     List<Night> listaNoches;
+    private RecyclerView recyclerView;
+    public AdaptadorDias adaptadorDias;
 
 
     @Override
@@ -121,19 +126,13 @@ public class Historial extends AppCompatActivity {
         listaNoches.add(new Night(new Date(), "breathing", 76, 15, 5));
         listaNoches.add(new Night(new Date(), "breathing", 40, 35, 4));
 
+        recyclerView = findViewById(R.id.recyclerViewHistorial);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Encuentra el TabLayout y el ViewPager
-        TabLayout tabLayout = findViewById(R.id.tabLayoutHistorial);
-        ViewPager viewPager = findViewById(R.id.viewPagerHistorial);
-        // Crea un adaptador para manejar los fragmentos
-        TabsHistorial adapter = new TabsHistorial(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-        // Conecta el TabLayout con el ViewPager
-        tabLayout.setupWithViewPager(viewPager);
-        TabLayout.Tab tab = tabLayout.getTabAt(0); // Selecciona la tab "Semana" por defecto
-        if (tab != null) {
-            tab.select();
-        }
+        // Inicializa y establece el adaptador con la lista de días
+        adaptadorDias = new AdaptadorDias(this, listaDias);
+        recyclerView.setAdapter(adaptadorDias);
 
         firebaseHelper.getPagesFromAllNights(userID,
                 new OnSuccessListener<Integer>() {

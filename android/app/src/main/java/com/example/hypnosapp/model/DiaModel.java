@@ -1,4 +1,4 @@
-package com.example.hypnosapp.historial;
+package com.example.hypnosapp.model;
 public class DiaModel {
     private String fecha;
     private String puntuacion;
