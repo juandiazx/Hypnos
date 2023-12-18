@@ -19,7 +19,6 @@ import androidx.viewpager.widget.ViewPager;
 
 
 import com.example.hypnosapp.firebase.FirebaseHelper;
-import com.example.hypnosapp.model.DiaModel;
 import com.example.hypnosapp.model.Night;
 import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
@@ -39,7 +38,6 @@ import java.util.List;
 
 
 public class Historial extends AppCompatActivity {
-    private List<DiaModel> listaDias;
     private static final String TAG = "AjustesDeSuenyo";
     private FirebaseHelper firebaseHelper;
     FirebaseAuth firebaseAuth;
@@ -66,7 +64,6 @@ public class Historial extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         userID = firebaseUser.getUid();
-        //userID = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
 
         btnPerfilUsuario = findViewById(R.id.logoUsuarioHeader);
         btnPantallaPrincipal = findViewById(R.id.btnPantallaPrincipal);
@@ -116,16 +113,14 @@ public class Historial extends AppCompatActivity {
             }
         });
 
-        listaNoches = new ArrayList<>();
-        listaNoches.add(new Night(new Date(), "breathing", 90, 25, 8));
-        listaNoches.add(new Night(new Date(), "breathing", 76, 15, 5));
-        listaNoches.add(new Night(new Date(), "breathing", 40, 35, 4));
-
         recyclerView = findViewById(R.id.recyclerViewHistorial);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Inicializa y establece el adaptador con la lista de días
+        listaNoches = new ArrayList<>();
+//        listaNoches.add(new Night(new Date(), "breathing", 90, 25, 8));
+//        listaNoches.add(new Night(new Date(), "breathing", 76, 15, 5));
+//        listaNoches.add(new Night(new Date(), "breathing", 40, 35, 4));
         adaptadorNoches = new AdaptadorNoches(this, listaNoches);
         recyclerView.setAdapter(adaptadorNoches);
 
@@ -147,6 +142,10 @@ public class Historial extends AppCompatActivity {
                 new OnSuccessListener<List<Night>>() {
                     @Override
                     public void onSuccess(List<Night> nights) {
+                        listaNoches.clear();
+                        listaNoches.addAll(nights);
+                        adaptadorNoches.notifyDataSetChanged();
+
                         for (Night night : nights) {
                             Log.d(TAG, "Night: " + night.getDate() + ", Score: " + night.getScore());
                         }
@@ -173,6 +172,10 @@ public class Historial extends AppCompatActivity {
                             new OnSuccessListener<List<Night>>() {
                                 @Override
                                 public void onSuccess(List<Night> nightList) {
+                                    listaNoches.clear();
+                                    listaNoches.addAll(nightList);
+                                    adaptadorNoches.notifyDataSetChanged();
+
                                     for (Night night : nightList) {
                                         Log.d(TAG, "Night: " + night.getDate() + ", Score: " + night.getScore());
                                     }
@@ -190,9 +193,6 @@ public class Historial extends AppCompatActivity {
 
 
     }//onCreate
-    public List<DiaModel> getListaDias() {
-        return listaDias;
-    }
 
     private void mostrarDatePickerDialogFrom() {
 

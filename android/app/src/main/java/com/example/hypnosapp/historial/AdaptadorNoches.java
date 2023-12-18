@@ -11,10 +11,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hypnosapp.R;
-import com.example.hypnosapp.model.DiaModel;
 import com.example.hypnosapp.model.Night;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class AdaptadorNoches extends RecyclerView.Adapter<AdaptadorNoches.ViewHolder>{
 
@@ -86,11 +87,14 @@ public class AdaptadorNoches extends RecyclerView.Adapter<AdaptadorNoches.ViewHo
         }
 
         public void bind(Night noche, final int position) {
-            fechaTextView.setText(noche.getDate().toString());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd yyyy", Locale.getDefault());
+            String formattedDate = dateFormat.format(noche.getDate());
+
+            fechaTextView.setText(formattedDate);
             puntuacionRespiratoriaTextView.setText(String.valueOf(noche.getScore()));
             tiempoSuenioTextView.setText(String.valueOf(noche.getTime()));
 
-            fechaCompletotv.setText(noche.getDate().toString());
+            fechaCompletotv.setText(formattedDate);
             puntRespiratoriaCompletotv.setText(String.valueOf(noche.getScore()));
             tiempoSuenioCompletoTv.setText(String.valueOf(noche.getTime()));
             puntuacionTextoTextview.setText(noche.getBreathing());
