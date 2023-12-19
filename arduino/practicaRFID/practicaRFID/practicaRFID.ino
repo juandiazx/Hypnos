@@ -11,6 +11,11 @@ MOSI - 23(MO)
 GND - G
 MISO - 19(MI)
 3.3V - 3V3
+
+LED RGB - M5STACK
+R - 17
+G - 16
+B - 3
 */
 
 
@@ -20,17 +25,36 @@ MISO - 19(MI)
 
 #define SDA_PIN 21
 #define RST_PIN 2
+#define LED_R 17
+#define LED_G 16
+#define LED_B 3
 
 unsigned char data[12] = {'H', 'y', 'p', 'n', 'o', 's', 'A', 'c', 't', 'i', 'v', 'o'};
+unsigned char badData[12] = {'A', 'c', 'c', 'e', 's', 's', 'D', 'e', 'n', 'i', 'e', 'd'};
+
 unsigned char *writeData = data;
+unsigned char *writeDeniedData = badData;
 unsigned char *str;
 unsigned long lastTime = 0;  // Variable para almacenar el tiempo de la última ejecución
 bool previousWriteToCardState = true;  // Variable para almacenar el estado anterior de writeToCard para controlar cuando sale el mensaje en pantalla del M5Stack.
+bool previousWriteToCardStateBAD = true;
 bool writeToCard = false; //Variable para señalar si se va a escribir en la tag
+bool writeBadDataToCard = false;
 
 MFRC522 mfrc522(SDA_PIN, RST_PIN);
 
 MFRC522::MIFARE_Key key;
+
+//------------------------------------------------------------------
+/*
+                          setLEDColor()
+*/
+//------------------------------------------------------------------
+void setLEDColor(int red, int green, int blue) {
+  analogWrite(LED_R, red);
+  analogWrite(LED_G, green);
+  analogWrite(LED_B, blue);
+}
 
 //------------------------------------------------------------------
 /*
@@ -95,6 +119,32 @@ void writeDataToCard(byte blockAddr) {
 
 //------------------------------------------------------------------
 /*
+                        writeDeniedDataToCard()
+*/
+//------------------------------------------------------------------
+void writeDeniedDataToCard(byte blockAddr) {
+  Serial.print(F("Escribir datos para no permitir acceso en sector "));
+  Serial.print(blockAddr);
+  Serial.println(F(" ..."));
+
+
+  printArray((byte *)badData, 12);
+  Serial.println();
+  MFRC522::StatusCode status = (MFRC522::StatusCode)mfrc522.MIFARE_Write(blockAddr, (byte *)badData, 16);
+
+  if (status != MFRC522::STATUS_OK) {
+    Serial.print(F("MIFARE_Write() failed: "));
+    Serial.println(mfrc522.GetStatusCodeName(status));
+  }else{
+    M5.Lcd.setCursor(0,100);
+    M5.Lcd.println("¡Escritura completada!");
+    delay(1000);
+  }
+
+}
+
+//------------------------------------------------------------------
+/*
                         readDataFromCard()
 */
 //------------------------------------------------------------------
@@ -132,6 +182,22 @@ void verifyCode(byte *data, byte dataSize) {
   memcpy(buffer, data, dataSize);
   buffer[dataSize] = '\0'; // Agregar el carácter nulo al final para formar una cadena de caracteres
 
+  if (strcmp(buffer, "HypnosActivo") == 0) {
+    setLEDColor(0, 255, 0);  // Verde
+    previousWriteToCardState = true;
+    delay(2000);
+  } else {
+    setLEDColor(255, 0, 0);  // Rojo
+    previousWriteToCardState = true;
+    delay(2000);
+  }
+  setLEDColor(0, 0, 0);  // Apagar el LED después de 2 segundos
+  M5.Lcd.fillScreen(TFT_BLACK);
+/*
+
+        CODIGO SIMULANDO LED CON M5STACK (PARA PROBAR CÓDIGO SIN LEDS)
+
+
   // Comparar con "HypnosActivo"
   if (strcmp(buffer, "HypnosActivo") == 0) {
 
@@ -154,6 +220,7 @@ void verifyCode(byte *data, byte dataSize) {
     delay(2000);
     M5.Lcd.fillScreen(TFT_BLACK);
   }
+  */
 }
 
 //------------------------------------------------------------------
@@ -173,6 +240,10 @@ void setup() {
 
   M5.Lcd.setTextSize(3);
   M5.Lcd.setCursor(0, 0);
+
+  pinMode(LED_R, OUTPUT);
+  pinMode(LED_G, OUTPUT);
+  pinMode(LED_B, OUTPUT);
 }
 
 //------------------------------------------------------------------
@@ -192,12 +263,21 @@ void loop() {
     Serial.println();
   }
 
+  if(M5.BtnC.wasPressed()){
+    writeBadDataToCard = true;
+    Serial.println();
+    Serial.println("Se ha pulsado el boton para escribir datos para denegar acceso");
+    Serial.println();
+  }
+
   unsigned long currentTime = millis();
 
   // Realizar acciones solo si ha pasado al menos 1 segundo desde la última ejecución
   if (currentTime - lastTime >= 1000) {
     lastTime = currentTime;  // Actualizar el tiempo de la última ejecución
 
+
+    
     // Verificar si el estado de writeToCard ha cambiado
     if (writeToCard != previousWriteToCardState) {
       previousWriteToCardState = writeToCard;  // Actualizar el estado anterior
@@ -214,6 +294,25 @@ void loop() {
         M5.Lcd.print("Acerca la tarjeta para leer o pulsa el boton A para escribir");
       }
     }
+
+
+    // Verificar si el estado de writeBadDataToCard ha cambiado
+    if (writeBadDataToCard != previousWriteToCardStateBAD) {
+      previousWriteToCardStateBAD = writeBadDataToCard;  // Actualizar el estado anterior
+      if (writeBadDataToCard) {
+        
+        M5.Lcd.fillScreen(TFT_BLACK);
+        M5.Lcd.setCursor(0, 0);
+        M5.Lcd.print("Acerca la tarjeta para escribir el codigo para denegar acceso");
+        
+      } else {
+        
+        M5.Lcd.fillScreen(TFT_BLACK);
+        M5.Lcd.setCursor(0, 0);
+        M5.Lcd.print("Acerca la tarjeta para leer o pulsa el boton A para escribir");
+      }
+    }
+
 
     if (!mfrc522.PICC_IsNewCardPresent())
       return;
@@ -233,7 +332,15 @@ void loop() {
       Serial.println("Se ha llamado a escribir");
       writeDataToCard(blockAddr);
       writeToCard = false; // Restablecer la variable después de escribir
-    } else {
+    }
+    if(writeBadDataToCard){
+      Serial.println();
+      Serial.println("Se ha llamado a escribir datos de acceso denegado");
+      writeDeniedDataToCard(blockAddr);
+      writeBadDataToCard = false; // Restablecer la variable después de escribir
+    }
+    
+    else {
       Serial.println();
       Serial.println("Se ha llamado a leer");
       readDataFromCard(blockAddr);
