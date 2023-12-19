@@ -120,9 +120,6 @@
     <string name="Buscar">Buscar</string>
     <string name="ErrorFechas">La fecha inicial no puede ser posterior a la fecha final</string>
 
-    <string name="google_maps_key">YOUR_GOOGLE_MAPS_API_KEY</string>
-
-
 
 
 </resources>
