@@ -185,9 +185,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
             if(selectedRingtoneUri != null){
                 setUrlsText(selectedRingtoneUri);
-
-                //Esto es solo por ahora, tendra que pasar a llamarse desde MQTT Helper
-                startAlarmService(selectedRingtoneUri,isVibrationEnabled);
             }
         }
     }
@@ -205,16 +202,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
         toneLocationClock.setText(urlString);
         toneLocationClockText.setText(titleString);
-    }
-
-    //Esto va a pasar a estar en MQTT y cogera los dos argumentos de la Base de datos
-    private void startAlarmService(Uri selectedRingtoneUri,Boolean isWithVibration){
-        Intent serviceIntent = new Intent(AjustesDeSuenyoActivity.this, AlarmService.class);
-
-        serviceIntent.setData(selectedRingtoneUri);
-        serviceIntent.putExtra("isWithVibration", isWithVibration);
-
-        startService(serviceIntent);
     }
 
     private void loadSleepSettings() {
