@@ -93,6 +93,14 @@ public class Pantalla_Principal extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton btnMaps = findViewById(R.id.floatingActiveButtonMaps);
+        btnMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirMaps(Pantalla_Principal.this);
+            }
+        });
+
 
     }
 }

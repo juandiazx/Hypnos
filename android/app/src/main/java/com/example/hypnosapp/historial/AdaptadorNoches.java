@@ -11,35 +11,39 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hypnosapp.R;
+import com.example.hypnosapp.model.Night;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
-public class AdaptadorDias extends RecyclerView.Adapter<AdaptadorDias.ViewHolder> {
+public class AdaptadorNoches extends RecyclerView.Adapter<AdaptadorNoches.ViewHolder>{
+
     private Context context;
-    private List<DiaModel> listaDias;
+    private List<Night> listaNoches;
     private int expandedPosition = -1; // Posición del elemento expandido, -1 significa ninguno
 
-    public AdaptadorDias(Context context, List<DiaModel> listaDias) {
+    public AdaptadorNoches(Context context, List<Night> listaNoches) {
         this.context = context;
-        this.listaDias = listaDias;
+        this.listaNoches = listaNoches;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdaptadorNoches.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.elemento_historial_padre, parent, false);
-        return new ViewHolder(view);
+        return new AdaptadorNoches.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DiaModel dia = listaDias.get(position);
-        holder.bind(dia, position);
+    public void onBindViewHolder(@NonNull AdaptadorNoches.ViewHolder holder, int position) {
+        Night noche = listaNoches.get(position);
+        holder.bind(noche, position);
     }
 
     @Override
     public int getItemCount() {
-        return listaDias.size();
+        return listaNoches.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -82,16 +86,19 @@ public class AdaptadorDias extends RecyclerView.Adapter<AdaptadorDias.ViewHolder
             }
         }
 
-        public void bind(DiaModel dia, final int position) {
-            fechaTextView.setText(dia.getFecha());
-            puntuacionRespiratoriaTextView.setText(dia.getPuntuacion());
-            tiempoSuenioTextView.setText(dia.getTiempoSuenio());
+        public void bind(Night noche, final int position) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd yyyy", Locale.getDefault());
+            String formattedDate = dateFormat.format(noche.getDate());
 
-            fechaCompletotv.setText(dia.getFecha());
-            puntRespiratoriaCompletotv.setText(dia.getPuntuacion());
-            tiempoSuenioCompletoTv.setText(dia.getTiempoSuenio());
-            puntuacionTextoTextview.setText(dia.getPuntuacionTexto());
-            temperaturaMediaTextView.setText(dia.getTemperaturaMedia());
+            fechaTextView.setText(formattedDate);
+            puntuacionRespiratoriaTextView.setText(String.valueOf(noche.getScore()));
+            tiempoSuenioTextView.setText(String.valueOf(noche.getTime()));
+
+            fechaCompletotv.setText(formattedDate);
+            puntRespiratoriaCompletotv.setText(String.valueOf(noche.getScore()));
+            tiempoSuenioCompletoTv.setText(String.valueOf(noche.getTime()));
+            puntuacionTextoTextview.setText(noche.getBreathing());
+            temperaturaMediaTextView.setText(String.valueOf(noche.getTemperature()));
 
             // Agrega un OnClickListener para alternar la visibilidad al hacer clic
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +111,7 @@ public class AdaptadorDias extends RecyclerView.Adapter<AdaptadorDias.ViewHolder
                     }
 
                     // Oculta elementoHistorialCompleto para otros elementos antes de mostrar el actual
-                    for (int i = 0; i < listaDias.size(); i++) {
+                    for (int i = 0; i < listaNoches.size(); i++) {
                         if (i != position) {
                             notifyItemChanged(i);
                         }
@@ -120,4 +127,3 @@ public class AdaptadorDias extends RecyclerView.Adapter<AdaptadorDias.ViewHolder
         }
     }
 }
-

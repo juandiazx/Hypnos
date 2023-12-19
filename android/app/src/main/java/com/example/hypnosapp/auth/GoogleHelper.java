@@ -77,15 +77,20 @@ public class GoogleHelper {
                                         if (exists) {
                                             // User document already exists, just log in
                                             Log.d("auth", "User document already exists, logging in");
-                                            // TODO: Perform login logic here if needed
                                         } else {
                                             // User document doesn't exist, add user, set default preferences, and set empty nights
                                             Log.d("auth", "User document doesn't exist, creating user and preferences");
-                                            firebaseHelper.addUserToUsers(user.getUid(), account.getDisplayName(), account.getEmail(), "01/01/0001");
-                                            firebaseHelper.setDefaultPreferences(user.getUid());
-                                            Log.d("auth", "Default preferences created");
-                                            firebaseHelper.setEmptyNights(user.getUid());
-                                            Log.d("auth", "Empty nights created");
+                                            firebaseHelper.setIncrementalFamilyID(new FirebaseHelper.FamilyAccessIndexCallback() {
+                                                @Override
+                                                public void onFamilyAccessIndexGenerated(long familyAccessIndex) {
+                                                    // Use familyAccessIndex here, for example, in your register function
+                                                    firebaseHelper.addUserToUsers(user.getUid(), account.getDisplayName(), account.getEmail(), "01/01/0001", familyAccessIndex);
+                                                    firebaseHelper.setDefaultPreferences(user.getUid());
+                                                    Log.d("auth", "Default preferences created");
+                                                    firebaseHelper.setEmptyNights(user.getUid());
+                                                    Log.d("auth", "Empty nights created");
+                                                }
+                                            });
                                         }
                                     }
                                 });

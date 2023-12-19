@@ -162,14 +162,20 @@ public class AuthHelper {
                             if(user!=null) {
                                 String UID = user.getUid();
                                 FirebaseHelper firebaseHelper = new FirebaseHelper();
-                                firebaseHelper.addUserToUsers(UID, nombre, correo, fechaNacimiento);
-                                firebaseHelper.setDefaultPreferences(UID);
-                                Log.d("auth", "default preferences created");
-                                firebaseHelper.setEmptyNights(UID);
-                                Log.d("auth", "empty nights created");
-                                enviarCorreoDeVerificacion(user, appContext);
-                                mostrarPopUpRegistro((AppCompatActivity) appContext);
-                                asignarDisplayName(user,nombre);
+                                firebaseHelper.setIncrementalFamilyID(new FirebaseHelper.FamilyAccessIndexCallback() {
+                                    @Override
+                                    public void onFamilyAccessIndexGenerated(long familyAccessIndex) {
+                                        // Use familyAccessIndex here, for example, in your register function
+                                        firebaseHelper.addUserToUsers(UID, nombre, correo, fechaNacimiento, familyAccessIndex);
+                                        firebaseHelper.setDefaultPreferences(UID);
+                                        Log.d("auth", "default preferences created");
+                                        firebaseHelper.setEmptyNights(UID);
+                                        Log.d("auth", "empty nights created");
+                                        enviarCorreoDeVerificacion(user, appContext);
+                                        mostrarPopUpRegistro((AppCompatActivity) appContext);
+                                        asignarDisplayName(user,nombre);
+                                    }
+                                });
                             }
                         }
                         onComplete.onComplete(task);

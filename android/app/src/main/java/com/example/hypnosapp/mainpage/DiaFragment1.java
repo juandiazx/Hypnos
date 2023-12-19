@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import com.example.hypnosapp.R;
 import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.model.Night;
-import com.example.hypnosapp.mainpage.HalfDonutChart;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,7 +49,7 @@ public class DiaFragment1 extends Fragment {
         txtRespiracionAnteAyer = view.findViewById(R.id.txtRespiracionAnteAyer);
         halfDonutChartAnteAyer = view.findViewById(R.id.halfDonutChartAnteAyer);
 
-        firebaseHelper.getBeforeYesterdayNight(userID, new OnSuccessListener<Night>() {
+        firebaseHelper.getThirdLastNight(userID, new OnSuccessListener<Night>() {
             @Override
             public void onSuccess(Night night) {
                 if (night != null) {

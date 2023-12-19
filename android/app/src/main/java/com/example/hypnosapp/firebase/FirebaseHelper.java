@@ -11,10 +11,11 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-
+import com.example.hypnosapp.model.Store;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,7 +45,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-
+import java.util.Random;
 
 public class FirebaseHelper {
     private static final String TAG = "FirebaseHelper";
@@ -64,6 +65,10 @@ public class FirebaseHelper {
 
     public interface OnUserExistsListener {
         void onUserExists(boolean exists);
+    }
+
+    public interface FamilyAccessIndexCallback {
+        void onFamilyAccessIndexGenerated(long familyAccessIndex);
     }
     /*----------------------------------------------------------------------------------------
                 String userId ---> checkIfUserExists() --> true if user exists on the user
@@ -85,12 +90,13 @@ public class FirebaseHelper {
                 String userId, nombre, ---> addUserToUsers() --> adds the user to the user
                 collection.
     ----------------------------------------------------------------------------------------*/
-    public void addUserToUsers(String userId, String nombre, String email, String fechaNacimiento) {
+    public void addUserToUsers(String userId, String nombre, String email, String fechaNacimiento, long familyCode) {
 
         Map<String, Object> userData = new HashMap<>();
         userData.put("name", nombre);
         userData.put("birth", fechaNacimiento);
         userData.put("email", email);
+        userData.put("familyAcessCode", familyCode);
 
         db.collection("users")
                 .document(userId)
@@ -134,6 +140,48 @@ public class FirebaseHelper {
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "Default preferences set successfully"))
                 .addOnFailureListener(e -> Log.e(TAG, "Error setting default preferences", e));
 
+    }
+
+    public void setIncrementalFamilyID(FamilyAccessIndexCallback callback) {
+//        CollectionReference usersCollectionRef = db.collection("users");
+//        usersCollectionRef.orderBy("familyAccessCode", Query.Direction.DESCENDING).limit(1)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        QuerySnapshot querySnapshot = task.getResult();
+//                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+//                            // Obtiene el primer documento (el de mayor 'familyAccessCode')
+//                            DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
+//
+//                            // Verifica si familyAccessCode no es nulo
+//                            Object familyAccessCodeObj = documentSnapshot.get("familyAccessCode");
+//                            if (familyAccessCodeObj != null) {
+//                                long lastFamilyAccessCode = (long) familyAccessCodeObj;
+//                                long newFamilyAccessIndex = lastFamilyAccessCode + 1;
+//
+//                                // Llama al callback con el nuevo familyAccessIndex
+//                                if (callback != null) {
+//                                    callback.onFamilyAccessIndexGenerated(newFamilyAccessIndex);
+//                                }
+//                            } else {
+//                                // Manejar el caso en el que familyAccessCode es nulo
+//                                // Puedes asignar un valor predeterminado, lanzar una excepción, etc.
+//                            }
+//                        }
+//                        // Genera un nuevo familyAccessIndex para el nuevo usuario
+//                    } else {
+//                        // Maneja la excepción si la consulta no es exitosa
+//                        Exception exception = task.getException();
+//                        if (exception != null) {
+//                            // Maneja la excepción
+//                        }
+//                    }
+//                });
+        long lowerBound = 1000000001L;
+        long upperBound = 9999999999L;
+        Random random = new Random();
+        long newFamilyAccessIndex = lowerBound + (long) (random.nextDouble() * (upperBound - lowerBound + 1));
+        callback.onFamilyAccessIndexGenerated(newFamilyAccessIndex);
     }
 
     /*----------------------------------------------------------------------------------------
@@ -201,7 +249,6 @@ public class FirebaseHelper {
                     }
                 });
     }
-
 
     /*----------------------------------------------------------------------------------------
                    String hour, songLocation     ----> setClock()
@@ -623,7 +670,7 @@ public class FirebaseHelper {
     }
 
     /*----------------------------------------------------------------------------------------------
-                                    getLastNight() --> Night
+                                    getLastNightWithListener() --> Night
     ----------------------------------------------------------------------------------------------*/
     public void getLastNightWithListener(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener, final DiaFragment3.NightDataChangeListener dataChangeListener) {
 
@@ -647,8 +694,7 @@ public class FirebaseHelper {
                         nightsList.add(night);
                     }
 
-                    Date currentDate = new Date();
-                    Night lastNight = searchLastNight(nightsList, currentDate);
+                    Night lastNight = searchLastNight(nightsList);
                     successListener.onSuccess(lastNight);
 
                     if (dataChangeListener != null) {
@@ -662,34 +708,25 @@ public class FirebaseHelper {
     }
 
     /*----------------------------------------------------------------------------------------------
-                           Date, List --> searchLastNight --> Night
+                     List --> searchLastNight() --> Night
     ----------------------------------------------------------------------------------------------*/
-    private static Night searchLastNight(List<Night> nights, Date currentDate) {
-    Night lastNight = null;
-
-    for (Night night : nights) {
-
-        if (isSameDay(night.getDate(), currentDate)) {
-            lastNight = night;
-            break;
+    private static Night searchLastNight(List<Night> nights) {
+        Night thisNight = null;
+        for (Night night : nights) {
+            if (thisNight == null || night.getDate().compareTo(thisNight.getDate()) > 0) {
+                thisNight = night;
+            }
         }
-    }
-
-    if (lastNight == null) {
-        Log.d(TAG,"No hay registros de la noche de hoy.");
-    }
-
-    return lastNight;
-}
-    private static boolean isSameDay(Date date1, Date date2) {
-        java.text.SimpleDateFormat fmt = new java.text.SimpleDateFormat("yyyyMMdd");
-        return fmt.format(date1).equals(fmt.format(date2));
+        if (thisNight == null) {
+            Log.d(TAG, "No hay registros de la noche del día antes.");
+        }
+        return thisNight;
     }
 
     /*----------------------------------------------------------------------------------------------
-                                    getYesterdayNight() --> Night
+                                    getSecondLastNight() --> Night
     ----------------------------------------------------------------------------------------------*/
-    public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+    public void getSecondLastNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
         CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
 
         // Define the query to get the relevant nights
@@ -708,9 +745,8 @@ public class FirebaseHelper {
                                 Night night = document.toObject(Night.class);
                                 nightsList.add(night);
                             }
-                            Date currentDate = new Date();
-                            Night yesterdayNight = searchYesterdayNight(nightsList, currentDate);
-                            successListener.onSuccess(yesterdayNight);
+                            Night secondLastNight = searchSecondLastNight(nightsList);
+                            successListener.onSuccess(secondLastNight);
                         }
                         else{
                             failureListener.onFailure(task.getException());
@@ -719,32 +755,32 @@ public class FirebaseHelper {
                 });
     }
     /*----------------------------------------------------------------------------------------------
-                     List, Date --> searchYesterdayNight() --> Night
+                     List --> searchSecondLastNight() --> Night
     ----------------------------------------------------------------------------------------------*/
-    private static Night searchYesterdayNight(List<Night> nights, Date currentDate) {
-        Night yesterdayNight = null;
-        long aDayInMillis = 24 * 60 * 60 * 1000; // Un día en milisegundos
-
-        Date yesterdayDate = new Date(currentDate.getTime() - aDayInMillis);
+    private static Night searchSecondLastNight(List<Night> nights) {
+        Night mostRecent = null;
+        Night secondMostRecent = null;
 
         for (Night night : nights) {
-
-            if (isSameDay(night.getDate(), yesterdayDate) && (yesterdayNight == null || night.getDate().after(yesterdayNight.getDate()))) {
-                yesterdayNight = night;
+            if (mostRecent == null || night.getDate().compareTo(mostRecent.getDate()) > 0) {
+                secondMostRecent = mostRecent;
+                mostRecent = night;
+            } else if (secondMostRecent == null || night.getDate().compareTo(secondMostRecent.getDate()) > 0) {
+                secondMostRecent = night;
             }
         }
 
-        if (yesterdayNight == null) {
-            Log.d(TAG, "No hay registros de la noche del día antes.");
+        if (secondMostRecent == null) {
+            Log.d(TAG, "No hay registros de la segunda noche más reciente.");
         }
 
-        return yesterdayNight;
+        return secondMostRecent;
     }
 
     /*----------------------------------------------------------------------------------------------
-                                    getBeforeYesterdayNight() --> Night
+                                    getThirdLastNight() --> Night
     ----------------------------------------------------------------------------------------------*/
-    public void getBeforeYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+    public void getThirdLastNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
         CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
 
         Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
@@ -761,9 +797,8 @@ public class FirebaseHelper {
                                 Night night = document.toObject(Night.class);
                                 nightsList.add(night);
                             }
-                            Date currentDate = new Date();
-                            Night beforeYesterdayNight = searchBeforeYesterdayNight(nightsList, currentDate);
-                            successListener.onSuccess(beforeYesterdayNight);
+                            Night thirdLastNight = searchThirdLastNight(nightsList);
+                            successListener.onSuccess(thirdLastNight);
                         }
                         else{
                             failureListener.onFailure(task.getException());
@@ -773,33 +808,32 @@ public class FirebaseHelper {
     }
 
     /*----------------------------------------------------------------------------------------------
-                     List, Date --> searchBeforeYesterdayNight() --> Night
+                     List --> searchThirdLastNight() --> Night
     ----------------------------------------------------------------------------------------------*/
-    private static Night searchBeforeYesterdayNight(List<Night> nights, Date currentDate) {
-        Night beforeYesterdayNight = null;
-        long aDayInMillis = 24 * 60 * 60 * 1000;
-
-        Date beforeYesterdayDate = new Date(currentDate.getTime() - (2 * aDayInMillis));
+    private static Night searchThirdLastNight(List<Night> nights) {
+        Night mostRecent = null;
+        Night secondMostRecent = null;
+        Night thirdMostRecent = null;
 
         for (Night night : nights) {
-
-            if (isSameDay(night.getDate(), beforeYesterdayDate) && (beforeYesterdayNight == null || night.getDate().after(beforeYesterdayNight.getDate()))) {
-                beforeYesterdayNight = night;
+            if (mostRecent == null || night.getDate().compareTo(mostRecent.getDate()) > 0) {
+                thirdMostRecent = secondMostRecent;
+                secondMostRecent = mostRecent;
+                mostRecent = night;
+            } else if (secondMostRecent == null || night.getDate().compareTo(secondMostRecent.getDate()) > 0) {
+                thirdMostRecent = secondMostRecent;
+                secondMostRecent = night;
+            } else if (thirdMostRecent == null || night.getDate().compareTo(thirdMostRecent.getDate()) > 0) {
+                thirdMostRecent = night;
             }
         }
 
-        if (beforeYesterdayNight == null) {
-            Log.d(TAG, "No hay registros de la noche de antes de ayer.");
+        if (thirdMostRecent == null) {
+            Log.d(TAG, "No hay registros de la tercera noche más reciente.");
         }
 
-        return beforeYesterdayNight;
+        return thirdMostRecent;
     }
-
-    /*----------------------------------------------------------------------------------------------
-                                  Night --> getSleepStages() --> List
-    ----------------------------------------------------------------------------------------------*/
-
-
 
     /*----------------------------------------------------------------------------------------------
                                   codigoAcceso --> checkFamilyAccessCode() --> userID || null
@@ -912,7 +946,6 @@ public class FirebaseHelper {
                 });
     }
 
-
     private static void getFormattedCreationDateTime(StorageReference reference, TextView fechaTextView) {
         getCreationTimeMillis(reference,
                 creationTimeMillis -> {
@@ -927,6 +960,64 @@ public class FirebaseHelper {
                 });
     }
 
+    /*----------------------------------------------------------------------------------------------
+                                storeId --> getStoreData()
+    ----------------------------------------------------------------------------------------------*/
+    public void getStoreData(final OnSuccessListener<List<Store>> successListener, final OnFailureListener failureListener) {
+        CollectionReference storesCollection = db.collection("stores");
+
+        storesCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    List<Store> storesList = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Store store = document.toObject(Store.class);
+                        storesList.add(store);
+                    }
+                    successListener.onSuccess(storesList);
+                } else{
+                    failureListener.onFailure(task.getException());
+                }
+            }
+        });
+    }
+
+
+    /*
+    public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
+        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+
+        // Define the query to get the relevant nights
+        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
+
+        // Execute the query
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<Night> nightsList = new ArrayList<>();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Convert each document to a Night object
+                                Night night = document.toObject(Night.class);
+                                nightsList.add(night);
+                            }
+                            Date currentDate = new Date();
+                            Night yesterdayNight = searchYesterdayNight(nightsList, currentDate);
+                            successListener.onSuccess(yesterdayNight);
+                        }
+                        else{
+                            failureListener.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+
+     */
 
 
 
