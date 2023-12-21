@@ -15,6 +15,7 @@ android {
         versionName = "1.0"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -25,6 +26,7 @@ android {
                 "proguard-rules.pro"
             )
         }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -39,7 +41,8 @@ android {
         resources {
             excludes.add("META-INF/DEPENDENCIES")
         }
-    }
+
+
 
 }
 
@@ -89,4 +92,4 @@ dependencies {
 
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
-}
+}}

@@ -1,10 +1,12 @@
 package com.example.hypnosapp.firebase;
 
 import com.bumptech.glide.Glide;
+import com.example.hypnosapp.mainpage.DiaFragment1;
 import com.example.hypnosapp.mainpage.DiaFragment3;
 import com.example.hypnosapp.model.Night;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import org.apache.commons.lang3.time.DateUtils;
 import android.util.Log;
@@ -13,14 +15,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 
 import com.example.hypnosapp.model.Store;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -39,6 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -983,6 +997,137 @@ public class FirebaseHelper {
                 }
             }
         });
+    }
+
+    public void graphicConfig(String UID, LineChart graph) {
+        graph.getDescription().setEnabled(false);
+        graph.setTouchEnabled(true);
+        graph.setDragEnabled(true);
+        graph.setScaleEnabled(true);
+        graph.setPinchZoom(true);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference docRef = db.collection("users").document(UID).collection("nightsData");
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<Entry> scores = new ArrayList<>();
+                    ArrayList<String> daysOfWeek = new ArrayList<>(); // To store the days of the week
+
+                    // Parse and store the data
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Check if 'date' field exists and is of type Timestamp
+                        if (document.contains("date") && document.get("date") instanceof Timestamp) {
+                            Timestamp timestamp = (Timestamp) document.get("date");
+                            String date = formatDate(timestamp.toDate()); // Convert timestamp to Date and then to formatted string
+                            String dayOfWeek = getDayOfWeekFromDate(date);
+                            Float score = document.getDouble("score").floatValue();
+                            scores.add(new Entry(getTimestampFromDate(date), score != null ? score : 0f));
+                            daysOfWeek.add(dayOfWeek);
+                        } else {
+                            // Log a warning or handle the case where 'date' is not a Timestamp
+                            Log.w(TAG, "Invalid 'date' field in Firestore document");
+                        }
+                    }
+
+                    // Sort the entries based on the timestamp
+                    Collections.sort(scores, new Comparator<Entry>() {
+                        @Override
+                        public int compare(Entry entry1, Entry entry2) {
+                            return Float.compare(entry1.getX(), entry2.getX());
+                        }
+                    });
+
+                    // Create and configure the DataSet
+                    LineDataSet set = new LineDataSet(scores, "Puntuación de sueño");
+                    set.setFillAlpha(110);
+                    set.setColor(Color.parseColor("#164499"));
+                    set.setLineWidth(5f);
+                    set.setValueTextSize(15f);
+
+                    // Add the DataSet to the chart
+                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                    dataSets.add(set);
+                    LineData data = new LineData(dataSets);
+                    graph.setData(data);
+
+                    // Configure the appearance of the x-axis
+                    XAxis xAxis = graph.getXAxis();
+                    xAxis.setGranularity(1f);
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    xAxis.setLabelRotationAngle(0f);
+
+                    // Manually set X-axis labels using timestamps
+                    xAxis.setValueFormatter(new ValueFormatter() {
+                        @Override
+                        public String getAxisLabel(float value, AxisBase axis) {
+                            long timestamp = (long) value;
+                            String date = formatDate(new Date(timestamp));
+                            return getDayOfWeekFromDate(date);
+                        }
+                    });
+
+                    // Set the number of labels to match the number of data points
+                    xAxis.setLabelCount(scores.size(), true);
+
+                    // Hide Y-axis labels and grid lines
+                    YAxis leftYAxis = graph.getAxisLeft();
+                    leftYAxis.setDrawLabels(false);
+                    leftYAxis.setDrawGridLines(false);
+
+                    YAxis rightYAxis = graph.getAxisRight();
+                    rightYAxis.setDrawLabels(false);
+                    rightYAxis.setDrawGridLines(false);
+
+                    // Hide X-axis grid lines
+                    xAxis.setDrawGridLines(false);
+
+                    // Invalidate the chart to refresh the appearance
+                    graph.invalidate();
+
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    // Function to get the day of the week from the date string
+    private String getDayOfWeekFromDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", Locale.getDefault());
+        try {
+            Date parsedDate = format.parse(date);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(parsedDate);
+
+            // Use a different format for the day of the week
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+            return dayFormat.format(calendar.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+    // Function to get a timestamp from the date string
+    private float getTimestampFromDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", Locale.getDefault());
+        try {
+            Date parsedDate = format.parse(date);
+            return parsedDate.getTime(); // Convert to timestamp in milliseconds
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0f;
+    }
+
+    // Function to format Date to a string
+    private String formatDate(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", Locale.getDefault());
+        return format.format(date);
     }
 
 
