@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hypnosapp.firebase.FirebaseHelper;
+import com.example.hypnosapp.mainpage.ECGActivity;
 import com.example.hypnosapp.services.AlarmService;
 import com.example.hypnosapp.services.MQTTHelper;
 import com.example.hypnosapp.utils.MenuManager;
@@ -133,6 +134,15 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 funcionMenu.abrirAcercaDe(AjustesDeSuenyoActivity.this);
+            }
+        });
+        ImageView btnAbrirActivityECG = findViewById(R.id.logoCardiacoHeader);
+        btnAbrirActivityECG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent para abrir la actividad ECG
+                Intent intent = new Intent(AjustesDeSuenyoActivity.this, ECGActivity.class);
+                startActivity(intent);
             }
         });
 

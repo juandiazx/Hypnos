@@ -75,9 +75,14 @@ dependencies {
     //pdfExporter
     implementation ("org.apache.pdfbox:pdfbox:2.0.27")
     implementation ("org.apache.commons:commons-lang3:3.12.0")
+<<<<<<< Updated upstream
     //google maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+=======
+    implementation ("androidx.annotation:annotation:1.3.0")
+    //graficas
+>>>>>>> Stashed changes
 
-
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 }

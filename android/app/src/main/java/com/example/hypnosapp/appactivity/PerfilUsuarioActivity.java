@@ -25,6 +25,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.example.hypnosapp.auth.PreinicioDeSesion;
+import com.example.hypnosapp.mainpage.ECGActivity;
 import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
 import com.facebook.login.LoginManager;
@@ -266,6 +267,16 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 funcionMenu.abrirAcercaDe(PerfilUsuarioActivity.this);
+            }
+        });
+
+        ImageView btnAbrirActivityECG = findViewById(R.id.logoCardiacoHeader);
+        btnAbrirActivityECG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent para abrir la actividad ECG
+                Intent intent = new Intent(PerfilUsuarioActivity.this, ECGActivity.class);
+                startActivity(intent);
             }
         });
         //-------------------------------------------------------------------------------------
