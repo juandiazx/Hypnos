@@ -1096,14 +1096,14 @@ public class FirebaseHelper {
 
     // Function to get the day of the week from the date string
     private String getDayOfWeekFromDate(String date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", new Locale("es", "ES"));
         try {
             Date parsedDate = format.parse(date);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(parsedDate);
 
             // Use a different format for the day of the week
-            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", new Locale("es", "ES"));
             return dayFormat.format(calendar.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
@@ -1114,7 +1114,7 @@ public class FirebaseHelper {
 
     // Function to get a timestamp from the date string
     private float getTimestampFromDate(String date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", new Locale("es", "ES"));
         try {
             Date parsedDate = format.parse(date);
             return parsedDate.getTime(); // Convert to timestamp in milliseconds
@@ -1126,7 +1126,7 @@ public class FirebaseHelper {
 
     // Function to format Date to a string
     private String formatDate(Date date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", new Locale("es", "ES"));
         return format.format(date);
     }
 
