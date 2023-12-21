@@ -37,13 +37,11 @@ public class MenuManager {
         Intent intent = new Intent(context, Historial.class);
         context.startActivity(intent);
     }
-<<<<<<< Updated upstream
+
 
     public static void abrirMaps(Context context){
         Intent intent = new Intent(context, MapActivity.class);
         context.startActivity(intent);
     }
 
-=======
->>>>>>> Stashed changes
 }

@@ -12,11 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-<<<<<<< Updated upstream
 import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.services.MQTTHelper;
-=======
->>>>>>> Stashed changes
+
 import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
 import com.github.mikephil.charting.charts.LineChart;
@@ -219,7 +217,7 @@ public class Pantalla_Principal extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 funcionMenu.abrirHistorial(Pantalla_Principal.this);
-<<<<<<< Updated upstream
+
 
             }
         });
@@ -233,9 +231,8 @@ public class Pantalla_Principal extends AppCompatActivity {
         });
 
 
-=======
-            }
-        });
+
+
 
         ImageView btnAbrirActivityECG = findViewById(R.id.logoCardiacoHeader);
         btnAbrirActivityECG.setOnClickListener(new View.OnClickListener() {
@@ -246,7 +243,7 @@ public class Pantalla_Principal extends AppCompatActivity {
                 startActivity(intent);
             }
         });
->>>>>>> Stashed changes
+
     }
 
     // Function to get the day of the week from the date string

@@ -21,16 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-
 public class DiaFragment1 extends Fragment {
 
     public DiaFragment1() {
@@ -59,13 +49,7 @@ public class DiaFragment1 extends Fragment {
         txtRespiracionAnteAyer = view.findViewById(R.id.txtRespiracionAnteAyer);
         halfDonutChartAnteAyer = view.findViewById(R.id.halfDonutChartAnteAyer);
 
-
         firebaseHelper.getThirdLastNight(userID, new OnSuccessListener<Night>() {
-
-
-
-        firebaseHelper.getBeforeYesterdayNight(userID, new OnSuccessListener<Night>() {
-
             @Override
             public void onSuccess(Night night) {
                 if (night != null) {

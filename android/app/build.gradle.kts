@@ -78,10 +78,10 @@ dependencies {
 
     //google maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-=======
+
     implementation ("androidx.annotation:annotation:1.3.0")
     //graficas
->>>>>>> Stashed changes
+
 
     implementation ("androidx.annotation:annotation:1.3.0")
     //graficas
