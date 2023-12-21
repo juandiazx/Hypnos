@@ -59,7 +59,7 @@ public class DiaFragment1 extends Fragment {
         txtRespiracionAnteAyer = view.findViewById(R.id.txtRespiracionAnteAyer);
         halfDonutChartAnteAyer = view.findViewById(R.id.halfDonutChartAnteAyer);
 
-<<<<<<< Updated upstream
+
         firebaseHelper.getThirdLastNight(userID, new OnSuccessListener<Night>() {
 
 
