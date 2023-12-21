@@ -7,7 +7,8 @@
 #include <PubSubClient.h>
 //--------------------------------------------------------
 
-const char* mqtt_server = "192.168.0.65";
+//Esto va a tener que pasar a ser el servidor moquitto y hay que 966cambiar el topic en .h
+const char* mqtt_server = "test.mosquitto.org";
 WiFiClient espClient;
 PubSubClient client(espClient);
 

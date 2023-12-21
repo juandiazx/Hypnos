@@ -15,8 +15,9 @@ public:
 
     // Override método para tomar una medida de sonido
     int takeMeasurement(){
-        //Transformar esto a un while que tome un monton de medidas y devuelva el conteo de ronquidos
-        return analogRead(sensorPin);
+        int lectura =analogRead(sensorPin);//Transformar esto a un while que tome un monton de medidas y devuelva el conteo de ronquidos
+        Serial.println(lectura);
+        return lectura;
     };
 
 private:

@@ -1,10 +1,10 @@
-package com.example.hypnosapp.auth;
+package com.example.hypnosapp.appactivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,24 +24,37 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
-import com.example.hypnosapp.other.MenuManager;
+import com.example.hypnosapp.auth.PreinicioDeSesion;
+import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.IOException;
 
 public class PerfilUsuarioActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-    String nombreUsuario, correoUsuario;
+    String nombreUsuario, correoUsuario, storagePath;
     TextView nombre, nombreApellidos, correo;
     EditText inputNombreApellidos;
+    StorageReference storageRef;
+    ImageView imgProfile;
+
 
     public interface ReauthenticationListener {
         void onReauthenticationSuccess();
@@ -136,6 +145,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         else{
             //si iniciamos sesión con correo electrónico:
             setContentView(R.layout.perfil_usuario);
+            storageRef = FirebaseStorage.getInstance().getReference();
 
             nombreApellidos = findViewById(R.id.nombreApellidosPerfil);
             nombreApellidos.setText(nombreUsuario);
@@ -144,6 +154,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
 
             correo = findViewById(R.id.emailPerfil);
             correo.setText(correoUsuario);
+
+            storagePath = "users/" + firebaseUser.getUid() + "/profilePhoto";
 
 
             //Boton editar nombre:
@@ -199,8 +211,25 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 }
             });
 
+            //Botón editar foto de perfil
+            ImageView btnEditarFotoPerfil = findViewById(R.id.editarFoto);
+            btnEditarFotoPerfil.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(Intent.ACTION_PICK);
+                    i.setType("image/*");
+                    startActivityForResult(i, 1234);
+                }
+            });
+
+            //Foto perfil
+            imgProfile = findViewById(R.id.fotoPerfil);
+            mostrarImagenPerfil();
 
         }
+
+
+
 
         //-------------------------------------------------------------------------------------
         // FUNCIONALIDAD BOTONES MENUS
@@ -254,6 +283,16 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         });
 
     }//Fin onCreate()
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1234) {
+                subirNuevaFotoPerfil(data.getData(), storagePath);
+            }
+        }
+    }
 
     public void cerrarSesion(View view){
 
@@ -367,7 +406,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         Button btnCancelar = dialogView.findViewById(R.id.btnCancelarCambioContrasenya);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirmar correo");
+        builder.setTitle("Cambiar contraseña");
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -407,6 +446,52 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+    }
+    private void subirNuevaFotoPerfil(Uri imagen, String direccionFirebase){
+
+        StorageReference ficheroRef = storageRef.child(direccionFirebase);
+        ficheroRef.putFile(imagen)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>(){
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Log.d("Almacenamiento", "Fichero subido");
+                        Toast.makeText(PerfilUsuarioActivity.this, "Foto actualizada con éxito", Toast.LENGTH_SHORT).show();
+                        mostrarImagenPerfil();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.e("Almacenamiento", "ERROR: subiendo fichero" + exception);
+                        Toast.makeText(PerfilUsuarioActivity.this, "Error actualizando la foto", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    private void mostrarImagenPerfil(){
+        File localFile = null;
+        try {
+            localFile = File.createTempFile("image", "jpg"); //nombre y extensión
+        } catch (IOException e) {
+            e.printStackTrace(); //Si hay problemas mostramos la causa
+        }
+        final String path = localFile.getAbsolutePath();
+        Log.d("Almacenamiento", "creando fichero: " + path);
+
+        StorageReference ficheroRef = storageRef.child(storagePath);
+        ficheroRef.getFile(localFile)
+                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>(){
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot){
+                        Log.d("Almacenamiento", "Fichero bajado" + path);
+                        //Aquí ya disponemos del fichero
+                        imgProfile.setImageBitmap(BitmapFactory.decodeFile(path));
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.e("Almacenamiento", "ERROR: bajando fichero");
+                    }
+                });
     }
 
 }//Class

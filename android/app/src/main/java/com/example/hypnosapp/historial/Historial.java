@@ -13,12 +13,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 
 import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.model.Night;
-import com.example.hypnosapp.other.MenuManager;
+import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,7 +38,6 @@ import java.util.List;
 
 
 public class Historial extends AppCompatActivity {
-    private List<DiaModel> listaDias;
     private static final String TAG = "AjustesDeSuenyo";
     private FirebaseHelper firebaseHelper;
     FirebaseAuth firebaseAuth;
@@ -46,6 +47,8 @@ public class Historial extends AppCompatActivity {
     TextView lblErrorDates;
     Button btnSearch,inputDateFrom, inputDateTo, btnExportar;
     List<Night> listaNoches;
+    private RecyclerView recyclerView;
+    public AdaptadorNoches adaptadorNoches;
 
 
     @Override
@@ -60,8 +63,7 @@ public class Historial extends AppCompatActivity {
         firebaseHelper = new FirebaseHelper();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        //userID = firebaseUser.getUid();
-        userID = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
+        userID = firebaseUser.getUid();
 
         btnPerfilUsuario = findViewById(R.id.logoUsuarioHeader);
         btnPantallaPrincipal = findViewById(R.id.btnPantallaPrincipal);
@@ -111,29 +113,16 @@ public class Historial extends AppCompatActivity {
             }
         });
 
-        listaDias = new ArrayList<>();
-        listaDias.add(new DiaModel("05/11/2023", "88/100", "Muy buena", "24C", "8h 25min"));
-        listaDias.add(new DiaModel("04/11/2023", "75/100", "Buena", "23C", "7h 45min"));
-        listaDias.add(new DiaModel("03/11/2023", "90/100","Muy buena", "25C", "7h 55min"));
+        recyclerView = findViewById(R.id.recyclerViewHistorial);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         listaNoches = new ArrayList<>();
-        listaNoches.add(new Night(new Date(), "breathing", 90, 25, 8));
-        listaNoches.add(new Night(new Date(), "breathing", 76, 15, 5));
-        listaNoches.add(new Night(new Date(), "breathing", 40, 35, 4));
-
-
-        // Encuentra el TabLayout y el ViewPager
-        TabLayout tabLayout = findViewById(R.id.tabLayoutHistorial);
-        ViewPager viewPager = findViewById(R.id.viewPagerHistorial);
-        // Crea un adaptador para manejar los fragmentos
-        TabsHistorial adapter = new TabsHistorial(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-        // Conecta el TabLayout con el ViewPager
-        tabLayout.setupWithViewPager(viewPager);
-        TabLayout.Tab tab = tabLayout.getTabAt(0); // Selecciona la tab "Semana" por defecto
-        if (tab != null) {
-            tab.select();
-        }
+//        listaNoches.add(new Night(new Date(), "breathing", 90, 25, 8));
+//        listaNoches.add(new Night(new Date(), "breathing", 76, 15, 5));
+//        listaNoches.add(new Night(new Date(), "breathing", 40, 35, 4));
+        adaptadorNoches = new AdaptadorNoches(this, listaNoches);
+        recyclerView.setAdapter(adaptadorNoches);
 
         firebaseHelper.getPagesFromAllNights(userID,
                 new OnSuccessListener<Integer>() {
@@ -153,6 +142,10 @@ public class Historial extends AppCompatActivity {
                 new OnSuccessListener<List<Night>>() {
                     @Override
                     public void onSuccess(List<Night> nights) {
+                        listaNoches.clear();
+                        listaNoches.addAll(nights);
+                        adaptadorNoches.notifyDataSetChanged();
+
                         for (Night night : nights) {
                             Log.d(TAG, "Night: " + night.getDate() + ", Score: " + night.getScore());
                         }
@@ -179,6 +172,10 @@ public class Historial extends AppCompatActivity {
                             new OnSuccessListener<List<Night>>() {
                                 @Override
                                 public void onSuccess(List<Night> nightList) {
+                                    listaNoches.clear();
+                                    listaNoches.addAll(nightList);
+                                    adaptadorNoches.notifyDataSetChanged();
+
                                     for (Night night : nightList) {
                                         Log.d(TAG, "Night: " + night.getDate() + ", Score: " + night.getScore());
                                     }
@@ -196,9 +193,6 @@ public class Historial extends AppCompatActivity {
 
 
     }//onCreate
-    public List<DiaModel> getListaDias() {
-        return listaDias;
-    }
 
     private void mostrarDatePickerDialogFrom() {
 

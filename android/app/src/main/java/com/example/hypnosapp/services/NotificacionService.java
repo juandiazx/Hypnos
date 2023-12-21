@@ -1,4 +1,4 @@
-package com.example.hypnosapp;
+package com.example.hypnosapp.services;
 
 import android.app.IntentService;
 import android.app.NotificationChannel;
@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.SystemClock;
 import androidx.core.app.NotificationCompat;
+
+import com.example.hypnosapp.R;
 
 public class NotificacionService extends IntentService {
 

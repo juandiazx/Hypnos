@@ -12,13 +12,17 @@
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
 
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+
     <application
-        android:name=".other.HypnosInicializacion"
+        android:name=".utils.HypnosInicializacion"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -27,15 +31,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HypnosApp"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:enableOnBackInvokedCallback="true"
+        android:usesCleartextTraffic="true"
+        >
 
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
 
         <activity
             android:name=".appactivity.MainActivity">
         </activity>
 
         <activity
-            android:name=".auth.InicioDeSesion">
+            android:name=".appactivity.FamilyLoginActivity">
+        </activity>
+
+        <activity
+            android:name=".appactivity.PlataformaFamiliarActivity">
+        </activity>
+
+        <activity
+            android:name=".appactivity.InicioDeSesion">
 
         </activity>
 
@@ -45,7 +63,7 @@
         </activity>
 
         <activity
-            android:name=".auth.PerfilUsuarioActivity">
+            android:name=".appactivity.PerfilUsuarioActivity">
 
         </activity>
 
@@ -64,7 +82,7 @@
         </activity>
 
         <activity
-            android:name=".auth.Registro">
+            android:name=".appactivity.Registro">
         </activity>
 
         <activity
@@ -75,6 +93,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+        </activity>
+
+        <activity android:name=".appactivity.MapActivity">
+            
         </activity>
 
 
@@ -97,7 +119,12 @@
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
 
-        <service android:name=".NotificacionService" />
+        <service android:name=".services.NotificacionService" />
+        <service
+            android:name=".services.AlarmService" />
+
+        <receiver
+            android:name=".services.AlarmStopReceiver" />
 
     </application>
 

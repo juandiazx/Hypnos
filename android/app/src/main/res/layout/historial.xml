@@ -45,27 +45,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--FIN DE HEADER-->
 
-    <!--tabs destinadas a mostrar los datos de descanso de semana, mes y año -->
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayoutHistorial"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        android:background="@color/colorBlanco"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tabGravity="fill"
-        app:tabMode="fixed" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="66dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayoutHistorial">
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout2">
 
         <Button
             android:id="@+id/inputDateFrom"
@@ -162,6 +149,10 @@
                 android:id="@+id/frameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="700dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/border_background"
                 tools:layout_editor_absoluteX="20dp"
                 tools:layout_editor_absoluteY="796dp">
@@ -209,6 +200,7 @@
                     android:id="@+id/viewPagerHistorial"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

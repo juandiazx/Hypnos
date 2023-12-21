@@ -110,10 +110,12 @@ private:
         }
 
         delay(3000);
+        Serial.print(pressureSensor->tiempoEncendido);
         sendDataToM5Stack(udpPort);
+        Serial.print(pressureSensor->tiempoEncendido);
+        sendDataToM5Stack(6231);
 
         Serial.print(pressureSensor->tiempoEncendido);
-        Serial.flush();  // Asegura que los datos se envíen completamente
 
         //Reseteamos los tiempos y estados del sensor de presion desde fuera
         pressureSensor->tiempoEncendido = 0;

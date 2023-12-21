@@ -13,7 +13,7 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-
+        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -55,17 +55,29 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     //firebase
+
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation ("com.google.firebase:firebase-storage")
     implementation ("com.google.firebase:firebase-auth:22.3.0")
-    implementation("com.google.firebase:firebase-database:20.3.0")
+    implementation ("com.google.firebase:firebase-database:20.3.0")
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
     implementation ("com.google.firebase:firebase-core:21.1.1")
-   implementation ("com.facebook.android:facebook-login:latest.release")
-    implementation("com.google.firebase:firebase-firestore:24.9.1")
-    implementation ("com.google.firebase:firebase-bom:32.5.0")
+    implementation ("com.facebook.android:facebook-login:latest.release")
+    implementation ("com.google.firebase:firebase-firestore:24.10.0")
+    implementation ("org.eclipse.paho:org.eclipse.paho.android.service:1.1.1")
+    implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
     //foto de perfil
-    implementation("com.android.volley:volley:1.2.1")
+    implementation ("com.android.volley:volley:1.2.1")
     //recyclerview
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     //pdfExporter
     implementation ("org.apache.pdfbox:pdfbox:2.0.27")
+    implementation ("org.apache.commons:commons-lang3:3.12.0")
+    //google maps
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
+
+
 }

@@ -166,6 +166,20 @@
         app:layout_constraintTop_toTopOf="@+id/txt" />
 
     <TextView
+        android:id="@+id/botonAccederFamiliar"
+        style="@style/TextoInterBold"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:clickable="true"
+        android:text="Accede como familiar"
+        android:textColor="@color/colorAzulPrincipal"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/txt"
         style="@style/TextoInterRegular"
         android:layout_width="wrap_content"

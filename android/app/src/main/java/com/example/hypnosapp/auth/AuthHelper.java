@@ -2,7 +2,6 @@ package com.example.hypnosapp.auth;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -15,6 +14,7 @@ import android.content.DialogInterface;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -26,7 +26,6 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,10 +38,13 @@ public class AuthHelper {
     }
 
     public static void manejoRespuestaFirebase(Task<AuthResult> task, TextView respuesta, AppCompatActivity activity, String className) {
+        Log.d("login", "entra a manejorespuesta");
         if (task.isSuccessful()) {
+            Log.d("login", "task successful");
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 if (user.isEmailVerified()) {
+                    Log.d("login", "verificado");
                     // Usuario autenticado y correo verificado, proceder con la lógica de la aplicación
                     try {
                         Class<?> destinationClass = Class.forName(className);
@@ -52,12 +54,19 @@ public class AuthHelper {
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    Log.d("login", "no verificado");
+                    // Usuario autenticado pero correo no verificado, mostrar un mensaje
+                    respuesta.setText("Por favor verifique su correo electronico");
                 }
-                // Usuario autenticado pero correo no verificado, mostrar un mensaje
-                respuesta.setText("Por favor verifique su correo electronico");
             }
+        } else {
+            Exception exception = task.getException();
+            if (exception != null) {
+                exception.printStackTrace();
+            }
+            respuesta.setText("Ha ocurrido un problema, las credenciales de inicio no son correctas");
         }
-        respuesta.setText("Ha ocurrido un problema, las credenciales de inicio no son correctas");
     }
 
     public static boolean verificaCredenciales(EditText etCorreo, EditText etContraseña, TextView tvCorreo, TextView tvContraseña) {
@@ -148,11 +157,26 @@ public class AuthHelper {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Log.d("registro", "se registro al usuario");
                             FirebaseUser user = auth.getCurrentUser();
-                            enviarCorreoDeVerificacion(user, appContext);
-                            mostrarPopUpRegistro((AppCompatActivity) appContext);
-                            //almacenarInformacionUsuario(user, nombre, fechaNacimiento);
-                            asignarDisplayName(user,nombre);
+                            if(user!=null) {
+                                String UID = user.getUid();
+                                FirebaseHelper firebaseHelper = new FirebaseHelper();
+                                firebaseHelper.setIncrementalFamilyID(new FirebaseHelper.FamilyAccessIndexCallback() {
+                                    @Override
+                                    public void onFamilyAccessIndexGenerated(int familyAccessIndex) {
+                                        // Use familyAccessIndex here, for example, in your register function
+                                        firebaseHelper.addUserToUsers(UID, nombre, correo, fechaNacimiento, familyAccessIndex);
+                                        firebaseHelper.setDefaultPreferences(UID);
+                                        Log.d("auth", "default preferences created");
+                                        firebaseHelper.setEmptyNights(UID);
+                                        Log.d("auth", "empty nights created");
+                                        enviarCorreoDeVerificacion(user, appContext);
+                                        mostrarPopUpRegistro((AppCompatActivity) appContext);
+                                        asignarDisplayName(user,nombre);
+                                    }
+                                });
+                            }
                         }
                         onComplete.onComplete(task);
                     }
@@ -166,6 +190,7 @@ public class AuthHelper {
                     public void onComplete(@NonNull Task<Void> emailVerificationTask) {
                         if (!emailVerificationTask.isSuccessful()) {
                             // Error al enviar el correo de verificación
+                            Log.d("Error", "No se ha podido enviar el código de verificación");
                             Toast.makeText(appContext, "No se ha podido enviar el código de verificación",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -211,18 +236,6 @@ public class AuthHelper {
                         }
                     });
         }
-    }
-
-    private static void almacenarInformacionUsuario(FirebaseUser user, String nombre, String fechaNacimiento) {
-
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
-        String userID = user.getUid();
-
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("nombre", nombre);
-        userData.put("fechaNacimiento", fechaNacimiento);
-        usersRef.child(userID).setValue(userData);
-
     }
 }
 

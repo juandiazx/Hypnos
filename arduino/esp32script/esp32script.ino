@@ -38,17 +38,11 @@ void setup(){
   Serial.begin(115200);
   // Inicializamos las instancias dentro de setup
   esp32Abstract = ESP32Abstract::getInstance(ssid, password, udpPort, TEMPERATUREPIN, SOUNDPIN, LEDPIN);
-  //esp32Abstract->listenForMessages();
 }
 
 
 void loop() {
   esp32Abstract->listenForMessages();
-  /*
-  Serial.println("Comienza toma de medidas");
-  int snoreCount = esp32Abstract->snoreCountComputation(2,5);//esp32Abstract->listenForMessages();
-  Serial.println(snoreCount);
-  */
   delay(4000);
   
 }
