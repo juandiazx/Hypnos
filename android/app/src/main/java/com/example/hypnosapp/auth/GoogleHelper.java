@@ -82,7 +82,7 @@ public class GoogleHelper {
                                             Log.d("auth", "User document doesn't exist, creating user and preferences");
                                             firebaseHelper.setIncrementalFamilyID(new FirebaseHelper.FamilyAccessIndexCallback() {
                                                 @Override
-                                                public void onFamilyAccessIndexGenerated(long familyAccessIndex) {
+                                                public void onFamilyAccessIndexGenerated(int familyAccessIndex) {
                                                     // Use familyAccessIndex here, for example, in your register function
                                                     firebaseHelper.addUserToUsers(user.getUid(), account.getDisplayName(), account.getEmail(), "01/01/0001", familyAccessIndex);
                                                     firebaseHelper.setDefaultPreferences(user.getUid());

@@ -164,7 +164,7 @@ public class AuthHelper {
                                 FirebaseHelper firebaseHelper = new FirebaseHelper();
                                 firebaseHelper.setIncrementalFamilyID(new FirebaseHelper.FamilyAccessIndexCallback() {
                                     @Override
-                                    public void onFamilyAccessIndexGenerated(long familyAccessIndex) {
+                                    public void onFamilyAccessIndexGenerated(int familyAccessIndex) {
                                         // Use familyAccessIndex here, for example, in your register function
                                         firebaseHelper.addUserToUsers(UID, nombre, correo, fechaNacimiento, familyAccessIndex);
                                         firebaseHelper.setDefaultPreferences(UID);

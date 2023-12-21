@@ -68,7 +68,7 @@ public class FirebaseHelper {
     }
 
     public interface FamilyAccessIndexCallback {
-        void onFamilyAccessIndexGenerated(long familyAccessIndex);
+        void onFamilyAccessIndexGenerated(int familyAccessIndex);
     }
     /*----------------------------------------------------------------------------------------
                 String userId ---> checkIfUserExists() --> true if user exists on the user
@@ -90,13 +90,13 @@ public class FirebaseHelper {
                 String userId, nombre, ---> addUserToUsers() --> adds the user to the user
                 collection.
     ----------------------------------------------------------------------------------------*/
-    public void addUserToUsers(String userId, String nombre, String email, String fechaNacimiento, long familyCode) {
+    public void addUserToUsers(String userId, String nombre, String email, String fechaNacimiento, int familyCode) {
 
         Map<String, Object> userData = new HashMap<>();
         userData.put("name", nombre);
         userData.put("birth", fechaNacimiento);
         userData.put("email", email);
-        userData.put("familyAcessCode", familyCode);
+        userData.put("familyAcessCode", Integer.toString(familyCode));
 
         db.collection("users")
                 .document(userId)
@@ -177,10 +177,10 @@ public class FirebaseHelper {
 //                        }
 //                    }
 //                });
-        long lowerBound = 1000000001L;
-        long upperBound = 9999999999L;
+        int lowerBound = 10000000;
+        int upperBound = 99999999;
         Random random = new Random();
-        long newFamilyAccessIndex = lowerBound + (long) (random.nextDouble() * (upperBound - lowerBound + 1));
+        int newFamilyAccessIndex = lowerBound + (int) (random.nextDouble() * (upperBound - lowerBound + 1));
         callback.onFamilyAccessIndexGenerated(newFamilyAccessIndex);
     }
 
@@ -838,9 +838,10 @@ public class FirebaseHelper {
     /*----------------------------------------------------------------------------------------------
                                   codigoAcceso --> checkFamilyAccessCode() --> userID || null
     ----------------------------------------------------------------------------------------------*/
-    public void checkFamilyAccessCode(int codigoAcceso, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
+    public void checkFamilyAccessCode(String codigoAcceso, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
         CollectionReference usersCollection = db.collection("users");
 
+        Log.d("Puta",codigoAcceso);
         Query query = usersCollection.whereEqualTo("familyAccessCode", codigoAcceso);
 
         query.get()

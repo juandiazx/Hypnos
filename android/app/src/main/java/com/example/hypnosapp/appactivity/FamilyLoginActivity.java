@@ -44,7 +44,7 @@ public class FamilyLoginActivity extends AppCompatActivity {
                 String accessCode = codigoAccesoEditText.getText().toString();
                 boolean flagContinuar = validarFormatoCodigoAcceso(accessCode);
                 if (flagContinuar) {
-                    firebaseHelper.checkFamilyAccessCode(Integer.parseInt(accessCode),
+                    firebaseHelper.checkFamilyAccessCode(accessCode,
                             new OnSuccessListener<String>() {
                                 @Override
                                 public void onSuccess(String userId) {
@@ -76,9 +76,9 @@ public class FamilyLoginActivity extends AppCompatActivity {
         } else if (!codigoAccesoString.matches("\\d+")) {
             // Si contiene alguna letra, indicar que solo puede contener dígitos
             tvCodigo.setText("El código solo puede contener dígitos");
-        } else if (codigoAccesoString.length() != 10) {
+        } else if (codigoAccesoString.length() != 8) {
             // Si no tiene 10 dígitos, indicar que debe contener 10 dígitos
-            tvCodigo.setText("El código debe contener 10 dígitos");
+            tvCodigo.setText("El código debe contener 8 dígitos");
         } else {
             tvCodigo.setText(null);
             return true;

@@ -130,7 +130,7 @@ private:
       int i=0;
       while(i < 50){
         int sonido = soundSensor->takeMeasurement();
-        Serial.println(sonido);
+        //Serial.println(sonido);
         if(sonido >= frecuenciaMinimaSonido) {
           soundDetectionsList.push_back(true);
         }

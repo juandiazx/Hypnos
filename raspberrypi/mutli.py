@@ -186,7 +186,7 @@ def escribir_en_firestore():
             'score': int(datos_mqtt)
         }
 
-        coleccion_referencia.document(uid_usuario).collection('nightsData').document('sUK71eLZ11HYDLJTEYiP').update(datos_combinados)
+        coleccion_referencia.document(uid_usuario).collection('nightsData').add(datos_combinados)
         print('Datos combinados agregados correctamente a Firestore en Firebase.')
         
         subir_imagenes_storage()
