@@ -61,11 +61,11 @@ public class DiaFragment1 extends Fragment {
 
 <<<<<<< Updated upstream
         firebaseHelper.getThirdLastNight(userID, new OnSuccessListener<Night>() {
-=======
+
 
 
         firebaseHelper.getBeforeYesterdayNight(userID, new OnSuccessListener<Night>() {
->>>>>>> Stashed changes
+
             @Override
             public void onSuccess(Night night) {
                 if (night != null) {
