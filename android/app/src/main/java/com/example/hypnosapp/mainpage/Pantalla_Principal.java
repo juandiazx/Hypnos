@@ -49,11 +49,7 @@ import java.util.Locale;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class Pantalla_Principal extends AppCompatActivity {
-
     private BandaCardiacaManager bandaCardiacaManager;
-
-    private static final String TAG = "Gráficas";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,10 +128,6 @@ public class Pantalla_Principal extends AppCompatActivity {
                 funcionMenu.abrirMaps(Pantalla_Principal.this);
             }
         });
-
-
-
-
 
         ImageView btnAbrirActivityECG = findViewById(R.id.logoCardiacoHeader);
         btnAbrirActivityECG.setOnClickListener(new View.OnClickListener() {
