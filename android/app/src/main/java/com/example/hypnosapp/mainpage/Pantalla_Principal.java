@@ -125,7 +125,7 @@ public class Pantalla_Principal extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton btnMaps = findViewById(R.id.floatingActiveButtonMaps);
+        ImageView btnMaps = findViewById(R.id.ButtonMaps);
         btnMaps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

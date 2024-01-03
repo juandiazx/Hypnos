@@ -22,18 +22,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="#ffffff" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActiveButtonMaps"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:src="@drawable/map_icon"
-        app:backgroundTint="@color/colorAzulPrincipal"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout5"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActiveButtonCalendarioSemanal"
-        app:tint="#ffffff" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout5"
         android:layout_width="0dp"
