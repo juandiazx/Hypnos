@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.mainpage.ECGActivity;
+import com.example.hypnosapp.mainpage.Pantalla_Principal;
 import com.example.hypnosapp.services.AlarmService;
 import com.example.hypnosapp.services.MQTTHelper;
 import com.example.hypnosapp.utils.MenuManager;
@@ -173,6 +174,14 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
 
+            }
+        });
+
+        ImageView btnMaps = findViewById(R.id.ButtonMaps);
+        btnMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirMaps(AjustesDeSuenyoActivity.this);
             }
         });
 

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.hypnosapp.mainpage.ECGActivity;
+import com.example.hypnosapp.mainpage.Pantalla_Principal;
 import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
 
@@ -60,6 +61,14 @@ public class AcercaDeActivity extends AppCompatActivity {
                 // Intent para abrir la actividad ECG
                 Intent intent = new Intent(AcercaDeActivity.this, ECGActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        ImageView btnMaps = findViewById(R.id.ButtonMaps);
+        btnMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirMaps(AcercaDeActivity.this);
             }
         });
 

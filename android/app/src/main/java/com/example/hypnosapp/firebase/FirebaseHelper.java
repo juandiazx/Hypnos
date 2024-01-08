@@ -55,9 +55,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.Random;
 
@@ -1008,30 +1010,37 @@ public class FirebaseHelper {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference docRef = db.collection("users").document(UID).collection("nightsData");
+        // Obtén la fecha actual
+        Calendar currentDate = Calendar.getInstance();
+        // Retrocede 7 días desde la fecha actual
+        currentDate.add(Calendar.DAY_OF_MONTH, -7);
+        // Obtén el timestamp de hace 7 días en milisegundos
+        long sevenDaysAgoTimestamp = currentDate.getTimeInMillis();
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     ArrayList<Entry> scores = new ArrayList<>();
-                    ArrayList<String> daysOfWeek = new ArrayList<>(); // To store the days of the week
-
-                    // Parse and store the data
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         // Check if 'date' field exists and is of type Timestamp
                         if (document.contains("date") && document.get("date") instanceof Timestamp) {
                             Timestamp timestamp = (Timestamp) document.get("date");
-                            String date = formatDate(timestamp.toDate()); // Convert timestamp to Date and then to formatted string
-                            String dayOfWeek = getDayOfWeekFromDate(date);
-                            Float score = document.getDouble("score").floatValue();
-                            scores.add(new Entry(getTimestampFromDate(date), score != null ? score : 0f));
-                            daysOfWeek.add(dayOfWeek);
+                            long timestampMillis = timestamp.toDate().getTime();
+                            // Verifica si la fecha está en los últimos 7 días
+                            if (timestampMillis >= sevenDaysAgoTimestamp) {
+                                String date = formatDate(timestamp.toDate()); // Convert timestamp to Date and then to formatted string
+                                Float score = document.getDouble("score").floatValue();
+                                scores.add(new Entry(getTimestampFromDate(date), score != null ? score : 0f));
+                            }
                         } else {
                             // Log a warning or handle the case where 'date' is not a Timestamp
                             Log.w(TAG, "Invalid 'date' field in Firestore document");
                         }
                     }
 
+                    fillMissingDaysWithZeros(scores);
+                    
                     // Sort the entries based on the timestamp
                     Collections.sort(scores, new Comparator<Entry>() {
                         @Override
@@ -1070,7 +1079,7 @@ public class FirebaseHelper {
                     });
 
                     // Set the number of labels to match the number of data points
-                    xAxis.setLabelCount(scores.size(), true);
+                    xAxis.setLabelCount(Math.min(scores.size(), 7), true);
 
                     // Hide Y-axis labels and grid lines
                     YAxis leftYAxis = graph.getAxisLeft();
@@ -1092,6 +1101,30 @@ public class FirebaseHelper {
                 }
             }
         });
+    }
+
+    private void fillMissingDaysWithZeros(ArrayList<Entry> scores) {
+        // Obtén los timestamps existentes
+        Set<Long> existingTimestamps = new HashSet<>();
+        for (Entry entry : scores) {
+            existingTimestamps.add((long) entry.getX());
+        }
+
+        // Obtén la fecha actual
+        Calendar currentDate = Calendar.getInstance();
+
+        // Retrocede 7 días desde la fecha actual
+        currentDate.add(Calendar.DAY_OF_MONTH, -7);
+
+        // Obtén el timestamp de hace 7 días en milisegundos
+        long sevenDaysAgoTimestamp = currentDate.getTimeInMillis();
+
+        // Llena los espacios vacíos con ceros
+        for (long timestamp = sevenDaysAgoTimestamp; timestamp <= currentDate.getTimeInMillis(); timestamp += 24 * 60 * 60 * 1000) {
+            if (!existingTimestamps.contains(timestamp)) {
+                scores.add(new Entry(timestamp, 0f));
+            }
+        }
     }
 
     // Function to get the day of the week from the date string
