@@ -16,8 +16,8 @@
 #define udpPort 6230
 //#define ssid "TP-LINK_6B36"
 //#define password "89776513"
-#define ssid "darkasa"
-#define password "0Spoilerspls"
+#define ssid "Redmi_Alex"
+#define password "abcde4567"
 #define PinDelSensor 4
 #define PinDelLed 2
 
