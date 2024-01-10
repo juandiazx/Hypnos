@@ -1040,7 +1040,7 @@ public class FirebaseHelper {
                     }
 
                     fillMissingDaysWithZeros(scores);
-                    
+
                     // Sort the entries based on the timestamp
                     Collections.sort(scores, new Comparator<Entry>() {
                         @Override

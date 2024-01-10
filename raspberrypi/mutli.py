@@ -9,6 +9,7 @@ from datetime import datetime
 from picamera import PiCamera
 import time
 from io import BytesIO
+import RPi.GPIO as GPIO
 
 cred = credentials.Certificate('firebase-adminsdk.json')
 firebase_admin.initialize_app(cred, {
@@ -58,6 +59,9 @@ datos_mqtt = None
 
 # Array para almacenar los archivos de imagen
 imagenes = []
+
+# Variable para almacenar el ajuste de iluminacion
+iluminacion = None
 
 def tomar_fotos():
     for _ in range(3):  # Tomar 3 fotos
@@ -147,6 +151,15 @@ def on_message(client, userdata, message):
         uid_usuario = payload
         print('UID recibido correctamente:', uid_usuario)
         mqtt_client.unsubscribe(mqtt_topic_uid)
+        #
+        #
+        #
+        iluminacion = leer_ajustes_iluminacion_firestore(uid_usuario)
+        time.sleep(7)
+        encender_led_segun_ajuste(iluminacion)
+        #
+        #
+        #
     elif message.topic == mqtt_topic:
         datos_mqtt = payload
         print('Datos MQTT recibidos correctamente:', datos_mqtt)
@@ -161,7 +174,6 @@ def iniciar_hilo_mqtt():
     mqtt_client.subscribe([(mqtt_topic_uid,0),(mqtt_topic,0)])
     mqtt_client.on_message = on_message
     mqtt_client.loop_forever()
-
 
 def enviar_mensaje_mqtt_daytime():
     try:
@@ -193,6 +205,49 @@ def escribir_en_firestore():
         
         enviar_mensaje_mqtt_daytime()
 
+def leer_ajustes_iluminacion_firestore(uid):
+    user_ref = db.collection('users').document(uid)
+    user_data = user_ref.get().to_dict()
+
+    if user_data is not None and 'preferences' in user_data:
+        preferences = user_data['preferences']
+        light_settings = preferences.get('lightSettings')
+        
+        if light_settings is not None:
+            return light_settings
+
+    return None
+
+def encender_led_segun_ajuste(lightSettings):
+    # Define GPIO pins for RGB LED (adjust these according to your wiring)
+    RED_PIN = 17
+    GREEN_PIN = 27
+    BLUE_PIN = 22
+
+    # Setup GPIO
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(RED_PIN, GPIO.OUT)
+    GPIO.setup(GREEN_PIN, GPIO.OUT)
+    GPIO.setup(BLUE_PIN, GPIO.OUT)
+
+    # Turn off all colors
+    GPIO.output(RED_PIN, GPIO.LOW)
+    GPIO.output(GREEN_PIN, GPIO.LOW)
+    GPIO.output(BLUE_PIN, GPIO.LOW)
+
+    # Set color based on lightSettings
+    if lightSettings == 'COL':
+        # Cold white
+        GPIO.output(BLUE_PIN, GPIO.HIGH)
+        time.sleep(5)
+        GPIO.cleanup
+    elif lightSettings == 'WAR':
+        # Warm white
+        GPIO.output(RED_PIN, GPIO.HIGH)
+        GPIO.output(GREEN_PIN, GPIO.HIGH)
+        time.sleep(5)
+        GPIO.cleanup
+
 
 thread_udp = threading.Thread(target=recibir_datos_udp)
 thread_uart = threading.Thread(target=recibir_datos_udp_time)
@@ -210,3 +265,7 @@ thread_mqtt.join()
 thread_foto.join()
 
 escribir_en_firestore()
+#
+#
+#
+encender_led_segun_ajuste(uid_usuario)
