@@ -23,8 +23,8 @@ M5StackAbstract* m5stackAbstract;
 #define udpPort 6230
 //#define ssid "TP-LINK_6B36"
 //#define password "89776513"
-#define ssid "Redmi_Alex"
-#define password "abcde4567"
+#define ssid "darkasa"
+#define password "0Spoilerspls"
 //--------------------------------------------------------------------------------------
 
 void setup() {

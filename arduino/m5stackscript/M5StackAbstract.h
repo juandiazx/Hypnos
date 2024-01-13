@@ -212,7 +212,7 @@ private:
 
     int calculateSleepScore(){
         // Normalizar valores dentro del rango óptimo
-        double normalizedTime = min(1.0, static_cast<double>(tiempoEncendido) / 14.0);
+        double normalizedTime = min(1.0, static_cast<double>(tiempoEncendido) / 22.0);
         double normalizedSnore = min(1.0, static_cast<double>(snoreAmount) / 5.0);
 
         // Ajustar ponderaciones iguales

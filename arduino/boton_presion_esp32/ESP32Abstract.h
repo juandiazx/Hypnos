@@ -93,10 +93,11 @@ private:
 
     void obtainSensorsData() {
         tiempoEmpieza = millis(); // Guardar el tiempo inicial
-        duration = 17000;     // Duración en milisegundos (en este caso, 15 segundos)
+        duration = 25000;     // Duración en milisegundos (en este caso, 15 segundos)
 
         digitalWrite(pinLedField, HIGH); // Enciende el LED
         delay(3000);
+        
         digitalWrite(pinLedField, LOW);
  
         while (millis() - tiempoEmpieza <= duration) {

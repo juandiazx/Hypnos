@@ -56,7 +56,7 @@ public:
 
     int snoreCountComputation(int min, int max){
       //Un ronquido sera mas o menos un intervalo de 4-7 medidas
-      saveSoundDetections();
+      //saveSoundDetections();
       int counter = 0;
       snoreAmount = 0;
       for(int p1=0 ;p1 < soundDetectionsList.size();p1++){
@@ -128,7 +128,7 @@ private:
 
     void saveSoundDetections() {
       int i=0;
-      while(i < 50){
+      while(i < 200){
         int sonido = soundSensor->takeMeasurement();
         //Serial.println(sonido);
         if(sonido >= frecuenciaMinimaSonido) {
