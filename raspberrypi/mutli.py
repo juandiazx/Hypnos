@@ -63,14 +63,17 @@ imagenes = []
 # Variable para almacenar el ajuste de iluminacion
 iluminacion = None
 
+
 def tomar_fotos():
     for _ in range(3):  # Tomar 3 fotos
         stream = BytesIO()
         camera.capture(stream, 'jpeg')
         imagenes.append(stream.getvalue())
-        time.sleep(4)        
+        time.sleep(4)
+
     camera.close()
-    
+
+
 def subir_imagenes_storage():
     try:
         for i, imagen in enumerate(imagenes):
@@ -89,6 +92,7 @@ def subir_imagenes_storage():
 
     except Exception as e:
         print(f"Error al subir imágenes a Firestore: {e}")
+
 
 def recibir_datos_udp():
     global datos_udp
@@ -130,9 +134,9 @@ def recibir_datos_udp_time():
                 try:
                     mensaje_json = json.loads(data)
                     if "sleepTime" in mensaje_json:
-                        
+
                         datos_udp_time = int(mensaje_json["sleepTime"])//1000
-                        
+
                         print('Datos UDP Time recibidos correctamente:', datos_udp_time)
                         break
                 except json.JSONDecodeError:
@@ -143,68 +147,6 @@ def recibir_datos_udp_time():
         print("\nSocket UDP cerrado.")
 
 
-def on_message(client, userdata, message):
-    global uid_usuario, datos_mqtt,count
-    payload = message.payload.decode('utf-8')
-
-    if message.topic == mqtt_topic_uid:
-        uid_usuario = payload
-        print('UID recibido correctamente:', uid_usuario)
-        mqtt_client.unsubscribe(mqtt_topic_uid)
-        #
-        #
-        #
-        iluminacion = leer_ajustes_iluminacion_firestore(uid_usuario)
-        time.sleep(7)
-        encender_led_segun_ajuste(iluminacion)
-        #
-        #
-        #
-    elif message.topic == mqtt_topic:
-        datos_mqtt = payload
-        print('Datos MQTT recibidos correctamente:', datos_mqtt)
-    count +=1
-    if count == 2:
-        mqtt_client.disconnect()
-
-
-
-def iniciar_hilo_mqtt():
-    mqtt_client.connect(mqtt_broker_address)
-    mqtt_client.subscribe([(mqtt_topic_uid,0),(mqtt_topic,0)])
-    mqtt_client.on_message = on_message
-    mqtt_client.loop_forever()
-
-def enviar_mensaje_mqtt_daytime():
-    try:
-        mqtt_topic_daytime = "hypnos_rp_daytime"
-        mensaje_daytime = "daytime"
-        mqtt_client.connect(mqtt_broker_address)
-        mqtt_client.publish(mqtt_topic_daytime, mensaje_daytime)
-        print('Mensaje MQTT enviado correctamente al topic hypnos_rp_daytime.')
-        mqtt_client.disconnect()
-    except Exception as e:
-        print(f"Error al enviar mensaje MQTT: {e}")
-        
-def escribir_en_firestore():
-    global datos_udp, datos_udp_time, datos_mqtt
-    if datos_udp is not None and datos_udp_time is not None and datos_mqtt is not None:
-        # Combinar datos de UDP, UART y MQTT
-        datos_combinados = {
-            'breathing': datos_udp["snore"],
-            'date':datetime.now(),
-            'temperature':datos_udp["temperature"],
-            'time': datos_udp_time,
-            'score': int(datos_mqtt)
-        }
-
-        coleccion_referencia.document(uid_usuario).collection('nightsData').add(datos_combinados)
-        print('Datos combinados agregados correctamente a Firestore en Firebase.')
-        
-        subir_imagenes_storage()
-        
-        enviar_mensaje_mqtt_daytime()
-
 def leer_ajustes_iluminacion_firestore(uid):
     user_ref = db.collection('users').document(uid)
     user_data = user_ref.get().to_dict()
@@ -212,11 +154,12 @@ def leer_ajustes_iluminacion_firestore(uid):
     if user_data is not None and 'preferences' in user_data:
         preferences = user_data['preferences']
         light_settings = preferences.get('lightSettings')
-        
+
         if light_settings is not None:
             return light_settings
 
     return None
+
 
 def encender_led_segun_ajuste(lightSettings):
     # Define GPIO pins for RGB LED (adjust these according to your wiring)
@@ -239,14 +182,74 @@ def encender_led_segun_ajuste(lightSettings):
     if lightSettings == 'COL':
         # Cold white
         GPIO.output(BLUE_PIN, GPIO.HIGH)
-        time.sleep(5)
-        GPIO.cleanup
     elif lightSettings == 'WAR':
         # Warm white
         GPIO.output(RED_PIN, GPIO.HIGH)
         GPIO.output(GREEN_PIN, GPIO.HIGH)
+
+def on_message(client, userdata, message):
+    global uid_usuario, datos_mqtt, count, iluminacion
+    payload = message.payload.decode('utf-8')
+
+    if message.topic == mqtt_topic_uid:
+        uid_usuario = payload
+        print('UID recibido correctamente:', uid_usuario)
+        mqtt_client.unsubscribe(mqtt_topic_uid)
+        time.sleep(2)
+        iluminacion = leer_ajustes_iluminacion_firestore(uid_usuario)
+        encender_led_segun_ajuste(iluminacion)
         time.sleep(5)
-        GPIO.cleanup
+        GPIO.cleanup()
+
+    elif message.topic == mqtt_topic:
+        datos_mqtt = payload
+        print('Datos MQTT recibidos correctamente:', datos_mqtt)
+        encender_led_segun_ajuste(iluminacion)
+        time.sleep(10)
+        GPIO.cleanup()
+    count += 1
+    if count == 2:
+        mqtt_client.disconnect()
+
+
+
+def iniciar_hilo_mqtt():
+    mqtt_client.connect(mqtt_broker_address)
+    mqtt_client.subscribe([(mqtt_topic_uid,0),(mqtt_topic,0)])
+    mqtt_client.on_message = on_message
+    mqtt_client.loop_forever()
+
+
+def enviar_mensaje_mqtt_daytime():
+    try:
+        mqtt_topic_daytime = "hypnos_rp_daytime"
+        mensaje_daytime = "daytime"
+        mqtt_client.connect(mqtt_broker_address)
+        mqtt_client.publish(mqtt_topic_daytime, mensaje_daytime)
+        print('Mensaje MQTT enviado correctamente al topic hypnos_rp_daytime.')
+        mqtt_client.disconnect()
+    except Exception as e:
+        print(f"Error al enviar mensaje MQTT: {e}")
+
+
+def escribir_en_firestore():
+    global datos_udp, datos_udp_time, datos_mqtt
+    if datos_udp is not None and datos_udp_time is not None and datos_mqtt is not None:
+        # Combinar datos de UDP, UART y MQTT
+        datos_combinados = {
+            'breathing': datos_udp["snore"],
+            'date':datetime.now(),
+            'temperature':datos_udp["temperature"],
+            'time': datos_udp_time,
+            'score': int(datos_mqtt)
+        }
+
+        coleccion_referencia.document(uid_usuario).collection('nightsData').add(datos_combinados)
+        print('Datos combinados agregados correctamente a Firestore en Firebase.')
+
+        subir_imagenes_storage()
+
+        enviar_mensaje_mqtt_daytime()
 
 
 thread_udp = threading.Thread(target=recibir_datos_udp)
@@ -265,7 +268,6 @@ thread_mqtt.join()
 thread_foto.join()
 
 escribir_en_firestore()
-#
-#
-#
-encender_led_segun_ajuste(uid_usuario)
+#encender_led_segun_ajuste(iluminacion)
+#time.sleep(5)
+#GPIO.cleanup()
