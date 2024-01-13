@@ -25,6 +25,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.example.hypnosapp.auth.PreinicioDeSesion;
+import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.mainpage.ECGActivity;
 import com.example.hypnosapp.mainpage.Pantalla_Principal;
 import com.example.hypnosapp.utils.MenuManager;
@@ -52,10 +53,11 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     String nombreUsuario, correoUsuario, storagePath;
-    TextView nombre, nombreApellidos, correo;
+    TextView nombre, nombreApellidos, correo, familyAccessCode;
     EditText inputNombreApellidos;
     StorageReference storageRef;
     ImageView imgProfile;
+    private FirebaseHelper firebaseHelper;
 
 
     public interface ReauthenticationListener {
@@ -67,6 +69,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firebaseHelper = new FirebaseHelper();
 
         //obtenemos la sesión y el usuario:
         firebaseAuth = FirebaseAuth.getInstance();
@@ -75,6 +78,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         //Obtención de datos del usuario:
         nombreUsuario = firebaseUser.getDisplayName();
         correoUsuario = firebaseUser.getEmail();
+
+
         Uri urlFoto = firebaseUser.getPhotoUrl();
         String proveedores = "";
         for (int n=0; n<firebaseUser.getProviderData().size(); n++){
@@ -84,6 +89,24 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         if (proveedores.contains("google")) {
             //Si iniciamos sesión con Google:
             setContentView(R.layout.perfil_usuario_google_facebook);
+
+            familyAccessCode = findViewById(R.id.codigoFamiliarGoogleFacebook);
+            firebaseHelper.getFamilyAccessCode(firebaseUser.getUid(),
+                    new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String code) {
+                            //familyAccessCode.setText(code);
+                            Log.d("family", code);
+                            familyAccessCode.setText(code);
+                        }
+                    },
+                    new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText( PerfilUsuarioActivity.this,
+                                    "We couldn't obtain your family acccess code", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
             //PARA OBTENER LA FOTO DE PERFIL DEL USUARIO
             // Inicialización Volley
@@ -117,6 +140,24 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             //Si iniciamos sesión con Facebook:
             setContentView(R.layout.perfil_usuario_google_facebook);
 
+            familyAccessCode = findViewById(R.id.codigoFamiliarGoogleFacebook);
+            firebaseHelper.getFamilyAccessCode(firebaseUser.getUid(),
+                    new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String code) {
+                            //familyAccessCode.setText(code);
+                            Log.d("family", code);
+                            familyAccessCode.setText(code);
+                        }
+                    },
+                    new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText( PerfilUsuarioActivity.this,
+                                    "We couldn't obtain your family acccess code", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
             //PARA OBTENER LA FOTO DE PERFIL DEL USUARIO
             // Inicialización Volley
             RequestQueue colaPeticiones = Volley.newRequestQueue(this);
@@ -147,6 +188,23 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         else{
             //si iniciamos sesión con correo electrónico:
             setContentView(R.layout.perfil_usuario);
+            familyAccessCode = findViewById(R.id.codigoFamiliarPerfilET);
+            firebaseHelper.getFamilyAccessCode(firebaseUser.getUid(),
+                    new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String code) {
+                            //familyAccessCode.setText(code);
+                            Log.d("family", code);
+                            familyAccessCode.setText(code);
+                        }
+                    },
+                    new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText( PerfilUsuarioActivity.this,
+                                    "We couldn't obtain your family acccess code", Toast.LENGTH_SHORT).show();
+                        }
+                    });
             storageRef = FirebaseStorage.getInstance().getReference();
 
             nombreApellidos = findViewById(R.id.nombreApellidosPerfil);

@@ -37,6 +37,37 @@
             android:layout_height="match_parent">
 
             <!--HEADER-->
+
+            <TextView
+                android:id="@+id/labelEmail2"
+                style="@style/TextoInterRegular.Inputs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Codigo familiar"
+                app:layout_constraintEnd_toEndOf="@+id/labelNombreApellidos"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/labelNombreApellidos"
+                app:layout_constraintTop_toBottomOf="@+id/emailGoogleFacebook" />
+
+            <TextView
+                android:id="@+id/codigoFamiliarGoogleFacebook"
+                style="@style/TextoInterRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="Codigo familiar"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/nombreGoogleFacebook"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/nombreGoogleFacebook"
+                app:layout_constraintTop_toBottomOf="@+id/labelEmail2" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
@@ -160,7 +191,7 @@
                 android:text="@string/CerrarSesion"
                 app:layout_constraintEnd_toEndOf="@+id/emailGoogleFacebook"
                 app:layout_constraintStart_toStartOf="@+id/emailGoogleFacebook"
-                app:layout_constraintTop_toBottomOf="@+id/emailGoogleFacebook" />
+                app:layout_constraintTop_toBottomOf="@+id/codigoFamiliarGoogleFacebook" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

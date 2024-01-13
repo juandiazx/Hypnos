@@ -37,6 +37,37 @@
             android:layout_height="match_parent">
 
             <!--HEADER-->
+
+            <TextView
+                android:id="@+id/labelEmail3"
+                style="@style/TextoInterRegular.Inputs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Codigo familiar"
+                app:layout_constraintStart_toStartOf="@+id/labelEmail"
+                app:layout_constraintTop_toBottomOf="@+id/emailPerfil" />
+
+            <TextView
+                android:id="@+id/codigoFamiliarPerfilET"
+                style="@style/TextoInterRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="40dp"
+                android:ems="10"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="Codigo familiar"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelEmail3" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
@@ -192,7 +223,7 @@
                 style="@style/EstiloBoton.ConBorde"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="32dp"
                 android:paddingStart="10dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="10dp"
@@ -200,7 +231,7 @@
                 android:text="@string/CambiarContrasenya"
                 app:layout_constraintEnd_toEndOf="@+id/emailPerfil"
                 app:layout_constraintStart_toStartOf="@+id/emailPerfil"
-                app:layout_constraintTop_toBottomOf="@+id/emailPerfil" />
+                app:layout_constraintTop_toBottomOf="@+id/codigoFamiliarPerfilET" />
 
             <Button
                 android:id="@+id/btnCerrarSesion"
