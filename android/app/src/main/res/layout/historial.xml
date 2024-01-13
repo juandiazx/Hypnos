@@ -173,16 +173,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/btnExportar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="32dp"
-                    android:text="Exportar"
-                    app:layout_constraintBottom_toBottomOf="@+id/txtTituloSeccion"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txtTituloSeccion" />
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewHistorial"
                     android:layout_width="0dp"

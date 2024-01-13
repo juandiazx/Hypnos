@@ -75,7 +75,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         goalNotifications = findViewById(R.id.switchNotifications);
         warmLight = findViewById(R.id.switchWarmLight);
         coldLight = findViewById(R.id.switchColdLight);
-        autoLight = findViewById(R.id.switchAutoLight);
+        //autoLight = findViewById(R.id.switchAutoLight);
         toneLocationClock = findViewById(R.id.toneLocationClock);
         toneLocationClockText = findViewById(R.id.toneLocationClockText);
         toneLocationClockText.setEnabled(false);
@@ -341,16 +341,17 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         if ("COL".equals(lightSettings)) {
             coldLight.setChecked(true);
             warmLight.setChecked(false);
-            autoLight.setChecked(false);
+            //autoLight.setChecked(false);
         } else if ("WAR".equals(lightSettings)) {
             warmLight.setChecked(true);
             coldLight.setChecked(false);
-            autoLight.setChecked(false);
-        } else {
-            autoLight.setChecked(true);
-            warmLight.setChecked(false);
-            coldLight.setChecked(false);
+            //autoLight.setChecked(false);
         }
+//        } else {
+//            //autoLight.setChecked(true);
+//            warmLight.setChecked(false);
+//            coldLight.setChecked(false);
+//        }
     }
     private void setSwitchListeners() {
         warmLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -359,7 +360,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                 if (isChecked) {
                     // Warm light activated, deactivate others
                     coldLight.setChecked(false);
-                    autoLight.setChecked(false);
+                    //autoLight.setChecked(false);
 
                     // Update setting in the database
                     firebaseHelper.setLightWarm(userID);
@@ -373,7 +374,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                 if (isChecked) {
                     // Cold light activated, deactivate others
                     warmLight.setChecked(false);
-                    autoLight.setChecked(false);
+                    //autoLight.setChecked(false);
 
                     // Update setting in the database
                     firebaseHelper.setLightCold(userID);
@@ -381,19 +382,19 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
             }
         });
 
-        autoLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // Auto light activated, deactivate others
-                    warmLight.setChecked(false);
-                    coldLight.setChecked(false);
-
-                    // Update setting in the database
-                    firebaseHelper.setLightAuto(userID);
-                }
-            }
-        });
+//        autoLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    // Auto light activated, deactivate others
+//                    warmLight.setChecked(false);
+//                    coldLight.setChecked(false);
+//
+//                    // Update setting in the database
+//                    firebaseHelper.setLightAuto(userID);
+//                }
+//            }
+//        });
 
         goalNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override

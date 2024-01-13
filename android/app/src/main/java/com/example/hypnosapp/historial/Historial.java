@@ -73,7 +73,7 @@ public class Historial extends AppCompatActivity {
         inputDateFrom = findViewById(R.id.inputDateFrom);
         inputDateTo = findViewById(R.id.inputDateTo);
         lblErrorDates = findViewById(R.id.lblErrorDates);
-        btnExportar = findViewById(R.id.btnExportar);
+        //btnExportar = findViewById(R.id.btnExportar);
 
 
         btnPerfilUsuario.setOnClickListener(new View.OnClickListener() {
