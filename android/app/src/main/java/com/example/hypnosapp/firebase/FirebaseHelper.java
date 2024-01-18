@@ -137,7 +137,6 @@ public class FirebaseHelper {
 
         Map<String, Object> defaultGoals = new HashMap<>();
         defaultGoals.put("goBedTime", "22:00");
-        defaultGoals.put("restTime", "8:00");
         defaultGoals.put("sleepNotifications", true);
         defaultGoals.put("wakeUpTimeGoal", "6:00");
 
@@ -490,7 +489,7 @@ public class FirebaseHelper {
         DocumentReference userDocRef = db.collection("users").document(userId);
 
         Map<String, Object> idealRestTime = new HashMap<>();
-        idealRestTime.put("preferences.goals.restTime", selectedIdealRestTime);
+        idealRestTime.put("preferences.goals.goBedTime", selectedIdealRestTime);
 
         userDocRef.update(idealRestTime)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "idealRestTime updated successfully"))
@@ -519,9 +518,9 @@ public class FirebaseHelper {
                                     if (preferences != null && preferences.containsKey("goals")) {
                                         Map<String, Object> goals = (Map<String, Object>) preferences.get("goals");
 
-                                        if (goals != null && goals.containsKey("restTime")) {
-                                            String wakeUpTimeGoal = (String) goals.get("restTime");
-                                            successListener.onSuccess(wakeUpTimeGoal);
+                                        if (goals != null && goals.containsKey("goBedTime")) {
+                                            String goBedTimeGoal = (String) goals.get("goBedTime");
+                                            successListener.onSuccess(goBedTimeGoal);
                                         }
                                     }
                                 }
