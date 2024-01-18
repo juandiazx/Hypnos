@@ -95,9 +95,9 @@ public class AdaptadorNoches extends RecyclerView.Adapter<AdaptadorNoches.ViewHo
             tiempoSuenioTextView.setText(String.valueOf(noche.getTime()));
 
             fechaCompletotv.setText(formattedDate);
-            puntRespiratoriaCompletotv.setText(String.valueOf(noche.getScore()));
+            puntRespiratoriaCompletotv.setText(String.valueOf(noche.getBreathing()));
             tiempoSuenioCompletoTv.setText(String.valueOf(noche.getTime()));
-            puntuacionTextoTextview.setText(noche.getBreathing());
+            puntuacionTextoTextview.setText(String.valueOf(noche.getScore()));
             temperaturaMediaTextView.setText(String.valueOf(noche.getTemperature()));
 
             // Agrega un OnClickListener para alternar la visibilidad al hacer clic
