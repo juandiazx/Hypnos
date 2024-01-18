@@ -856,7 +856,7 @@ public class FirebaseHelper {
     public void checkFamilyAccessCode(String codigoAcceso, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
         CollectionReference usersCollection = db.collection("users");
 
-        Log.d("Puta",codigoAcceso);
+        Log.d(TAG,codigoAcceso);
         Query query = usersCollection.whereEqualTo("familyAccessCode", codigoAcceso);
 
         query.get()
@@ -1176,17 +1176,18 @@ public class FirebaseHelper {
                                 // DocumentSnapshot data represents the user document
                                 Map<String, Object> userData = document.getData();
 
-                                if (userData != null && userData.containsKey("familyAccessCode")) {
+                                if (userData != null && userData.containsKey("familyAcessCode")) {
                                     // Extract the preferences map from the user document
-                                    String familyAccessCode = (String) userData.get("familyAccessCode");
+                                    String familyAccessCode = (String) userData.get("familyAcessCode");
                                     // Extract the lightSettings string from preferences
                                     if (familyAccessCode != null) {
                                         successListener.onSuccess(familyAccessCode);
-                                        return;
                                     }
+                                } else{
+                                    Log.d(TAG, "No family access code found");
+                                    failureListener.onFailure(new Exception("No family access code found"));
                                 }
-                                Log.d(TAG, "No family access code found");
-                                failureListener.onFailure(new Exception("No family access code found"));
+
                             } else {
                                 Log.d(TAG, "User document does not exist");
                                 failureListener.onFailure(new Exception("User document does not exist"));
@@ -1199,6 +1200,46 @@ public class FirebaseHelper {
                 });
     }
 
+    /*
+    public void getIdealWakeUpHour(String userId, final OnSuccessListener<String> successListener, final OnFailureListener failureListener){
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        userDocRef.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+
+                            if(document.exists()) {
+                                Map<String, Object> userData = document.getData();
+
+                                if (userData != null && userData.containsKey("preferences")) {
+                                    Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
+
+                                    if (preferences != null && preferences.containsKey("goals")) {
+                                        Map<String, Object> goals = (Map<String, Object>) preferences.get("goals");
+
+                                        if (goals != null && goals.containsKey("wakeUpTimeGoal")) {
+                                            String wakeUpTimeGoal = (String) goals.get("wakeUpTimeGoal");
+                                            successListener.onSuccess(wakeUpTimeGoal);
+                                        }
+                                    }
+                                }
+                            } else{
+                                Log.d(TAG, "No wakeUpTimeGoal document found");
+                                successListener.onSuccess(null);
+                            }
+
+                            }
+                            else{
+                                Log.e(TAG, "Error getting user document", task.getException());
+                                failureListener.onFailure(task.getException());
+                            }
+                        }
+        });
+    }
+     */
 
     /*
     public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
