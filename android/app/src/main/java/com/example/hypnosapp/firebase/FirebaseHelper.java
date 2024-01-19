@@ -857,7 +857,7 @@ public class FirebaseHelper {
         CollectionReference usersCollection = db.collection("users");
 
         Log.d(TAG,codigoAcceso);
-        Query query = usersCollection.whereEqualTo("familyAcessCode", codigoAcceso);
+        Query query = usersCollection.whereEqualTo("familyAccessCode", codigoAcceso);
 
         query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
