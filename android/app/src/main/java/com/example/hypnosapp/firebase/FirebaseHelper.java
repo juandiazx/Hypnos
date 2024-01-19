@@ -857,7 +857,7 @@ public class FirebaseHelper {
         CollectionReference usersCollection = db.collection("users");
 
         Log.d(TAG,codigoAcceso);
-        Query query = usersCollection.whereEqualTo("familyAccessCode", codigoAcceso);
+        Query query = usersCollection.whereEqualTo("familyAcessCode", codigoAcceso);
 
         query.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -869,7 +869,7 @@ public class FirebaseHelper {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 // Encontrar el documento que coincide con el familyAccessCode
                                 String userId = document.getId();
-                                Log.d("Holaaaa",userId);
+                                Log.d(TAG,userId);
                                 successListener.onSuccess(userId);
                                 return;  // No es necesario continuar después de encontrar una coincidencia
                             }
@@ -1199,82 +1199,6 @@ public class FirebaseHelper {
                     }
                 });
     }
-
-    /*
-    public void getIdealWakeUpHour(String userId, final OnSuccessListener<String> successListener, final OnFailureListener failureListener){
-        DocumentReference userDocRef = db.collection("users").document(userId);
-
-        userDocRef.get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-
-                            if(document.exists()) {
-                                Map<String, Object> userData = document.getData();
-
-                                if (userData != null && userData.containsKey("preferences")) {
-                                    Map<String, Object> preferences = (Map<String, Object>) userData.get("preferences");
-
-                                    if (preferences != null && preferences.containsKey("goals")) {
-                                        Map<String, Object> goals = (Map<String, Object>) preferences.get("goals");
-
-                                        if (goals != null && goals.containsKey("wakeUpTimeGoal")) {
-                                            String wakeUpTimeGoal = (String) goals.get("wakeUpTimeGoal");
-                                            successListener.onSuccess(wakeUpTimeGoal);
-                                        }
-                                    }
-                                }
-                            } else{
-                                Log.d(TAG, "No wakeUpTimeGoal document found");
-                                successListener.onSuccess(null);
-                            }
-
-                            }
-                            else{
-                                Log.e(TAG, "Error getting user document", task.getException());
-                                failureListener.onFailure(task.getException());
-                            }
-                        }
-        });
-    }
-     */
-
-    /*
-    public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
-        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
-
-        // Define the query to get the relevant nights
-        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
-
-        // Execute the query
-        query.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Night> nightsList = new ArrayList<>();
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Convert each document to a Night object
-                                Night night = document.toObject(Night.class);
-                                nightsList.add(night);
-                            }
-                            Date currentDate = new Date();
-                            Night yesterdayNight = searchYesterdayNight(nightsList, currentDate);
-                            successListener.onSuccess(yesterdayNight);
-                        }
-                        else{
-                            failureListener.onFailure(task.getException());
-                        }
-                    }
-                });
-    }
-
-
-     */
-
 
 
 }//class
