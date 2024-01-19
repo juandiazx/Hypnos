@@ -1,6 +1,7 @@
 package com.example.hypnosapp.historial;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -18,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 
+import com.example.hypnosapp.appactivity.AjustesDeSuenyoActivity;
 import com.example.hypnosapp.firebase.FirebaseHelper;
+import com.example.hypnosapp.mainpage.ECGActivity;
 import com.example.hypnosapp.model.Night;
 import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
@@ -100,6 +103,17 @@ public class Historial extends AppCompatActivity {
                 funcionMenu.abrirAcercaDe(Historial.this);
             }
         });
+
+        ImageView btnAbrirActivityECG = findViewById(R.id.logoCardiacoHeader);
+        btnAbrirActivityECG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent para abrir la actividad ECG
+                Intent intent = new Intent(Historial.this, ECGActivity.class);
+                startActivity(intent);
+            }
+        });
+
         inputDateFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
