@@ -193,7 +193,7 @@ def on_message(client, userdata, message):
         GPIO.cleanup()
 
     elif message.topic == mqtt_topic:
-        datos_mqtt = payload
+        datos_mqtt = json.loads(payload) #payload
         print('Datos MQTT recibidos correctamente:', datos_mqtt)
         encender_led_segun_ajuste(iluminacion)
         time.sleep(10)

@@ -126,12 +126,23 @@ public:
 
     void enviarDatosMQTT(){
       if (client.connect("M5StackClient")) {
+        //I need you to make a code to send the sleepScore and tiempoEncendido in an object to mqtt publishing
+     
         sleepScore = calculateSleepScore();
 
+        StaticJsonDocument<200> doc;
+        doc["sleepScore"] = sleepScore;
+        doc["tiempoEncendido"] = this->tiempoEncendido;
+
+        char buffer[512];
+        serializeJson(doc, buffer);
+        client.publish(mqtt_topic, buffer);
+        //this->tiempoEncendido
+        /*
         char message[10];  // Ajusta el tamaño según tus necesidades
         sprintf(message, "%d", sleepScore);
 
-        client.publish(mqtt_topic, message);
+        client.publish(mqtt_topic, message);*/
         client.disconnect();
       }
       else {
