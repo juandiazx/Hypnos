@@ -133,7 +133,7 @@ public:
         StaticJsonDocument<200> doc;
         doc["sleepScore"] = sleepScore;
         doc["tiempoEncendido"] = this->tiempoEncendido;
-
+        
         char buffer[512];
         serializeJson(doc, buffer);
         client.publish(mqtt_topic, buffer);
