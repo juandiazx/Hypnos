@@ -153,7 +153,17 @@ public class ECGActivity extends AppCompatActivity {
             }
         });
 
+        ImageView btnMaps = findViewById(R.id.ButtonMaps);
+        btnMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirMaps(ECGActivity.this);
+            }
+        });
+
     }
+
+
 
     private void startBluetoothConnection() {
         // Obtener el dispositivo de la banda cardíaca (reemplaza con tu lógica)
