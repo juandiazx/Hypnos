@@ -12,7 +12,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,17 +25,52 @@ import com.example.hypnosapp.utils.MenuManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class ECGActivity extends AppCompatActivity {
     private static final int REQUEST_ENABLE_BT = 1;
     private BluetoothAdapter bluetoothAdapter;
-    private Handler handler;
+    private Handler handler = new Handler();
     public static final int MESSAGE_READ = 0;
+
+    private int latidos = 80; // Valor inicial
+    private TextView latidosTextView;
+
+    /* De _todo este archivo, solo es útil y funciona el botón para buscar bluetooth "btnConectarBandaCardiaca" y
+    *     la funcionalidad de los menus. Lo demás es uno de varios intentos de manejar dispositivos Bluetooth y no debería
+    * funcionar ni interferir con nada */
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ecg); // Reemplaza con tu layout
+        setContentView(R.layout.activity_ecg);
+
+        Button btnConectarBandaCardiaca = findViewById(R.id.btnConectarBandaCardiaca);
+        latidosTextView = findViewById(R.id.latidos_ECG);
+        btnConectarBandaCardiaca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Al hacer clic en el botón, iniciar la actividad BluetoothExplorerActivity
+                Intent intent = new Intent(ECGActivity.this, ECGManager_Ziven_Cardio.class);
+                startActivity(intent);
+            }
+        });
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Mostrar el TextView de "Conectado"
+                TextView textViewConectado = findViewById(R.id.textViewConectado);
+                textViewConectado.setVisibility(View.VISIBLE);
+                // Simular la variación de latidos
+                latidos += new Random().nextInt(6) - 3; // Variación entre -3 y 3
+                latidos = Math.max(80, Math.min(120, latidos)); // Asegurarse de estar en el rango 80-120
+                latidosTextView.setText("Latidos por minuto: " + latidos);
+
+                // Programar la próxima actualización después de un intervalo
+                handler.postDelayed(this, 2000); // Actualizar cada 2 segundos
+            }
+        }, 7000); // Iniciar la actualización después de 2 segundos
 
         //Menu buttons functionalities
         MenuManager funcionMenu = new MenuManager();
@@ -140,8 +177,6 @@ public class ECGActivity extends AppCompatActivity {
         // por ejemplo, actualiza la interfaz de usuario con la frecuencia cardíaca.
         Log.d("ECGActivity", "Data from Heart Rate Monitor: " + Arrays.toString(data));
     }
-
-    // Agrega otros métodos según sea necesario
 
     private void manageMyConnectedSocket(BluetoothSocket socket) {
         // Lógica para manejar el socket conectado

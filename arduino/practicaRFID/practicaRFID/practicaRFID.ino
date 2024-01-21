@@ -185,11 +185,13 @@ void verifyCode(byte *data, byte dataSize) {
   if (strcmp(buffer, "HypnosActivo") == 0) {
     setLEDColor(0, 255, 0);  // Verde
     previousWriteToCardState = true;
-    delay(2000);
+    M5.Speaker.tone(1300, 200); // Frecuencia y duración del tono
+    delay(140);
   } else {
     setLEDColor(255, 0, 0);  // Rojo
     previousWriteToCardState = true;
-    delay(2000);
+    M5.Speaker.tone(200, 200); // Frecuencia y duración del tono
+    delay(140);
   }
   setLEDColor(0, 0, 0);  // Apagar el LED después de 2 segundos
   M5.Lcd.fillScreen(TFT_BLACK);

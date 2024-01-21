@@ -856,7 +856,7 @@ public class FirebaseHelper {
     public void checkFamilyAccessCode(String codigoAcceso, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
         CollectionReference usersCollection = db.collection("users");
 
-        Log.d("Puta",codigoAcceso);
+        Log.d(TAG,codigoAcceso);
         Query query = usersCollection.whereEqualTo("familyAccessCode", codigoAcceso);
 
         query.get()
@@ -869,7 +869,7 @@ public class FirebaseHelper {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 // Encontrar el documento que coincide con el familyAccessCode
                                 String userId = document.getId();
-                                Log.d("Holaaaa",userId);
+                                Log.d(TAG,userId);
                                 successListener.onSuccess(userId);
                                 return;  // No es necesario continuar después de encontrar una coincidencia
                             }
@@ -1176,17 +1176,18 @@ public class FirebaseHelper {
                                 // DocumentSnapshot data represents the user document
                                 Map<String, Object> userData = document.getData();
 
-                                if (userData != null && userData.containsKey("familyAccessCode")) {
+                                if (userData != null && userData.containsKey("familyAcessCode")) {
                                     // Extract the preferences map from the user document
-                                    String familyAccessCode = (String) userData.get("familyAccessCode");
+                                    String familyAccessCode = (String) userData.get("familyAcessCode");
                                     // Extract the lightSettings string from preferences
                                     if (familyAccessCode != null) {
                                         successListener.onSuccess(familyAccessCode);
-                                        return;
                                     }
+                                } else{
+                                    Log.d(TAG, "No family access code found");
+                                    failureListener.onFailure(new Exception("No family access code found"));
                                 }
-                                Log.d(TAG, "No family access code found");
-                                failureListener.onFailure(new Exception("No family access code found"));
+
                             } else {
                                 Log.d(TAG, "User document does not exist");
                                 failureListener.onFailure(new Exception("User document does not exist"));
@@ -1198,42 +1199,6 @@ public class FirebaseHelper {
                     }
                 });
     }
-
-
-    /*
-    public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
-        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
-
-        // Define the query to get the relevant nights
-        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
-
-        // Execute the query
-        query.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Night> nightsList = new ArrayList<>();
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Convert each document to a Night object
-                                Night night = document.toObject(Night.class);
-                                nightsList.add(night);
-                            }
-                            Date currentDate = new Date();
-                            Night yesterdayNight = searchYesterdayNight(nightsList, currentDate);
-                            successListener.onSuccess(yesterdayNight);
-                        }
-                        else{
-                            failureListener.onFailure(task.getException());
-                        }
-                    }
-                });
-    }
-
-
-     */
-
 
 
 }//class

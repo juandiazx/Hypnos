@@ -15,6 +15,7 @@
 
         <!-- Inclusión del encabezado -->
         <include
+            android:id="@+id/include5"
             layout="@layout/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,23 +30,27 @@
             android:layout_height="wrap_content"
             android:text="ECG Value"
             android:textSize="18sp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/include6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Botón para la conexión con la banda cardiaca -->
+
+        <!-- Inclusión del pie de página -->
+
         <Button
             android:id="@+id/btnConectarBandaCardiaca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="220dp"
             android:text="Conectar Banda Cardiaca"
-            app:layout_constraintTop_toBottomOf="@+id/ecgValueTextView"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="16dp"/>
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ecgValueTextView" />
 
-        <!-- Inclusión del pie de página -->
         <include
             android:id="@+id/include6"
             layout="@layout/footer"
@@ -54,6 +59,34 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/latidos_ECG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Latidos por minuto:"
+            android:textSize="24sp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/ecgValueTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include5" />
+
+        <TextView
+            android:id="@+id/textViewConectado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dispositivo Conectado"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/ecgValueTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/latidos_ECG"
+            app:layout_constraintVertical_bias="0.102" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
