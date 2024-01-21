@@ -8,53 +8,6 @@
     android:background="@color/colorBlanco"
     tools:context=".appactivity.MainActivity">
 
-    <!--FOOTER-->
-
-    <!--FIN DE FOOTER-->
-
-    <!--
-        <ImageView
-            android:id="@+id/imageMenu"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icons8_menu_100" />
-
-        <ImageView
-            android:id="@+id/imageViewLogo2"
-            android:layout_width="112dp"
-            android:layout_height="72dp"
-            android:layout_marginEnd="10dp"
-            android:background="#00000000"
-            android:backgroundTint="#00000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.516"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logotipo_hypnos" />
-
-        <ImageView
-            android:id="@+id/imageViewProfile"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:background="#00000000"
-            android:clickable="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icons8_male_user_96" />
-    -->
-    <!--HEADER-->
-    <!--FIN DE HEADER-->
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
@@ -116,35 +69,7 @@
                     app:layout_constraintStart_toStartOf="@+id/halfDonutChartAyer"
                     app:layout_constraintTop_toBottomOf="@+id/txtTituloDescansoAyer"
                     app:layout_constraintVertical_bias="0.179" />
-<!--
-                <TextView
-                    android:id="@+id/txtEstimacionDescanso"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#00000000"
-                    android:text="Normal"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/halfDonutChartAyer"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAyer"
-                    app:layout_constraintHorizontal_bias="0.498"
-                    app:layout_constraintStart_toStartOf="@+id/halfDonutChartAyer"
-                    app:layout_constraintTop_toBottomOf="@+id/txtNumeroPuntuacionDescansoAyer"
-                    app:layout_constraintVertical_bias="0.0" />
-                    -->
 
-                <TextView
-                    android:id="@+id/txtConsejoSalud"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="#00000000"
-                    android:text="Consejo de salud"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAyer"
-                    app:layout_constraintHorizontal_bias="0.005"
-                    app:layout_constraintStart_toStartOf="@+id/halfDonutChartAyer"
-                    app:layout_constraintTop_toBottomOf="@+id/txtPuntuacionRespiracion" />
 
                 <TextView
                     android:id="@+id/txtTituloDescansoAyer"
@@ -160,107 +85,46 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/iconoConsejoSalud"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
-                    android:background="#00000000"
-                    app:layout_constraintStart_toStartOf="@+id/txtConsejoSalud"
-                    app:layout_constraintTop_toBottomOf="@+id/txtConsejoSalud"
-                    app:srcCompat="@drawable/consejo_salud_mano" />
-
-                <TextView
-                    android:id="@+id/txtDescripcionConsejoSalud"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="#00000000"
-                    android:text="Reduce la temperatura de la habitación abriendo una ventana para que entre aire fresco."
-                    android:textSize="13sp"
-                    android:gravity="center_vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/iconoConsejoSalud"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAyer"
-                    app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
-                    app:layout_constraintTop_toBottomOf="@+id/txtConsejoSalud" />
-
                 <TextView
                     android:id="@+id/txtTiempoSueño"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="24dp"
                     android:background="#00000000"
+                    android:gravity="center_vertical"
                     android:text="Tiempo de sueño:"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoTiempoSueño"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAyer"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
-                    app:layout_constraintTop_toTopOf="@+id/iconoTiempoSueño"
-                    app:layout_constraintVertical_bias="0.0" />
-<!--
-                <TextView
-                    android:id="@+id/txtHoraDespertar"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="5dp"
-                    android:background="#00000000"
-                    android:text="Hora de despertar:"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:gravity="center_vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/iconoHoraDespertar"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
-                    app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
-                    app:layout_constraintTop_toTopOf="@+id/iconoHoraDespertar" />
-
-                <TextView
-                    android:id="@+id/txtHoraDormir"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="5dp"
-                    android:background="#00000000"
-                    android:text="Hora de dormir:"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:gravity="center_vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/iconoHoraDormir"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
-                    app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
-                    app:layout_constraintTop_toTopOf="@+id/iconoHoraDormir" />
-                    -->
+                    app:layout_constraintStart_toEndOf="@+id/iconoTiempoSueño"
+                    app:layout_constraintTop_toTopOf="@+id/iconoTiempoSueño" />
 
                 <TextView
                     android:id="@+id/txtTemperaturaMediaNoche"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="24dp"
                     android:background="#00000000"
                     android:gravity="center_vertical"
                     android:text="Temperatura:"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoTemperaturaMediaNoche"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAyer"
-                    app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
+                    app:layout_constraintStart_toEndOf="@+id/iconoTemperaturaMediaNoche"
                     app:layout_constraintTop_toTopOf="@+id/iconoTemperaturaMediaNoche" />
 
                 <TextView
                     android:id="@+id/txtPuntuacionRespiracion"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="24dp"
                     android:background="#00000000"
                     android:gravity="center_vertical"
                     android:text="Respiracion:"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoPuntuacionRespiracion"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAyer"
-                    app:layout_constraintStart_toEndOf="@+id/iconoConsejoSalud"
+                    app:layout_constraintStart_toEndOf="@+id/iconoPuntuacionRespiracion"
                     app:layout_constraintTop_toTopOf="@+id/iconoPuntuacionRespiracion" />
 
                 <TextView
@@ -277,52 +141,17 @@
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAyer"
                     app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAyer"
                     app:layout_constraintTop_toTopOf="@+id/iconoTiempoSueño" />
-<!--
-                <TextView
-                    android:id="@+id/txtHoraDespertarHoras"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="#00000000"
-                    android:text="08:15 AM"
-                    android:textAlignment="center"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:gravity="center_vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/iconoHoraDespertar"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAyer"
-                    app:layout_constraintTop_toTopOf="@+id/iconoHoraDespertar"
-                    app:layout_constraintVertical_bias="1.0" />
-
-                <TextView
-                    android:id="@+id/txtHoraDormirHoras"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="#00000000"
-                    android:text="23:02 PM"
-                    android:textAlignment="center"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:gravity="center_vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/iconoHoraDormir"
-                    app:layout_constraintEnd_toEndOf="@+id/halfDonutChart"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/txtNumeroPuntuacionDescansoAyer"
-                    app:layout_constraintTop_toTopOf="@+id/iconoHoraDormir"
-                    app:layout_constraintVertical_bias="1.0" />
-                    -->
 
                 <TextView
                     android:id="@+id/txtTemperaturaMediaNocheGradosAyer"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="#00000000"
+                    android:gravity="center_vertical"
                     android:text="28ºC"
                     android:textAlignment="center"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="@+id/iconoTemperaturaMediaNoche"
                     app:layout_constraintEnd_toEndOf="@+id/halfDonutChartAyer"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -351,32 +180,11 @@
                     android:id="@+id/iconoTiempoSueño"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="54dp"
                     android:background="#00000000"
                     app:layout_constraintStart_toStartOf="@+id/halfDonutChartAyer"
                     app:layout_constraintTop_toBottomOf="@+id/txtNumeroPuntuacionDescansoAyer"
                     app:srcCompat="@drawable/icons8_sleeping_in_bed_96" />
-<!--
-                <ImageView
-                    android:id="@+id/iconoHoraDespertar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="20dp"
-                    android:background="#00000000"
-                    app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
-                    app:layout_constraintTop_toBottomOf="@+id/iconoTiempoSueño"
-                    app:srcCompat="@drawable/icons8_sunrise_96" />
-
-                <ImageView
-                    android:id="@+id/iconoHoraDormir"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="20dp"
-                    android:background="#00000000"
-                    app:layout_constraintStart_toStartOf="@+id/halfDonutChart"
-                    app:layout_constraintTop_toBottomOf="@+id/iconoHoraDespertar"
-                    app:srcCompat="@drawable/icons8_sunset_96" />
-                    -->
 
                 <ImageView
                     android:id="@+id/iconoTemperaturaMediaNoche"
@@ -393,26 +201,20 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="32dp"
                     android:background="#00000000"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/halfDonutChartAyer"
                     app:layout_constraintTop_toBottomOf="@+id/iconoTemperaturaMediaNoche"
                     app:srcCompat="@drawable/icons8_breath_100" />
 
-                <TextView
-                    android:id="@+id/textoInvisibleSeparacion"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtDescripcionConsejoSalud" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/frameLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
@@ -455,57 +257,5 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <!--
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/frameLayoutMenu"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="-10dp"
-            android:background="@drawable/border_background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/imageHome"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="60dp"
-                android:layout_marginBottom="10dp"
-                android:background="#00000000"
-                android:clickable="true"
-                android:src="@drawable/icons8_home_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageGear"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="60dp"
-                android:background="#00000000"
-                android:clickable="true"
-                android:src="@drawable/icons8_gear_48"
-                app:layout_constraintBottom_toBottomOf="@+id/imageHome"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageHome"
-                app:layout_constraintVertical_bias="0.49" />
-
-            <ImageView
-                android:id="@+id/imageMoon"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="#00000000"
-                android:clickable="true"
-                android:src="@drawable/icons8_moon_60"
-                app:layout_constraintBottom_toBottomOf="@+id/imageHome"
-                app:layout_constraintEnd_toStartOf="@+id/imageGear"
-                app:layout_constraintStart_toEndOf="@+id/imageHome"
-                app:layout_constraintTop_toTopOf="@+id/imageHome" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
