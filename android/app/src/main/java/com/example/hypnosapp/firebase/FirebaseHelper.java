@@ -158,40 +158,6 @@ public class FirebaseHelper {
     }
 
     public void setIncrementalFamilyID(FamilyAccessIndexCallback callback) {
-//        CollectionReference usersCollectionRef = db.collection("users");
-//        usersCollectionRef.orderBy("familyAccessCode", Query.Direction.DESCENDING).limit(1)
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        QuerySnapshot querySnapshot = task.getResult();
-//                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-//                            // Obtiene el primer documento (el de mayor 'familyAccessCode')
-//                            DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-//
-//                            // Verifica si familyAccessCode no es nulo
-//                            Object familyAccessCodeObj = documentSnapshot.get("familyAccessCode");
-//                            if (familyAccessCodeObj != null) {
-//                                long lastFamilyAccessCode = (long) familyAccessCodeObj;
-//                                long newFamilyAccessIndex = lastFamilyAccessCode + 1;
-//
-//                                // Llama al callback con el nuevo familyAccessIndex
-//                                if (callback != null) {
-//                                    callback.onFamilyAccessIndexGenerated(newFamilyAccessIndex);
-//                                }
-//                            } else {
-//                                // Manejar el caso en el que familyAccessCode es nulo
-//                                // Puedes asignar un valor predeterminado, lanzar una excepción, etc.
-//                            }
-//                        }
-//                        // Genera un nuevo familyAccessIndex para el nuevo usuario
-//                    } else {
-//                        // Maneja la excepción si la consulta no es exitosa
-//                        Exception exception = task.getException();
-//                        if (exception != null) {
-//                            // Maneja la excepción
-//                        }
-//                    }
-//                });
         int lowerBound = 10000000;
         int upperBound = 99999999;
         Random random = new Random();
@@ -210,7 +176,7 @@ public class FirebaseHelper {
             Date nightDate = DateUtils.addDays(new Date(), -i);
 
             // Create an empty night with the required fields
-            Night emptyNight = new Night(nightDate, "No night has been monitorized yet", 0, 0, 0);
+            Night emptyNight = new Night(nightDate, "0", 0, 0, 0);
 
             // Set the date for the empty night
             emptyNight.setDate(nightDate);

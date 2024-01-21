@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
@@ -58,6 +59,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     StorageReference storageRef;
     ImageView imgProfile;
     private FirebaseHelper firebaseHelper;
+
+    private boolean isPasswordVisible = false;
 
 
     public interface ReauthenticationListener {
@@ -399,6 +402,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             EditText inputpassRe = dialogView.findViewById(R.id.inputPassReautenticacion);
             Button btnAceptarRe = dialogView.findViewById(R.id.btnAceptarReautenticacion);
             Button btnCancelarRe = dialogView.findViewById(R.id.btnCancelarReautenticacion);
+            ImageView ojoMostrarOcultarPass = dialogView.findViewById(R.id.ojoMostrarOcultarPass);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Reautenticación");
@@ -433,6 +437,16 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
+                }
+            });
+
+            ojoMostrarOcultarPass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isPasswordVisible = !isPasswordVisible;
+                    int visibility = isPasswordVisible ? View.VISIBLE : View.GONE;
+                    inputpassRe.setInputType(isPasswordVisible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    ojoMostrarOcultarPass.setImageResource(isPasswordVisible ? R.drawable.ic_visibility_eye : R.drawable.ic_visibility_eye_off);
                 }
             });
         }
