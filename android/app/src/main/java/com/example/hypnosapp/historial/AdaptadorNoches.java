@@ -100,7 +100,6 @@ public class AdaptadorNoches extends RecyclerView.Adapter<AdaptadorNoches.ViewHo
             puntuacionTextoTextview.setText(String.valueOf(noche.getScore()));
             temperaturaMediaTextView.setText(String.valueOf(noche.getTemperature()));
 
-            // Agrega un OnClickListener para alternar la visibilidad al hacer clic
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

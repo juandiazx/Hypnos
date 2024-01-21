@@ -382,8 +382,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         //Facebook Log Out Login Manager
         LoginManager.getInstance().logOut();
 
-        Toast.makeText(this, "Se ha cerrado la sesión", Toast.LENGTH_SHORT).show();
-
         //después de cerrar sesión nos dirigirá a la pantalla de pre-inicio de sesión:
         Intent i = new Intent(getApplicationContext(), PreinicioDeSesion.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -512,7 +510,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 String passRepe = inputPassRepe.getText().toString();
 
                 if (passNueva.equals(passRepe)) {
-                    Toast.makeText(PerfilUsuarioActivity.this, "Pass Correcta", Toast.LENGTH_SHORT).show();
                     Log.d("CambioContrasenya", "Contraseña repetida correctamente");
 
                     firebaseUser.updatePassword(passNueva)

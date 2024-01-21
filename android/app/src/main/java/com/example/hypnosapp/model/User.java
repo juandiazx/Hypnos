@@ -88,4 +88,15 @@ public class User {
             this.goals = goals;
         }
     }
+
+    public User(){}
+
+    public User(String birth, String email, String name, String picture, List<String> problems, Preferences preferences) {
+        this.birth = birth;
+        this.email = email;
+        this.name = name;
+        this.picture = picture;
+        this.problems = problems;
+        this.preferences = preferences;
+    }
 }

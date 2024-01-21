@@ -51,7 +51,7 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
 
     private static final int PICK_RINGTONE_REQUEST = 1;
     ImageView btnPerfilUsuario, btnPantallaPrincipal, btnAjustesDescanso, btnPreferencias;
-    EditText toneLocationClock, /*wakeUpHourGoal, sleepTimeGoal,*/ toneLocationClockText;
+    EditText toneLocationClock, toneLocationClockText;
     Spinner wakeUpHourGoal, sleepTimeGoal;
     Switch isAutoClock, goalNotifications, warmLight, coldLight, autoLight;
     Button btnGuardarClock, btnGuardarGoals, botonVincularMQTT;
@@ -71,8 +71,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         userID = firebaseUser.getUid();
-
-        //userID = "lr3SPEtJqt493dpfWoDd"; // this is the only user of the database at the time
 
         btnPerfilUsuario= findViewById(R.id.logoUsuarioHeader);
         isAutoClock = findViewById(R.id.switchAutoClock);
@@ -314,17 +312,10 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
         if ("COL".equals(lightSettings)) {
             coldLight.setChecked(true);
             warmLight.setChecked(false);
-            //autoLight.setChecked(false);
         } else if ("WAR".equals(lightSettings)) {
             warmLight.setChecked(true);
             coldLight.setChecked(false);
-            //autoLight.setChecked(false);
         }
-//        } else {
-//            //autoLight.setChecked(true);
-//            warmLight.setChecked(false);
-//            coldLight.setChecked(false);
-//        }
     }
     private void setSwitchListeners() {
         warmLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -354,20 +345,6 @@ public class AjustesDeSuenyoActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        autoLight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    // Auto light activated, deactivate others
-//                    warmLight.setChecked(false);
-//                    coldLight.setChecked(false);
-//
-//                    // Update setting in the database
-//                    firebaseHelper.setLightAuto(userID);
-//                }
-//            }
-//        });
 
         goalNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
