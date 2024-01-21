@@ -91,8 +91,6 @@ public class Registro extends AppCompatActivity {
             AuthHelper.registrarUsuario(auth, correo, contraseña, nombreCompleto, fechaNacimiento, this, tvRespuesta, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    //AuthHelper.manejoRespuestaFirebase(task, tvRespuesta, Registro.this, "com.example.hypnosapp.InicioDeSesion");
-                    //AuthHelper.mostrarPopUpRegistro(Registro.this);
                 }
             });
         }
