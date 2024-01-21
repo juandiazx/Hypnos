@@ -60,7 +60,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     ImageView imgProfile;
     private FirebaseHelper firebaseHelper;
 
-    private boolean isPasswordVisible = false;
+
 
 
     public interface ReauthenticationListener {
@@ -441,6 +441,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             });
 
             ojoMostrarOcultarPass.setOnClickListener(new View.OnClickListener() {
+                boolean isPasswordVisible = false;
                 @Override
                 public void onClick(View v) {
                     isPasswordVisible = !isPasswordVisible;
@@ -496,6 +497,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         EditText inputPassRepe = dialogView.findViewById(R.id.inputPassRepe);
         Button btnAceptar = dialogView.findViewById(R.id.btnAceptarCambioContrasenya);
         Button btnCancelar = dialogView.findViewById(R.id.btnCancelarCambioContrasenya);
+        ImageView ojoMostrarOcultarCambioPass = dialogView.findViewById(R.id.ojoMostrarOcultarCambioPass);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Cambiar contraseña");
@@ -538,6 +540,20 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
+        ojoMostrarOcultarCambioPass.setOnClickListener(new View.OnClickListener() {
+            boolean isPasswordVisible = false;
+            @Override
+            public void onClick(View v) {
+                isPasswordVisible = !isPasswordVisible;
+                int visibility = isPasswordVisible ? View.VISIBLE : View.GONE;
+                inputPassNueva.setInputType(isPasswordVisible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                inputPassRepe.setInputType(isPasswordVisible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                ojoMostrarOcultarCambioPass.setImageResource(isPasswordVisible ? R.drawable.ic_visibility_eye : R.drawable.ic_visibility_eye_off);
+            }
+        });
+
+
     }
     private void subirNuevaFotoPerfil(Uri imagen, String direccionFirebase){
 
