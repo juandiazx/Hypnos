@@ -151,7 +151,6 @@ def leer_ajustes_iluminacion_firestore(uid):
 
     return None
 
-
 def encender_led_segun_ajuste(lightSettings):
     # Define GPIO pins for RGB LED (adjust these according to your wiring)
     RED_PIN = 17

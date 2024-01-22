@@ -132,9 +132,6 @@ public class Historial extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         listaNoches = new ArrayList<>();
-//        listaNoches.add(new Night(new Date(), "breathing", 90, 25, 8));
-//        listaNoches.add(new Night(new Date(), "breathing", 76, 15, 5));
-//        listaNoches.add(new Night(new Date(), "breathing", 40, 35, 4));
         adaptadorNoches = new AdaptadorNoches(this, listaNoches);
         recyclerView.setAdapter(adaptadorNoches);
 

@@ -65,15 +65,13 @@
     <Button
         android:id="@+id/btnAceptarCambioContrasenya"
         style="@style/EstiloBoton"
-        android:layout_width="0dp"
+        android:layout_width="363dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="40dp"
         android:text="@string/Aceptar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputPassRepe" />
+        app:layout_constraintEnd_toEndOf="@+id/inputPassRepe"
+        app:layout_constraintStart_toStartOf="@+id/inputPassRepe"
+        app:layout_constraintTop_toBottomOf="@+id/ojoMostrarOcultarCambioPass" />
 
     <Button
         android:id="@+id/btnCancelarCambioContrasenya"
@@ -87,5 +85,27 @@
         app:layout_constraintEnd_toEndOf="@+id/btnAceptarCambioContrasenya"
         app:layout_constraintStart_toStartOf="@+id/btnAceptarCambioContrasenya"
         app:layout_constraintTop_toBottomOf="@+id/btnAceptarCambioContrasenya" />
+
+    <ImageView
+        android:id="@+id/ojoMostrarOcultarCambioPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Mostrar/Ocultar contraseña"
+        android:src="@drawable/ic_visibility_eye_off"
+        app:layout_constraintEnd_toEndOf="@+id/inputPassRepe"
+        app:layout_constraintTop_toBottomOf="@+id/inputPassRepe" />
+
+    <TextView
+        android:id="@+id/textView7"
+        style="@style/TextoInterRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Mostrar contraseña"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ojoMostrarOcultarCambioPass"
+        app:layout_constraintEnd_toStartOf="@+id/ojoMostrarOcultarCambioPass"
+        app:layout_constraintTop_toTopOf="@+id/ojoMostrarOcultarCambioPass" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

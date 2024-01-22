@@ -107,7 +107,7 @@
     <string name="CambiarContrasenya">Cambiar contraseña</string>
 
     <!--Reautenticación-->
-    <string name="IntroducirCredencialesAntiguas">Introduce tus antiguas credenciales</string>
+    <string name="IntroducirCredencialesAntiguas">Introduce tus credenciales actuales</string>
     <string name="NecesarioIniciarSesion">Por motivos de seguridad, es necesario volver a iniciar sesión:</string>
 
 

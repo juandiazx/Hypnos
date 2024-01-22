@@ -72,8 +72,6 @@ public class PreinicioDeSesion extends AppCompatActivity {
         btnEmail = findViewById(R.id.btnEmail);
         tvRegistrate = findViewById(R.id.tvRegistratePreinicio);
         accederFamiliar = findViewById(R.id.botonAccederFamiliar);
-        //binding = PreinicioDeSesionBinding.inflate(getLayoutInflater());
-        //setContentView(binding.getRoot());
         // Inicializa la instancia de GoogleHelper
         googleHelper = new GoogleHelper(PreinicioDeSesion.this);
 
