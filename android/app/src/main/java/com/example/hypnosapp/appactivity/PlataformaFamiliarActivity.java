@@ -28,5 +28,6 @@ public class PlataformaFamiliarActivity extends AppCompatActivity {
         String userID = getIntent().getStringExtra("userID");
 
         firebaseHelper.cargarUltimaImagen(this, imgFamily,userID,textoFecha);
+
     }
 }

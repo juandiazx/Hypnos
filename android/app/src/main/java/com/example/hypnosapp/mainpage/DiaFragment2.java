@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.hypnosapp.R;
 import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.model.Night;
+import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +34,7 @@ public class DiaFragment2 extends Fragment {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     String userID;
+    private LineChart graph;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +50,10 @@ public class DiaFragment2 extends Fragment {
         txtTemperaturaMediaNocheGradosAyer = view.findViewById(R.id.txtTemperaturaMediaNocheGradosAyer);
         txtRespiracionAyer = view.findViewById(R.id.txtRespiracionAyer);
         halfDonutChartAyer = view.findViewById(R.id.halfDonutChartAyer);
+        //grafica
+        graph = view.findViewById(R.id.imagenGraficaSueñoDiario);
+        // Configura la gráfica
+        firebaseHelper.graphicConfig(userID, graph);
 
         firebaseHelper.getSecondLastNight(userID, new OnSuccessListener<Night>() {
             @Override

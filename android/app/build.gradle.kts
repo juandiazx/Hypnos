@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
+    //id("kotlin-android")
+    //id("kotlin-android-extensions")
 }
 
 android {
@@ -15,6 +17,7 @@ android {
         versionName = "1.0"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -25,6 +28,7 @@ android {
                 "proguard-rules.pro"
             )
         }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -39,7 +43,8 @@ android {
         resources {
             excludes.add("META-INF/DEPENDENCIES")
         }
-    }
+
+
 
 }
 
@@ -56,7 +61,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     //firebase
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation (platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation ("com.google.firebase:firebase-storage")
     implementation ("com.google.firebase:firebase-auth:22.3.0")
     implementation ("com.google.firebase:firebase-database:20.3.0")
@@ -71,13 +76,24 @@ dependencies {
     //foto de perfil
     implementation ("com.android.volley:volley:1.2.1")
     //recyclerview
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation ("androidx.recyclerview:recyclerview:1.3.2")
     //pdfExporter
     implementation ("org.apache.pdfbox:pdfbox:2.0.27")
     implementation ("org.apache.commons:commons-lang3:3.12.0")
+
     //google maps
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation ("com.google.android.gms:play-services-maps:18.2.0")
 
+    implementation ("androidx.annotation:annotation:1.3.0")
+    //graficas
 
+    implementation ("androidx.annotation:annotation:1.3.0")
+    //graficas
 
-}
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    //API NUEVA PARA BLUETOOTH
+    implementation ("com.github.jose-jhr:blueJhrLibrary:0.1.0")
+    //implementation ("androidx.core:core-ktx:1.12.0")
+
+}}

@@ -1,5 +1,6 @@
 package com.example.hypnosapp.mainpage;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,26 +14,44 @@ import androidx.fragment.app.Fragment;
 import com.example.hypnosapp.R;
 import com.example.hypnosapp.firebase.FirebaseHelper;
 import com.example.hypnosapp.model.Night;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class DiaFragment1 extends Fragment {
-
     public DiaFragment1() {
         // Constructor público vacío requerido
     }
-
     HalfDonutChart halfDonutChartAnteAyer;
     TextView txtNumeroPuntuacionDescansoAnteAyer, txtTituloDescansoAnteAyer, txtTiempoSueñoHorasAnteAyer, txtTemperaturaMediaNocheGradosAnteAyer, txtRespiracionAnteAyer;
     FirebaseHelper firebaseHelper = new FirebaseHelper();
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     String userID;
+    private LineChart graph;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +67,10 @@ public class DiaFragment1 extends Fragment {
         txtTemperaturaMediaNocheGradosAnteAyer = view.findViewById(R.id.txtTemperaturaMediaNocheGradosAnteAyer);
         txtRespiracionAnteAyer = view.findViewById(R.id.txtRespiracionAnteAyer);
         halfDonutChartAnteAyer = view.findViewById(R.id.halfDonutChartAnteAyer);
+        //grafica
+        graph = view.findViewById(R.id.imagenGraficaSueñoDiario);
+        // Configura la gráfica
+        firebaseHelper.graphicConfig(userID, graph);
 
         firebaseHelper.getThirdLastNight(userID, new OnSuccessListener<Night>() {
             @Override

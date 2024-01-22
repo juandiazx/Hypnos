@@ -20,15 +20,30 @@
     </View>
 
     <ImageView
+        android:id="@+id/btnPreferencias"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:elevation="20dp"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toEndOf="@+id/ButtonMaps"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:srcCompat="@drawable/interrogacion" />
+
+    <ImageView
         android:id="@+id/btnPantallaPrincipal"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="40dp"
         android:background="@android:color/transparent"
         android:clickable="true"
         android:elevation="20dp"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnAjustesDescanso"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/view"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/view"
         app:srcCompat="@drawable/home_icono" />
@@ -41,25 +56,30 @@
         android:elevation="20dp"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toStartOf="@+id/btnPreferencias"
+        app:layout_constraintEnd_toStartOf="@+id/ButtonMaps"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnPantallaPrincipal"
         app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintVertical_bias="0.55"
         app:srcCompat="@drawable/icono_ajustes"
         app:tint="@color/colorAzulPrincipal" />
 
     <ImageView
-        android:id="@+id/btnPreferencias"
+        android:id="@+id/ButtonMaps"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="40dp"
-        android:clickable="true"
-        android:elevation="20dp"
+        android:layout_marginBottom="3dp"
+        android:elevation="50dp"
         android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toStartOf="@+id/btnPreferencias"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnAjustesDescanso"
         app:layout_constraintTop_toTopOf="@+id/view"
-        app:srcCompat="@drawable/interrogacion" />
-
+        app:layout_constraintVertical_bias="0.6"
+        app:srcCompat="@drawable/map_icon_blue"
+        app:tint="@color/colorAzulPrincipal" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,12 @@
 package com.example.hypnosapp.firebase;
 
 import com.bumptech.glide.Glide;
+import com.example.hypnosapp.mainpage.DiaFragment1;
 import com.example.hypnosapp.mainpage.DiaFragment3;
 import com.example.hypnosapp.model.Night;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import org.apache.commons.lang3.time.DateUtils;
 import android.util.Log;
@@ -13,14 +15,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 
 import com.example.hypnosapp.model.Store;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -39,11 +52,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.Random;
 
@@ -121,7 +137,6 @@ public class FirebaseHelper {
 
         Map<String, Object> defaultGoals = new HashMap<>();
         defaultGoals.put("goBedTime", "22:00");
-        defaultGoals.put("restTime", "8:00");
         defaultGoals.put("sleepNotifications", true);
         defaultGoals.put("wakeUpTimeGoal", "6:00");
 
@@ -143,40 +158,6 @@ public class FirebaseHelper {
     }
 
     public void setIncrementalFamilyID(FamilyAccessIndexCallback callback) {
-//        CollectionReference usersCollectionRef = db.collection("users");
-//        usersCollectionRef.orderBy("familyAccessCode", Query.Direction.DESCENDING).limit(1)
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        QuerySnapshot querySnapshot = task.getResult();
-//                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-//                            // Obtiene el primer documento (el de mayor 'familyAccessCode')
-//                            DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-//
-//                            // Verifica si familyAccessCode no es nulo
-//                            Object familyAccessCodeObj = documentSnapshot.get("familyAccessCode");
-//                            if (familyAccessCodeObj != null) {
-//                                long lastFamilyAccessCode = (long) familyAccessCodeObj;
-//                                long newFamilyAccessIndex = lastFamilyAccessCode + 1;
-//
-//                                // Llama al callback con el nuevo familyAccessIndex
-//                                if (callback != null) {
-//                                    callback.onFamilyAccessIndexGenerated(newFamilyAccessIndex);
-//                                }
-//                            } else {
-//                                // Manejar el caso en el que familyAccessCode es nulo
-//                                // Puedes asignar un valor predeterminado, lanzar una excepción, etc.
-//                            }
-//                        }
-//                        // Genera un nuevo familyAccessIndex para el nuevo usuario
-//                    } else {
-//                        // Maneja la excepción si la consulta no es exitosa
-//                        Exception exception = task.getException();
-//                        if (exception != null) {
-//                            // Maneja la excepción
-//                        }
-//                    }
-//                });
         int lowerBound = 10000000;
         int upperBound = 99999999;
         Random random = new Random();
@@ -195,7 +176,7 @@ public class FirebaseHelper {
             Date nightDate = DateUtils.addDays(new Date(), -i);
 
             // Create an empty night with the required fields
-            Night emptyNight = new Night(nightDate, "No night has been monitorized yet", 0, 0, 0);
+            Night emptyNight = new Night(nightDate, "0", 0, 0, 0);
 
             // Set the date for the empty night
             emptyNight.setDate(nightDate);
@@ -474,7 +455,7 @@ public class FirebaseHelper {
         DocumentReference userDocRef = db.collection("users").document(userId);
 
         Map<String, Object> idealRestTime = new HashMap<>();
-        idealRestTime.put("preferences.goals.restTime", selectedIdealRestTime);
+        idealRestTime.put("preferences.goals.goBedTime", selectedIdealRestTime);
 
         userDocRef.update(idealRestTime)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "idealRestTime updated successfully"))
@@ -503,9 +484,9 @@ public class FirebaseHelper {
                                     if (preferences != null && preferences.containsKey("goals")) {
                                         Map<String, Object> goals = (Map<String, Object>) preferences.get("goals");
 
-                                        if (goals != null && goals.containsKey("restTime")) {
-                                            String wakeUpTimeGoal = (String) goals.get("restTime");
-                                            successListener.onSuccess(wakeUpTimeGoal);
+                                        if (goals != null && goals.containsKey("goBedTime")) {
+                                            String goBedTimeGoal = (String) goals.get("goBedTime");
+                                            successListener.onSuccess(goBedTimeGoal);
                                         }
                                     }
                                 }
@@ -841,7 +822,7 @@ public class FirebaseHelper {
     public void checkFamilyAccessCode(String codigoAcceso, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
         CollectionReference usersCollection = db.collection("users");
 
-        Log.d("Puta",codigoAcceso);
+        Log.d(TAG,codigoAcceso);
         Query query = usersCollection.whereEqualTo("familyAccessCode", codigoAcceso);
 
         query.get()
@@ -854,7 +835,7 @@ public class FirebaseHelper {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 // Encontrar el documento que coincide con el familyAccessCode
                                 String userId = document.getId();
-                                Log.d("Holaaaa",userId);
+                                Log.d(TAG,userId);
                                 successListener.onSuccess(userId);
                                 return;  // No es necesario continuar después de encontrar una coincidencia
                             }
@@ -985,41 +966,205 @@ public class FirebaseHelper {
         });
     }
 
+    public void graphicConfig(String UID, LineChart graph) {
+        graph.getDescription().setEnabled(false);
+        graph.setTouchEnabled(true);
+        graph.setDragEnabled(true);
+        graph.setScaleEnabled(true);
+        graph.setPinchZoom(true);
 
-    /*
-    public void getYesterdayNight(String userId, final OnSuccessListener<Night> successListener, final OnFailureListener failureListener){
-        CollectionReference nightsCollection = db.collection("users").document(userId).collection("nightsData");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference docRef = db.collection("users").document(UID).collection("nightsData");
+        // Obtén la fecha actual
+        Calendar currentDate = Calendar.getInstance();
+        // Retrocede 7 días desde la fecha actual
+        currentDate.add(Calendar.DAY_OF_MONTH, -7);
+        // Obtén el timestamp de hace 7 días en milisegundos
+        long sevenDaysAgoTimestamp = currentDate.getTimeInMillis();
 
-        // Define the query to get the relevant nights
-        Query query = nightsCollection.orderBy("date", Query.Direction.DESCENDING);
-
-        // Execute the query
-        query.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Night> nightsList = new ArrayList<>();
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Convert each document to a Night object
-                                Night night = document.toObject(Night.class);
-                                nightsList.add(night);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<Entry> scores = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Check if 'date' field exists and is of type Timestamp
+                        if (document.contains("date") && document.get("date") instanceof Timestamp) {
+                            Timestamp timestamp = (Timestamp) document.get("date");
+                            long timestampMillis = timestamp.toDate().getTime();
+                            // Verifica si la fecha está en los últimos 7 días
+                            if (timestampMillis >= sevenDaysAgoTimestamp) {
+                                String date = formatDate(timestamp.toDate()); // Convert timestamp to Date and then to formatted string
+                                Float score = document.getDouble("score").floatValue();
+                                scores.add(new Entry(getTimestampFromDate(date), score != null ? score : 0f));
                             }
-                            Date currentDate = new Date();
-                            Night yesterdayNight = searchYesterdayNight(nightsList, currentDate);
-                            successListener.onSuccess(yesterdayNight);
+                        } else {
+                            // Log a warning or handle the case where 'date' is not a Timestamp
+                            Log.w(TAG, "Invalid 'date' field in Firestore document");
                         }
-                        else{
+                    }
+
+                    fillMissingDaysWithZeros(scores);
+
+                    // Sort the entries based on the timestamp
+                    Collections.sort(scores, new Comparator<Entry>() {
+                        @Override
+                        public int compare(Entry entry1, Entry entry2) {
+                            return Float.compare(entry1.getX(), entry2.getX());
+                        }
+                    });
+
+                    // Create and configure the DataSet
+                    LineDataSet set = new LineDataSet(scores, "Puntuación de sueño");
+                    set.setFillAlpha(110);
+                    set.setColor(Color.parseColor("#164499"));
+                    set.setLineWidth(5f);
+                    set.setValueTextSize(15f);
+
+                    // Add the DataSet to the chart
+                    ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                    dataSets.add(set);
+                    LineData data = new LineData(dataSets);
+                    graph.setData(data);
+
+                    // Configure the appearance of the x-axis
+                    XAxis xAxis = graph.getXAxis();
+                    xAxis.setGranularity(1f);
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    xAxis.setLabelRotationAngle(0f);
+
+                    // Manually set X-axis labels using timestamps
+                    xAxis.setValueFormatter(new ValueFormatter() {
+                        @Override
+                        public String getAxisLabel(float value, AxisBase axis) {
+                            long timestamp = (long) value;
+                            String date = formatDate(new Date(timestamp));
+                            return getDayOfWeekFromDate(date);
+                        }
+                    });
+
+                    // Set the number of labels to match the number of data points
+                    xAxis.setLabelCount(Math.min(scores.size(), 7), true);
+
+                    // Hide Y-axis labels and grid lines
+                    YAxis leftYAxis = graph.getAxisLeft();
+                    leftYAxis.setDrawLabels(false);
+                    leftYAxis.setDrawGridLines(false);
+
+                    YAxis rightYAxis = graph.getAxisRight();
+                    rightYAxis.setDrawLabels(false);
+                    rightYAxis.setDrawGridLines(false);
+
+                    // Hide X-axis grid lines
+                    xAxis.setDrawGridLines(false);
+
+                    // Invalidate the chart to refresh the appearance
+                    graph.invalidate();
+
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void fillMissingDaysWithZeros(ArrayList<Entry> scores) {
+        // Obtén los timestamps existentes
+        Set<Long> existingTimestamps = new HashSet<>();
+        for (Entry entry : scores) {
+            existingTimestamps.add((long) entry.getX());
+        }
+
+        // Obtén la fecha actual
+        Calendar currentDate = Calendar.getInstance();
+
+        // Retrocede 7 días desde la fecha actual
+        currentDate.add(Calendar.DAY_OF_MONTH, -7);
+
+        // Obtén el timestamp de hace 7 días en milisegundos
+        long sevenDaysAgoTimestamp = currentDate.getTimeInMillis();
+
+        // Llena los espacios vacíos con ceros
+        for (long timestamp = sevenDaysAgoTimestamp; timestamp <= currentDate.getTimeInMillis(); timestamp += 24 * 60 * 60 * 1000) {
+            if (!existingTimestamps.contains(timestamp)) {
+                scores.add(new Entry(timestamp, 0f));
+            }
+        }
+    }
+
+    // Function to get the day of the week from the date string
+    private String getDayOfWeekFromDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", new Locale("es", "ES"));
+        try {
+            Date parsedDate = format.parse(date);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(parsedDate);
+
+            // Use a different format for the day of the week
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", new Locale("es", "ES"));
+            return dayFormat.format(calendar.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+    // Function to get a timestamp from the date string
+    private float getTimestampFromDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", new Locale("es", "ES"));
+        try {
+            Date parsedDate = format.parse(date);
+            return parsedDate.getTime(); // Convert to timestamp in milliseconds
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0f;
+    }
+
+    // Function to format Date to a string
+    private String formatDate(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy, h:mm:ss a z", new Locale("es", "ES"));
+        return format.format(date);
+    }
+
+    public void getFamilyAccessCode(String userId, final OnSuccessListener<String> successListener, final OnFailureListener failureListener) {
+        // Retrieve light settings from Firestore and return the selectedLightCode
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        userDocRef.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // DocumentSnapshot data represents the user document
+                                Map<String, Object> userData = document.getData();
+
+                                if (userData != null && userData.containsKey("familyAcessCode")) {
+                                    // Extract the preferences map from the user document
+                                    String familyAccessCode = (String) userData.get("familyAcessCode");
+                                    // Extract the lightSettings string from preferences
+                                    if (familyAccessCode != null) {
+                                        successListener.onSuccess(familyAccessCode);
+                                    }
+                                } else{
+                                    Log.d(TAG, "No family access code found");
+                                    failureListener.onFailure(new Exception("No family access code found"));
+                                }
+
+                            } else {
+                                Log.d(TAG, "User document does not exist");
+                                failureListener.onFailure(new Exception("User document does not exist"));
+                            }
+                        } else {
+                            Log.e(TAG, "Error getting user document", task.getException());
                             failureListener.onFailure(task.getException());
                         }
                     }
                 });
     }
-
-
-     */
-
 
 
 }//class

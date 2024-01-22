@@ -223,12 +223,13 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.119" />
 
-                    <EditText
+
+
+                    <Spinner
                         android:id="@+id/wakeUpHourGoal"
                         style="@style/TextoInterRegular.Texto"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="null"
                         app:layout_constraintBottom_toBottomOf="@+id/textView18"
                         app:layout_constraintEnd_toEndOf="@+id/sleepTimeGoal"
                         app:layout_constraintStart_toStartOf="@+id/sleepTimeGoal"
@@ -251,12 +252,11 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.323" />
 
-                    <EditText
+                    <Spinner
                         android:id="@+id/sleepTimeGoal"
                         style="@style/TextoInterRegular.Texto"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
-                        android:text="null"
                         app:layout_constraintBottom_toBottomOf="@+id/textView20"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.518"
@@ -307,7 +307,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/frameLayout3"
                     android:layout_width="0dp"
-                    android:layout_height="160dp"
+                    android:layout_height="110dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="48dp"
@@ -327,6 +327,7 @@
                         android:background="#00000000"
                         android:text="@string/Automatico2"
                         android:textSize="16sp"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.17"
@@ -407,13 +408,14 @@
                         app:layout_constraintHorizontal_bias="0.155"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.51" />
+                        app:layout_constraintVertical_bias="0.747" />
 
                     <Switch
                         android:id="@+id/switchAutoLight"
                         style="@style/SwitchStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/textView17"
                         app:layout_constraintEnd_toEndOf="@+id/switchColdLight"
                         app:layout_constraintHorizontal_bias="0.916"
@@ -426,6 +428,7 @@
                         android:layout_width="20dp"
                         android:layout_height="25dp"
                         android:background="#00000000"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/textView17"
                         app:layout_constraintEnd_toStartOf="@+id/textView17"
                         app:layout_constraintStart_toStartOf="parent"
@@ -441,7 +444,7 @@
                     android:layout_marginStart="64dp"
                     android:layout_marginEnd="64dp"
                     android:layout_marginBottom="48dp"
-                    android:text="Vincular entorno Hypnos"
+                    android:text="Conectar con entorno Hypnos"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

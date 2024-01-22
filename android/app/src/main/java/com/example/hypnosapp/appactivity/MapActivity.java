@@ -60,8 +60,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback{
         firebaseHelper.getStoreData(new OnSuccessListener<List<Store>>() {
             @Override
             public void onSuccess(List<Store> stores) {
-                Log.d("PRUEBAAAAAAAAAAAA", stores.get(0).getName() + ",,,," + stores.get(1).getLocation());
-
                 for(Store store : stores){
                     double latitud = store.getLocation().get(0);
                     double longitud = store.getLocation().get(1);

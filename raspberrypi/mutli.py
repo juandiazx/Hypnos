@@ -1,6 +1,5 @@
 import firebase_admin
 import socket
-#import serial
 import threading
 import json
 from firebase_admin import credentials, firestore, storage
@@ -9,6 +8,7 @@ from datetime import datetime
 from picamera import PiCamera
 import time
 from io import BytesIO
+import RPi.GPIO as GPIO
 
 cred = credentials.Certificate('firebase-adminsdk.json')
 firebase_admin.initialize_app(cred, {
@@ -24,23 +24,15 @@ uid_usuario = None
 
 # Configura los sockets UDP para cada función
 udp_socket_data = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-udp_socket_time = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#udp_socket_time = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 udp_host = '0.0.0.0'  # Escucha en todas las interfaces de red
 udp_port_data = 6230   # Elige un número de puerto disponible para datos
-udp_port_time = 6231   # Elige un número de puerto disponible para tiempo
+#udp_port_time = 6231   # Elige un número de puerto disponible para tiempo
 
 udp_socket_data.bind((udp_host, udp_port_data))
-udp_socket_time.bind((udp_host, udp_port_time))
+#udp_socket_time.bind((udp_host, udp_port_time))
 
-'''
-# Configura el objeto serial
-ser = serial.Serial(
-    port='/dev/ttyUSB0',  # Puerto serial en Raspberry Pi (puede variar)
-    baudrate=115200,       # Velocidad de baudios, asegúrate de que coincida con la configuración del ESP32
-    timeout=1              # Tiempo de espera para la lectura serial
-)
-'''
 # Configuración de MQTT
 mqtt_broker_address = "test.mosquitto.org"  # Cambia esto con la IP de tu Raspberry Pi
 mqtt_topic_uid = "hypnos_rp_uid"
@@ -53,20 +45,26 @@ camera = PiCamera()
 
 # Variables para almacenar los datos de UDP y UART
 datos_udp = None
-datos_udp_time = None
+#datos_udp_time = None
 datos_mqtt = None
 
 # Array para almacenar los archivos de imagen
 imagenes = []
+
+# Variable para almacenar el ajuste de iluminacion
+iluminacion = None
+
 
 def tomar_fotos():
     for _ in range(3):  # Tomar 3 fotos
         stream = BytesIO()
         camera.capture(stream, 'jpeg')
         imagenes.append(stream.getvalue())
-        time.sleep(4)        
+        time.sleep(4)
+
     camera.close()
-    
+
+
 def subir_imagenes_storage():
     try:
         for i, imagen in enumerate(imagenes):
@@ -85,6 +83,7 @@ def subir_imagenes_storage():
 
     except Exception as e:
         print(f"Error al subir imágenes a Firestore: {e}")
+
 
 def recibir_datos_udp():
     global datos_udp
@@ -115,7 +114,7 @@ def recibir_datos_udp():
     except KeyboardInterrupt:
         udp_socket.close()
         print("\nSocket UDP cerrado.")
-
+'''
 def recibir_datos_udp_time():
     global datos_udp_time
     try:
@@ -126,9 +125,9 @@ def recibir_datos_udp_time():
                 try:
                     mensaje_json = json.loads(data)
                     if "sleepTime" in mensaje_json:
-                        
+
                         datos_udp_time = int(mensaje_json["sleepTime"])//1000
-                        
+
                         print('Datos UDP Time recibidos correctamente:', datos_udp_time)
                         break
                 except json.JSONDecodeError:
@@ -137,20 +136,68 @@ def recibir_datos_udp_time():
     except KeyboardInterrupt:
         udp_socket.close()
         print("\nSocket UDP cerrado.")
+'''
 
+def leer_ajustes_iluminacion_firestore(uid):
+    user_ref = db.collection('users').document(uid)
+    user_data = user_ref.get().to_dict()
+
+    if user_data is not None and 'preferences' in user_data:
+        preferences = user_data['preferences']
+        light_settings = preferences.get('lightSettings')
+
+        if light_settings is not None:
+            return light_settings
+
+    return None
+
+def encender_led_segun_ajuste(lightSettings):
+    # Define GPIO pins for RGB LED (adjust these according to your wiring)
+    RED_PIN = 17
+    GREEN_PIN = 27
+    BLUE_PIN = 22
+
+    # Setup GPIO
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(RED_PIN, GPIO.OUT)
+    GPIO.setup(GREEN_PIN, GPIO.OUT)
+    GPIO.setup(BLUE_PIN, GPIO.OUT)
+
+    # Turn off all colors
+    GPIO.output(RED_PIN, GPIO.LOW)
+    GPIO.output(GREEN_PIN, GPIO.LOW)
+    GPIO.output(BLUE_PIN, GPIO.LOW)
+
+    # Set color based on lightSettings
+    if lightSettings == 'COL':
+        # Cold white
+        GPIO.output(BLUE_PIN, GPIO.HIGH)
+    elif lightSettings == 'WAR':
+        # Warm white
+        GPIO.output(RED_PIN, GPIO.HIGH)
+        GPIO.output(GREEN_PIN, GPIO.HIGH)
 
 def on_message(client, userdata, message):
-    global uid_usuario, datos_mqtt,count
+    global uid_usuario, datos_mqtt, count, iluminacion
     payload = message.payload.decode('utf-8')
 
     if message.topic == mqtt_topic_uid:
         uid_usuario = payload
         print('UID recibido correctamente:', uid_usuario)
         mqtt_client.unsubscribe(mqtt_topic_uid)
+        time.sleep(2)
+        iluminacion = leer_ajustes_iluminacion_firestore(uid_usuario)
+        encender_led_segun_ajuste(iluminacion)
+        time.sleep(5)
+        GPIO.cleanup()
+
     elif message.topic == mqtt_topic:
-        datos_mqtt = payload
+        datos_mqtt = json.loads(payload) #payload
         print('Datos MQTT recibidos correctamente:', datos_mqtt)
-    count +=1
+        encender_led_segun_ajuste(iluminacion)
+        time.sleep(10)
+        GPIO.cleanup()
+    count += 1
     if count == 2:
         mqtt_client.disconnect()
 
@@ -173,7 +220,8 @@ def enviar_mensaje_mqtt_daytime():
         mqtt_client.disconnect()
     except Exception as e:
         print(f"Error al enviar mensaje MQTT: {e}")
-        
+
+
 def escribir_en_firestore():
     global datos_udp, datos_udp_time, datos_mqtt
     if datos_udp is not None and datos_udp_time is not None and datos_mqtt is not None:
@@ -182,31 +230,34 @@ def escribir_en_firestore():
             'breathing': datos_udp["snore"],
             'date':datetime.now(),
             'temperature':datos_udp["temperature"],
-            'time': datos_udp_time,
-            'score': int(datos_mqtt)
+            'time': int(datos_mqtt["time"]),#datos_udp_time
+            'score': int(datos_mqtt["score"])
         }
 
         coleccion_referencia.document(uid_usuario).collection('nightsData').add(datos_combinados)
         print('Datos combinados agregados correctamente a Firestore en Firebase.')
-        
+
         subir_imagenes_storage()
-        
+
         enviar_mensaje_mqtt_daytime()
 
 
 thread_udp = threading.Thread(target=recibir_datos_udp)
-thread_uart = threading.Thread(target=recibir_datos_udp_time)
+#thread_uart = threading.Thread(target=recibir_datos_udp_time)
 thread_mqtt = threading.Thread(target=iniciar_hilo_mqtt)
 thread_foto = threading.Thread(target=tomar_fotos)
 
 thread_udp.start()
-thread_uart.start()
+#thread_uart.start()
 thread_mqtt.start()
 thread_foto.start()
 
 thread_udp.join()
-thread_uart.join()
+#thread_uart.join()
 thread_mqtt.join()
 thread_foto.join()
 
 escribir_en_firestore()
+#encender_led_segun_ajuste(iluminacion)
+#time.sleep(5)
+#GPIO.cleanup()

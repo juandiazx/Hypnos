@@ -9,7 +9,5 @@ public class HypnosInicializacion extends Application {
     public void onCreate() {
         super.onCreate();
         FirebaseApp.initializeApp(this);
-        // Perform any application-wide setup specific to the "Hypnos" app here.
-        // Initialize Firebase or utils necessary tasks.
     }
 }

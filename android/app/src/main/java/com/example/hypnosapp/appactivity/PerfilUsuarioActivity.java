@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
@@ -25,6 +26,9 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.example.hypnosapp.auth.PreinicioDeSesion;
+import com.example.hypnosapp.firebase.FirebaseHelper;
+import com.example.hypnosapp.mainpage.ECGActivity;
+import com.example.hypnosapp.mainpage.Pantalla_Principal;
 import com.example.hypnosapp.utils.MenuManager;
 import com.example.hypnosapp.R;
 import com.facebook.login.LoginManager;
@@ -50,10 +54,13 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     String nombreUsuario, correoUsuario, storagePath;
-    TextView nombre, nombreApellidos, correo;
+    TextView nombre, nombreApellidos, correo, familyAccessCode;
     EditText inputNombreApellidos;
     StorageReference storageRef;
     ImageView imgProfile;
+    private FirebaseHelper firebaseHelper;
+
+
 
 
     public interface ReauthenticationListener {
@@ -65,6 +72,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firebaseHelper = new FirebaseHelper();
 
         //obtenemos la sesión y el usuario:
         firebaseAuth = FirebaseAuth.getInstance();
@@ -73,6 +81,8 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         //Obtención de datos del usuario:
         nombreUsuario = firebaseUser.getDisplayName();
         correoUsuario = firebaseUser.getEmail();
+
+
         Uri urlFoto = firebaseUser.getPhotoUrl();
         String proveedores = "";
         for (int n=0; n<firebaseUser.getProviderData().size(); n++){
@@ -82,6 +92,24 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         if (proveedores.contains("google")) {
             //Si iniciamos sesión con Google:
             setContentView(R.layout.perfil_usuario_google_facebook);
+
+            familyAccessCode = findViewById(R.id.codigoFamiliarGoogleFacebook);
+            firebaseHelper.getFamilyAccessCode(firebaseUser.getUid(),
+                    new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String code) {
+                            //familyAccessCode.setText(code);
+                            Log.d("family", code);
+                            familyAccessCode.setText(code);
+                        }
+                    },
+                    new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText( PerfilUsuarioActivity.this,
+                                    "We couldn't obtain your family acccess code", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
             //PARA OBTENER LA FOTO DE PERFIL DEL USUARIO
             // Inicialización Volley
@@ -115,6 +143,24 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             //Si iniciamos sesión con Facebook:
             setContentView(R.layout.perfil_usuario_google_facebook);
 
+            familyAccessCode = findViewById(R.id.codigoFamiliarGoogleFacebook);
+            firebaseHelper.getFamilyAccessCode(firebaseUser.getUid(),
+                    new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String code) {
+                            //familyAccessCode.setText(code);
+                            Log.d("family", code);
+                            familyAccessCode.setText(code);
+                        }
+                    },
+                    new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText( PerfilUsuarioActivity.this,
+                                    "We couldn't obtain your family acccess code", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
             //PARA OBTENER LA FOTO DE PERFIL DEL USUARIO
             // Inicialización Volley
             RequestQueue colaPeticiones = Volley.newRequestQueue(this);
@@ -145,6 +191,23 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         else{
             //si iniciamos sesión con correo electrónico:
             setContentView(R.layout.perfil_usuario);
+            familyAccessCode = findViewById(R.id.codigoFamiliarPerfilET);
+            firebaseHelper.getFamilyAccessCode(firebaseUser.getUid(),
+                    new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String code) {
+                            //familyAccessCode.setText(code);
+                            Log.d("family", code);
+                            familyAccessCode.setText(code);
+                        }
+                    },
+                    new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText( PerfilUsuarioActivity.this,
+                                    "We couldn't obtain your family acccess code", Toast.LENGTH_SHORT).show();
+                        }
+                    });
             storageRef = FirebaseStorage.getInstance().getReference();
 
             nombreApellidos = findViewById(R.id.nombreApellidosPerfil);
@@ -268,6 +331,24 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 funcionMenu.abrirAcercaDe(PerfilUsuarioActivity.this);
             }
         });
+
+        ImageView btnAbrirActivityECG = findViewById(R.id.logoCardiacoHeader);
+        btnAbrirActivityECG.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent para abrir la actividad ECG
+                Intent intent = new Intent(PerfilUsuarioActivity.this, ECGActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView btnMaps = findViewById(R.id.ButtonMaps);
+        btnMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                funcionMenu.abrirMaps(PerfilUsuarioActivity.this);
+            }
+        });
         //-------------------------------------------------------------------------------------
         // FIN DE FUNCIONALIDAD BOTONES MENUS
         //-------------------------------------------------------------------------------------
@@ -301,8 +382,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         //Facebook Log Out Login Manager
         LoginManager.getInstance().logOut();
 
-        Toast.makeText(this, "Se ha cerrado la sesión", Toast.LENGTH_SHORT).show();
-
         //después de cerrar sesión nos dirigirá a la pantalla de pre-inicio de sesión:
         Intent i = new Intent(getApplicationContext(), PreinicioDeSesion.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -321,6 +400,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
             EditText inputpassRe = dialogView.findViewById(R.id.inputPassReautenticacion);
             Button btnAceptarRe = dialogView.findViewById(R.id.btnAceptarReautenticacion);
             Button btnCancelarRe = dialogView.findViewById(R.id.btnCancelarReautenticacion);
+            ImageView ojoMostrarOcultarPass = dialogView.findViewById(R.id.ojoMostrarOcultarPass);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Reautenticación");
@@ -355,6 +435,17 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     dialog.dismiss();
+                }
+            });
+
+            ojoMostrarOcultarPass.setOnClickListener(new View.OnClickListener() {
+                boolean isPasswordVisible = false;
+                @Override
+                public void onClick(View v) {
+                    isPasswordVisible = !isPasswordVisible;
+                    int visibility = isPasswordVisible ? View.VISIBLE : View.GONE;
+                    inputpassRe.setInputType(isPasswordVisible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    ojoMostrarOcultarPass.setImageResource(isPasswordVisible ? R.drawable.ic_visibility_eye : R.drawable.ic_visibility_eye_off);
                 }
             });
         }
@@ -404,6 +495,7 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
         EditText inputPassRepe = dialogView.findViewById(R.id.inputPassRepe);
         Button btnAceptar = dialogView.findViewById(R.id.btnAceptarCambioContrasenya);
         Button btnCancelar = dialogView.findViewById(R.id.btnCancelarCambioContrasenya);
+        ImageView ojoMostrarOcultarCambioPass = dialogView.findViewById(R.id.ojoMostrarOcultarCambioPass);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Cambiar contraseña");
@@ -418,7 +510,6 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 String passRepe = inputPassRepe.getText().toString();
 
                 if (passNueva.equals(passRepe)) {
-                    Toast.makeText(PerfilUsuarioActivity.this, "Pass Correcta", Toast.LENGTH_SHORT).show();
                     Log.d("CambioContrasenya", "Contraseña repetida correctamente");
 
                     firebaseUser.updatePassword(passNueva)
@@ -446,6 +537,20 @@ public class PerfilUsuarioActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
+        ojoMostrarOcultarCambioPass.setOnClickListener(new View.OnClickListener() {
+            boolean isPasswordVisible = false;
+            @Override
+            public void onClick(View v) {
+                isPasswordVisible = !isPasswordVisible;
+                int visibility = isPasswordVisible ? View.VISIBLE : View.GONE;
+                inputPassNueva.setInputType(isPasswordVisible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                inputPassRepe.setInputType(isPasswordVisible ? InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                ojoMostrarOcultarCambioPass.setImageResource(isPasswordVisible ? R.drawable.ic_visibility_eye : R.drawable.ic_visibility_eye_off);
+            }
+        });
+
+
     }
     private void subirNuevaFotoPerfil(Uri imagen, String direccionFirebase){
 

@@ -81,7 +81,7 @@
 
     <string name="ObjetivosDeDescanso">Objetivos de descanso</string>
 
-    <string name="TiempoDeDescanso">Tiempo de descanso:</string>
+    <string name="TiempoDeDescanso">Hora de acostarse:</string>
 
     <string name="HoraDeDespertarse">Hora de despertarse:</string>
 
@@ -107,7 +107,7 @@
     <string name="CambiarContrasenya">Cambiar contraseña</string>
 
     <!--Reautenticación-->
-    <string name="IntroducirCredencialesAntiguas">Introduce tus antiguas credenciales</string>
+    <string name="IntroducirCredencialesAntiguas">Introduce tus credenciales actuales</string>
     <string name="NecesarioIniciarSesion">Por motivos de seguridad, es necesario volver a iniciar sesión:</string>
 
 
