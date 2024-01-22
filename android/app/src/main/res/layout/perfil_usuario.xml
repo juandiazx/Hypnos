@@ -37,6 +37,37 @@
             android:layout_height="match_parent">
 
             <!--HEADER-->
+
+            <TextView
+                android:id="@+id/labelEmail3"
+                style="@style/TextoInterRegular.Inputs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Codigo familiar"
+                app:layout_constraintStart_toStartOf="@+id/labelEmail"
+                app:layout_constraintTop_toBottomOf="@+id/emailPerfil" />
+
+            <TextView
+                android:id="@+id/codigoFamiliarPerfilET"
+                style="@style/TextoInterRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="40dp"
+                android:ems="10"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="Codigo familiar"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelEmail3" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
@@ -54,8 +85,46 @@
             <!--FIN DE HEADER-->
 
 
+            <TextView
+                android:id="@+id/emailPerfil"
+                style="@style/TextoInterRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="40dp"
+                android:ems="10"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/Email"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelEmail" />
+
+            <TextView
+                android:id="@+id/nombreApellidosPerfil"
+                style="@style/TextoInterRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="40dp"
+                android:ems="10"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/NombreApellidos"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/labelNombre" />
+
             <EditText
-                android:id="@+id/inputEmail"
+                android:id="@+id/inputNombreApellidos"
                 style="@style/Inputs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -63,39 +132,40 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="40dp"
                 android:ems="10"
+                android:hint="@string/NombreApellidos"
                 android:inputType="textEmailAddress"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="16dp"
-                android:text="@string/Email"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/labelEmail" />
+                app:layout_constraintTop_toBottomOf="@+id/labelNombre" />
 
             <TextView
                 android:id="@+id/labelEmail"
                 style="@style/TextoInterRegular.Inputs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/Email"
+                app:layout_constraintEnd_toEndOf="@+id/labelNombre"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/labelNombre"
+                app:layout_constraintTop_toBottomOf="@+id/inputNombreApellidos" />
+
+            <TextView
+                android:id="@+id/labelNombre"
+                style="@style/TextoInterRegular.Inputs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="@string/NombreApellidos"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fotoPerfil" />
-
-            <TextView
-                android:id="@+id/labelEmail3"
-                style="@style/TextoInterRegular.Inputs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/contrasenya"
-                app:layout_constraintEnd_toEndOf="@+id/labelEmail"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/labelEmail"
-                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
 
             <TextView
                 android:id="@+id/textView"
@@ -113,6 +183,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="40dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -126,61 +197,87 @@
                 android:layout_marginEnd="-10dp"
                 android:layout_marginBottom="-10dp"
                 android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="@+id/fotoPerfil"
                 app:layout_constraintEnd_toEndOf="@+id/fotoPerfil"
-                app:srcCompat="@drawable/icono_lapiz" />
+                app:srcCompat="@drawable/edit_icon" />
 
-            <EditText
-                android:id="@+id/inputContrasenya"
-                style="@style/Inputs"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp"
-                android:text="Hola1234"
-                app:layout_constraintEnd_toEndOf="@+id/inputEmail"
-                app:layout_constraintStart_toStartOf="@+id/inputEmail"
-                app:layout_constraintTop_toBottomOf="@+id/labelEmail3" />
+
+            <ImageView
+                android:id="@+id/editarNombre"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/nombreApellidosPerfil"
+                app:layout_constraintEnd_toEndOf="@+id/nombreApellidosPerfil"
+                app:layout_constraintHorizontal_bias="0.96"
+                app:layout_constraintStart_toStartOf="@+id/nombreApellidosPerfil"
+                app:layout_constraintTop_toTopOf="@+id/nombreApellidosPerfil"
+                app:srcCompat="@drawable/edit_icon" />
 
             <Button
-                android:id="@+id/btnConfirmarCambios"
-                style="@style/EstiloBoton"
+                android:id="@+id/btnCambiarContrasenya"
+                style="@style/EstiloBoton.ConBorde"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp"
-                android:text="@string/ConfirmarCambios"
-                app:layout_constraintEnd_toEndOf="@+id/inputContrasenya"
-                app:layout_constraintStart_toStartOf="@+id/inputContrasenya"
-                app:layout_constraintTop_toBottomOf="@+id/inputContrasenya" />
+                android:layout_marginTop="32dp"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/CambiarContrasenya"
+                app:layout_constraintEnd_toEndOf="@+id/emailPerfil"
+                app:layout_constraintStart_toStartOf="@+id/emailPerfil"
+                app:layout_constraintTop_toBottomOf="@+id/codigoFamiliarPerfilET" />
 
             <Button
                 android:id="@+id/btnCerrarSesion"
                 style="@style/EstiloBoton.ConBorde"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:layout_marginBottom="72dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="112dp"
                 android:paddingStart="10dp"
-                android:paddingTop="12dp"
+                android:paddingTop="10dp"
                 android:paddingEnd="10dp"
-                android:paddingBottom="12dp"
+                android:paddingBottom="10dp"
                 android:text="@string/CerrarSesion"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/btnConfirmarCambios"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/btnConfirmarCambios"
-                app:layout_constraintTop_toBottomOf="@+id/btnConfirmarCambios"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintEnd_toEndOf="@+id/btnCambiarContrasenya"
+                app:layout_constraintStart_toStartOf="@+id/btnCambiarContrasenya"
+                app:layout_constraintTop_toBottomOf="@+id/btnCambiarContrasenya" />
 
+            <ImageView
+                android:id="@+id/confirmarCambioNombre"
+                android:visibility="gone"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="32dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/nombreApellidosPerfil"
+                app:layout_constraintEnd_toEndOf="@+id/nombreApellidosPerfil"
+                app:layout_constraintHorizontal_bias="0.921"
+                app:layout_constraintStart_toStartOf="@+id/nombreApellidosPerfil"
+                app:layout_constraintTop_toTopOf="@+id/nombreApellidosPerfil"
+                app:srcCompat="@drawable/check_icon_1" />
+
+            <ImageView
+                android:id="@+id/cancelarCambioNombre"
+                android:visibility="gone"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/confirmarCambioNombre"
+                app:layout_constraintStart_toEndOf="@+id/confirmarCambioNombre"
+                app:layout_constraintTop_toTopOf="@+id/confirmarCambioNombre"
+                app:srcCompat="@drawable/cancel_icon_1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

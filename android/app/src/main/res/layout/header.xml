@@ -40,6 +40,19 @@
         android:focusable="true"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintTop_toTopOf="@+id/view3"
-        app:srcCompat="@drawable/user_100" />
+        app:srcCompat="@drawable/perfil" />
+
+    <ImageView
+        android:id="@+id/logoCardiacoHeader"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="75dp"
+        android:clickable="true"
+        android:elevation="10dp"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view3"
+        app:srcCompat="@drawable/medida_cardiaca_azul" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

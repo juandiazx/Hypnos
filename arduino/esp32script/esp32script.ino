@@ -4,6 +4,7 @@
 #include <AsyncUDP.h>
 #include <ArduinoJson.h>
 #include <WiFi.h>
+#include <vector>
 //--------------------------------------------------------
 
 
@@ -21,8 +22,10 @@
 #define SOUNDPIN 34
 #define LEDPIN 2
 #define udpPort 6230
-//#define ssid "TP-LINK_6CAE"
-//#define password "54346615"
+//#define ssid "TP-LINK_6B36"
+//#define password "89776513"
+// #define ssid "Redmi_Alex"
+// #define password "abcde4567"
 #define ssid "darkasa"
 #define password "0Spoilerspls"
 //--------------------------------------------------------------------------------------
@@ -37,13 +40,12 @@ void setup(){
   Serial.begin(115200);
   // Inicializamos las instancias dentro de setup
   esp32Abstract = ESP32Abstract::getInstance(ssid, password, udpPort, TEMPERATUREPIN, SOUNDPIN, LEDPIN);
-  //esp32Abstract->listenForMessages();
 }
 
 
 void loop() {
   esp32Abstract->listenForMessages();
   delay(4000);
-
+  
 }
 

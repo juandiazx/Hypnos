@@ -81,7 +81,7 @@
 
     <string name="ObjetivosDeDescanso">Objetivos de descanso</string>
 
-    <string name="TiempoDeDescanso">Tiempo de descanso:</string>
+    <string name="TiempoDeDescanso">Hora de acostarse:</string>
 
     <string name="HoraDeDespertarse">Hora de despertarse:</string>
 
@@ -95,17 +95,30 @@
 
     <string name="Blancas">Blancas:</string>
 
-    <!--Confirmar cambios-->
+    <!--Confirmar correo-->
     <string name="RepetirCorreo">Repite el correo electrónico:</string>
-    <string name="RepetirContrasenya">Repite la contraseña:</string>
     <string name="CorreoElectronico">Correo electrónico</string>
     <string name="Aceptar">Aceptar</string>
     <string name="Cancelar">Cancelar</string>
 
+    <!--Cambiar contrasenya-->
+    <string name="RepetirContrasenya">Repite la contraseña:</string>
+    <string name="EscribirContrasenya">Escribe la nueva contraseña:</string>
+    <string name="CambiarContrasenya">Cambiar contraseña</string>
+
+    <!--Reautenticación-->
+    <string name="IntroducirCredencialesAntiguas">Introduce tus credenciales actuales</string>
+    <string name="NecesarioIniciarSesion">Por motivos de seguridad, es necesario volver a iniciar sesión:</string>
 
 
+    <string name="reproduciendo_musica">Reproduciendo Música</string>
+    <string name="descripcion_musica">La Guerra de las Galaxias</string>
 
-
+    <!--Historial-->
+    <string name="Desde">Desde</string>
+    <string name="Hasta">Hasta</string>
+    <string name="Buscar">Buscar</string>
+    <string name="ErrorFechas">La fecha inicial no puede ser posterior a la fecha final</string>
 
 
 

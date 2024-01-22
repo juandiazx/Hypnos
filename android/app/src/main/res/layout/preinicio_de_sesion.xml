@@ -56,7 +56,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:onClick="pulsaIniciarConGoogle"
         android:paddingLeft="0dp"
         android:paddingRight="30dp"
         android:text="@string/IniciarGoogle"
@@ -71,7 +70,6 @@
         style="@style/EstiloBoton.ConBorde"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="pulsaIniciarConFacebook"
         android:paddingLeft="0dp"
         android:paddingRight="30dp"
         android:text="@string/IniciarFacebook"
@@ -117,7 +115,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
-        android:onClick="pulsaEmail"
         android:paddingRight="30dp"
         android:text="@string/IniciarCorreo"
         android:textAlignment="textEnd"
@@ -153,13 +150,12 @@
         app:srcCompat="@drawable/luna_peque" />
 
     <TextView
-        android:id="@+id/tvIniciaSesion"
+        android:id="@+id/tvRegistratePreinicio"
         style="@style/TextoInterBold"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
         android:clickable="true"
-        android:onClick="pulsaRegistrar"
         android:text="@string/Registrate"
         android:textColor="@color/colorAzulPrincipal"
         android:textSize="14sp"
@@ -170,6 +166,20 @@
         app:layout_constraintTop_toTopOf="@+id/txt" />
 
     <TextView
+        android:id="@+id/botonAccederFamiliar"
+        style="@style/TextoInterBold"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:clickable="true"
+        android:text="Accede como familiar"
+        android:textColor="@color/colorAzulPrincipal"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/txt"
         style="@style/TextoInterRegular"
         android:layout_width="wrap_content"
@@ -177,7 +187,7 @@
         android:layout_marginTop="28dp"
         android:text="@string/NoTienesUnaCuenta"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/tvIniciaSesion"
+        app:layout_constraintEnd_toStartOf="@+id/tvRegistratePreinicio"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnEmail" />

@@ -3,7 +3,7 @@
 
 class LedLight {
 public:
-    // M�todo para tomar una medida
+    // Método para tomar una medida
     void turnOn(){
         if(!isLightOn){
             isLightOn = true;

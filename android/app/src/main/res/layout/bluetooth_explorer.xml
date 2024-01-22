@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Agregar un ImageView para mostrar el GIF -->
+
+    <ImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="141dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:scaleType="centerInside"
+        android:src="@drawable/bluetooth"
+        android:visibility="visible"
+ />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listDeviceBluetooth"
+        android:visibility="visible">
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/viewConn"
+        android:visibility="gone">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtTx"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+        </EditText>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonSend"
+            android:text="Enviar"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp">
+        </Button>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/consola">
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>

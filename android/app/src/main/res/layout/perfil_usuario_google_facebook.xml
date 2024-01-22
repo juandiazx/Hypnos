@@ -37,6 +37,37 @@
             android:layout_height="match_parent">
 
             <!--HEADER-->
+
+            <TextView
+                android:id="@+id/labelEmail2"
+                style="@style/TextoInterRegular.Inputs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Codigo familiar"
+                app:layout_constraintEnd_toEndOf="@+id/labelNombreApellidos"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/labelNombreApellidos"
+                app:layout_constraintTop_toBottomOf="@+id/emailGoogleFacebook" />
+
+            <TextView
+                android:id="@+id/codigoFamiliarGoogleFacebook"
+                style="@style/TextoInterRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:text="Codigo familiar"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/nombreGoogleFacebook"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/nombreGoogleFacebook"
+                app:layout_constraintTop_toBottomOf="@+id/labelEmail2" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
@@ -54,21 +85,21 @@
             <!--FIN DE HEADER-->
 
 
-            <EditText
-                android:id="@+id/inputEmail"
-                style="@style/Inputs"
+            <TextView
+                android:id="@+id/emailGoogleFacebook"
+                style="@style/TextoInterRegular"
+                android:textSize="16sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:ems="10"
-                android:inputType="textEmailAddress"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="16dp"
                 android:text="@string/Email"
-                app:layout_constraintEnd_toEndOf="@+id/inputNombre"
-                app:layout_constraintStart_toStartOf="@+id/inputNombre"
+                app:layout_constraintEnd_toEndOf="@+id/nombreGoogleFacebook"
+                app:layout_constraintStart_toStartOf="@+id/nombreGoogleFacebook"
                 app:layout_constraintTop_toBottomOf="@+id/labelEmail" />
 
             <TextView
@@ -81,7 +112,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/labelNombreApellidos"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/labelNombreApellidos"
-                app:layout_constraintTop_toBottomOf="@+id/inputNombre" />
+                app:layout_constraintTop_toBottomOf="@+id/nombreGoogleFacebook" />
 
             <TextView
                 android:id="@+id/textView"
@@ -93,17 +124,7 @@
                 android:text="@string/TituloPerfilUsuario"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-            <!--
-                        <ImageView
-                            android:id="@+id/fotoPerfil"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_marginTop="40dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView"
-                            app:srcCompat="@drawable/avatar" />
-            -->
+
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/fotoPerfil"
                 android:layout_width="100dp"
@@ -113,6 +134,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+            <!--
             <ImageView
                 android:id="@+id/editarFoto"
                 android:layout_width="30dp"
@@ -123,6 +145,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/fotoPerfil"
                 app:layout_constraintEnd_toEndOf="@+id/fotoPerfil"
                 app:srcCompat="@drawable/icono_lapiz" />
+                -->
 
             <TextView
                 android:id="@+id/labelNombreApellidos"
@@ -136,16 +159,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fotoPerfil" />
 
-            <EditText
-                android:id="@+id/inputNombre"
-                style="@style/Inputs"
+            <TextView
+                android:id="@+id/nombreGoogleFacebook"
+                style="@style/TextoInterRegular"
+                android:textSize="16sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="40dp"
                 android:ems="10"
-                android:inputType="text"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="16dp"
@@ -166,9 +189,9 @@
                 android:paddingEnd="10dp"
                 android:paddingBottom="12dp"
                 android:text="@string/CerrarSesion"
-                app:layout_constraintEnd_toEndOf="@+id/inputEmail"
-                app:layout_constraintStart_toStartOf="@+id/inputEmail"
-                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+                app:layout_constraintEnd_toEndOf="@+id/emailGoogleFacebook"
+                app:layout_constraintStart_toStartOf="@+id/emailGoogleFacebook"
+                app:layout_constraintTop_toBottomOf="@+id/codigoFamiliarGoogleFacebook" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
