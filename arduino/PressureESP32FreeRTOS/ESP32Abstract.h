@@ -158,8 +158,11 @@ private:
         }
 
         //vTaskDelay(3000 / portTICK_PERIOD_MS)
-        sendDataToM5Stack(udpPort);
-
+        sendDataViaUDP(udpPort);
+        Serial.println("udp 6230, esperamos 4 segundos");
+        vTaskDelay(4000 / portTICK_PERIOD_MS);
+        sendDataViaUDP(udpPort + 1);
+        Serial.println("udp 6231");
         Serial.print(pressureSensor->tiempoEncendido);
         Serial.flush();  // Asegura que los datos se envíen completamente
 
@@ -171,16 +174,17 @@ private:
         vTaskDelete(obtainSensorsDataTaskHandle);
     }
 
-    void sendDataToM5Stack(int puerto) {
+    void sendDataViaUDP(int puerto) {
         StaticJsonDocument<200> jsonBuffer;
         char medidas[200];
 
         jsonBuffer["sleepTime"] = pressureSensor->tiempoEncendido;
         // Serializar el objeto JSON en una cadena
         serializeJson(jsonBuffer, medidas);
-        Serial.println("data sent to m5stack");
+        Serial.println("data sent to" + puerto);
         udp.broadcastTo(medidas, puerto); 
     }
+
     static ESP32Abstract* instance;
 };
 
